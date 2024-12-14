@@ -14,10 +14,20 @@ export class BookSearchController {
     }
 
     public routes() {
-        this.router.get(`${ENV.BOOKSEARCH}`, this.getUsers);
+        this.router.get(`${ENV.BOOKSEARCH}`, this.getBookInfo);
     }
 
-    private getUsers(req: Request, res: Response) {
+
+    private getBookInfo(req: Request, res: Response) {
+
+        // キーワードを取得
+        let keyword = req.query;
+
+        // キーワードがない場合
+        if (!keyword) {
+
+        }
+
         res.send('Call book search');
     }
 
