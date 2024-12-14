@@ -3,9 +3,8 @@ import axios, { AxiosInstance } from 'axios';
 export class ApiClient {
     private client: AxiosInstance;
 
-    constructor(baseURL: string) {
+    constructor() {
         this.client = axios.create({
-            baseURL,
             timeout: 5000, // タイムアウト設定
             headers: { 'Content-Type': 'application/json' },
         });

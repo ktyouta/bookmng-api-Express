@@ -23,12 +23,16 @@ export class BookSearchController {
         // キーワードを取得
         let keyword = req.query;
 
-        // キーワードがない場合
-        if (!keyword) {
+        try {
+
+            // キーワードがない場合
+            if (!keyword) {
+
+            }
+
+            res.send('Call book search');
+        } catch (err) {
 
         }
-
-        res.send('Call book search');
     }
-
 }
