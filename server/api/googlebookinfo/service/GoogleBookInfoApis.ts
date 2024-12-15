@@ -1,9 +1,9 @@
 import ENV from '../../../env.json';
 import express, { Request, Response } from 'express';
 import axios, { AxiosResponse } from 'axios';
-import { ApiClient } from '../../../util/ApiClient';
+import { ApiClient } from '../../../util/service/ApiClient';
 import { GoogleBooksAPIsModelType } from '../model/GoogleBooksAPIsModelType';
-import { QueryBuilder } from '../../../util/QueryBuilder';
+import { QueryBuilder } from '../../../util/service/QueryBuilder';
 
 
 export class GoogleBookInfoApis {
