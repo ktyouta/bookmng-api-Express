@@ -6,7 +6,7 @@ import { BookSearchService } from '../service/BookSearchService';
 export class BookSearchController {
 
     public router: Router;
-    public bookSearchService = new BookSearchService();
+    private bookSearchService = new BookSearchService();
 
     constructor() {
         this.router = Router();
