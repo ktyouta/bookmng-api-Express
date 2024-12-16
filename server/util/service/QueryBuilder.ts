@@ -24,6 +24,8 @@ export class QueryBuilder {
             }
         }).filter((element) => {
             return !!element.value;
+        }).map((element) => {
+            return `${element.key}=${element.value}`
         }).join("&");
     }
 

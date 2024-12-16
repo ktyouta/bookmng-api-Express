@@ -9,10 +9,10 @@ export class BookSearchService {
      * 書籍情報を取得する
      * @param keyword 
      */
-    public getBookInfoList(keyword: string) {
+    public async getBookInfoList(keyword: string) {
 
         try {
-            let googleBookInfoList = this.googleBookInfoApis.getGoogleBookInfo(keyword);
+            let googleBookInfoList = await this.googleBookInfoApis.getGoogleBookInfo(keyword);
 
             return googleBookInfoList;
 

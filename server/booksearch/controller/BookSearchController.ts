@@ -26,18 +26,26 @@ export class BookSearchController {
      * @param res 
      * @returns 
      */
-    public getBookInfo(req: Request, res: Response): Response {
-
-        // キーワードを取得
-        let keyword = req.query;
+    public async getBookInfo(req: Request, res: Response) {
 
         try {
-            // キーワードがない場合
+
+            // クエリパラメータを取得
+            let query = req.query;
+            // キーワードを取得
+            let keyword = typeof query[`q`] === "string" ? query[`q`] : "";
+
+            // クエリがない場合
             if (!keyword) {
                 return res.status(HTTP_STATUS_BAD_REQUEST).json({ errMessage: "キーワードを設定してください。" });
             }
 
-            return res.status(200).json({ message: "Data found" });
+            let googleBookInfoList = await this.bookSearchService.getBookInfoList(keyword);
+
+            return res.status(200).json({
+                message: "Data found",
+                data: googleBookInfoList
+            });
 
         } catch (err) {
 

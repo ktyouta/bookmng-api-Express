@@ -46,7 +46,12 @@ export class GoogleBookInfoApis {
     /**
      * Google Books Apiを呼び出す
      */
-    public async getGoogleBookInfo(keyword?: string): Promise<GoogleBooksAPIsModelType> {
+    public async getGoogleBookInfo(keyword: string): Promise<GoogleBooksAPIsModelType> {
+
+        // Google Books Apiの呼び出しにキーワードが必須のため存在しない場合はエラーにする
+        if (!keyword) {
+            throw Error("Google Books Apiの呼び出しにはキーワードが必須です。");
+        }
 
         // クエリパラメータ作成用オブジェクト
         const queryBuilder: QueryBuilder = new QueryBuilder();
@@ -54,23 +59,22 @@ export class GoogleBookInfoApis {
         queryBuilder.addQuery(`${ENV.GOOGLE_BOOKS_API_QUERYKEY_MAXRESULTS}`, `${ENV.GOOGLE_BOOKS_API_MAXRESULTS}`);
 
         // キーワードが存在する場合はクエリパラメータに設定する
-        if (!keyword) {
-            queryBuilder.addQuery(`${ENV.GOOGLE_BOOKS_API_QUERYKEY_KEYWORD}`, `${keyword}`);
-        }
+        queryBuilder.addQuery(`${ENV.GOOGLE_BOOKS_API_QUERYKEY_KEYWORD}`, `${keyword}`);
 
-        // クエリパラメータ
+        // クエリパラメータを作成
         let queryPrm = queryBuilder.createQueryStr();
-        queryPrm = queryPrm ? `?${queryPrm}` : "";
+        // Google Books Api 呼び出し用URL 
+        let callApiUrl = `${this.GOOGLE_BOOK_API_BASE_URL}${queryPrm ? `?${queryPrm}` : ""}`;
 
         try {
             // Google Books Apiを呼び出す
-            const response: GoogleBooksAPIsModelType = await this.apiClient.get(`${this.GOOGLE_BOOK_API_BASE_URL}${queryPrm}`);
+            const response: GoogleBooksAPIsModelType = await this.apiClient.get(callApiUrl);
             return response;
 
         } catch (err) {
 
             let errMsg = `Google Books Apiの呼び出しでエラーが発生しました。
-                 \r\n url:${this.GOOGLE_BOOK_API_BASE_URL}
+                 \r\n url:${callApiUrl}
                  \r\n keyword:${keyword}
                  \r\n err:${err}`;
 
