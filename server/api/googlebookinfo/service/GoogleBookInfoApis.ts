@@ -58,7 +58,7 @@ export class GoogleBookInfoApis {
         // 最大取得件数をパラメータにセット
         queryBuilder.addQuery(`${ENV.GOOGLE_BOOKS_API_QUERYKEY_MAXRESULTS}`, `${ENV.GOOGLE_BOOKS_API_MAXRESULTS}`);
 
-        // キーワードが存在する場合はクエリパラメータに設定する
+        // キーワードをクエリパラメータにセット
         queryBuilder.addQuery(`${ENV.GOOGLE_BOOKS_API_QUERYKEY_KEYWORD}`, `${keyword}`);
 
         // クエリパラメータを作成
@@ -73,13 +73,14 @@ export class GoogleBookInfoApis {
 
         } catch (err) {
 
-            let errMsg = `Google Books Apiの呼び出しでエラーが発生しました。
-                 \r\n url:${callApiUrl}
-                 \r\n keyword:${keyword}
-                 \r\n err:${err}`;
+            const errorDetails = {
+                message: "Google Books Apiの呼び出しでエラーが発生しました。",
+                url: callApiUrl,
+                keyword,
+                error: err
+            };
 
-            console.log(errMsg);
-            throw Error(errMsg);
+            throw Error(JSON.stringify(errorDetails));
         }
     }
 }
