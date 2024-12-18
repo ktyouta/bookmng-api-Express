@@ -65,4 +65,17 @@ export class FileOperation {
 
         return files;
     }
+
+
+    /**
+     * ファイルを読み込んでオブジェクトを返却
+     * @param filePath 
+     * @returns 
+     */
+    getFileObj<T>(filePath: string): T {
+
+        //ファイルの読み込み
+        let fileData = this.readFile(filePath);
+        return JSON.parse(fileData);
+    }
 }

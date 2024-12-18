@@ -16,7 +16,7 @@ export class BookSearchController {
     }
 
     public routes() {
-        this.router.get(`${ENV.BOOKSEARCH}`, (req: Request, res: Response) => {
+        this.router.get(`${ENV.BOOK_SEARCH}`, (req: Request, res: Response) => {
             this.doExecute(req, res);
         });
     }
