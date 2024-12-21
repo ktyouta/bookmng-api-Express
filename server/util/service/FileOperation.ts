@@ -1,14 +1,13 @@
 export class FileOperation {
 
-    private readonly fs = require('fs');
-
+    private static readonly fs = require('fs');
 
     /**
      * ファイルの存在チェック
      * @param filePath 
      * @returns 
      */
-    public checkFileExist(filePath: string) {
+    public static checkFileExist(filePath: string) {
 
         let isExist = false;
 
@@ -30,7 +29,7 @@ export class FileOperation {
      * @param filePath 
      * @returns 
      */
-    readFile(filePath: string) {
+    public static readFile(filePath: string) {
         let content: string = "";
         if (this.checkFileExist(filePath)) {
             content = this.fs.readFileSync(filePath, 'utf8');
@@ -40,14 +39,18 @@ export class FileOperation {
 
 
     /**
-     * ファイルの書き込み
+     * ファイル書き込み
      * @param filePath 
-     * @param stream 
+     * @param data 
      * @returns 
      */
-    overWriteData(filePath: string, stream: string) {
+    public static overWriteFileData<T>(filePath: string, data: T) {
         try {
+
+            //json文字列に変換
+            let stream: string = JSON.stringify(data, null, '\t');
             this.fs.writeFileSync(filePath, stream);
+
             return "";
         } catch (err) {
             return "ファイルの書き込みに失敗しました。";
@@ -60,7 +63,7 @@ export class FileOperation {
      * @param dirPath 
      * @returns 
      */
-    getFileName(dirPath: string,) {
+    public static getFileName(dirPath: string,) {
         const files: string[] = this.fs.readdirSync(dirPath);
 
         return files;
@@ -72,7 +75,7 @@ export class FileOperation {
      * @param filePath 
      * @returns 
      */
-    getFileObj<T>(filePath: string): T {
+    public static getFileObj<T>(filePath: string): T {
 
         //ファイルの読み込み
         let fileData = this.readFile(filePath);
