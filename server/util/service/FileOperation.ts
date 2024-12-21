@@ -59,6 +59,26 @@ export class FileOperation {
 
 
     /**
+     * ファイル書き込み(追記)
+     * @param filePath 
+     * @param data 
+     * @returns 
+     */
+    public static addWriteFileData<T>(filePath: string, data: T) {
+        try {
+
+            //json文字列に変換
+            let stream: string = JSON.stringify(data, null, '\t');
+            this.fs.appendFileSync(filePath, stream);
+
+            return "";
+        } catch (err) {
+            return `ファイルの追記に失敗しました。(${err})`;
+        }
+    }
+
+
+    /**
      * 指定したディレクトリ内のファイル名を取得する
      * @param dirPath 
      * @returns 
