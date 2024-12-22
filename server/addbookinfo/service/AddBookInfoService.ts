@@ -1,5 +1,6 @@
 import { GoogleBookInfoApis } from "../../api/googlebookinfo/service/GoogleBookInfoApis";
 import { FileOperation } from "../../util/service/FileOperation";
+import { JsonFileOperation } from "../../util/service/JsonFileOperation";
 
 export class AddBookInfoService {
 
@@ -7,6 +8,6 @@ export class AddBookInfoService {
     // マスタから書籍情報を取得する
     public getBookInfo() {
 
-        let bookInfoList = FileOperation.getFileObj("");
+        let bookInfoList = JsonFileOperation.getFileObj("");
     }
 }

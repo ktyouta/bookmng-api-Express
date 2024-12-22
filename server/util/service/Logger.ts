@@ -1,4 +1,5 @@
 import { ERROR_LOG_FILE, INFO_LOG_FILE, LOG_PATH, WARN_LOG_FILE } from "../const/FileInfoConst";
+import { DateUtil } from "./DateUtil";
 import { FileOperation } from "./FileOperation";
 
 export class Logger {
@@ -25,9 +26,9 @@ export class Logger {
     private static log(level: string, message: string,) {
 
         // 現在時刻
-        const timestamp = new Date().toISOString();
+        const timestamp = DateUtil.getNowDatetime();
         // 出力内容
-        let output = `[${timestamp}] [${level}] ${message}`;
+        const output = `[${timestamp}] [${level}] ${message}\n`;
         // 出力先
         let outputFile = "";
 
