@@ -5,6 +5,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Logger } from './util/service/Logger';
 import { LoggerMiddleware } from './router/service/LoggerMiddleware';
 import bodyParser from 'body-parser';
+import { CONTROLLER_LIST } from './router/conf/ControllerList';
 
 
 const express = require('express');
@@ -14,17 +15,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
-// 書籍検索
-const bookSearchController = new BookSearchController();
-// 書籍情報登録
-const addBookInfoController = new AddBookInfoController();
+// コントローラーのルートを設定
+CONTROLLER_LIST.forEach((e) => {
+
+    app.use('/', LoggerMiddleware.accessLogMiddleware, e.router);
+});
 
 
-app.use('/', LoggerMiddleware.accessLogMiddleware, bookSearchController.router);
-app.use('/', LoggerMiddleware.accessLogMiddleware, addBookInfoController.router);
-
-
-
+// サーバーを起動
 app.listen(ENV.PORT, () => {
 
     console.log(`Book Manage API Server listening on port ${ENV.PORT}`);
