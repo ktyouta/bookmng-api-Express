@@ -26,7 +26,7 @@ export class Logger {
     private static log(level: string, message: string,) {
 
         // 現在時刻
-        const timestamp = DateUtil.getNowDatetime();
+        const timestamp = DateUtil.getNowDatetime('yyyy-MM-dd HH:mm:ss');
         // 出力内容
         const output = `[${timestamp}] [${level}] ${message}\n`;
         // 出力先
