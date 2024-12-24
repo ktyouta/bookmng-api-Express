@@ -4,17 +4,12 @@ import { AddBookInfoService } from '../service/AddBookInfoService';
 import { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_CREATED, HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_OK } from '../../util/const/HttpStatusConst';
 import { GoogleBooksAPIsModelType } from '../../api/googlebookinfo/model/GoogleBooksAPIsModelType';
 import { BookInfoAddRequestModelType } from '../model/BookInfoAddRequestModelType';
+import { RouteController } from '../../router/controller/RouteController';
 
 
-export class AddBookInfoController {
+export class AddBookInfoController extends RouteController {
 
-    public router: Router;
     private addBookInfoService = new AddBookInfoService();
-
-    constructor() {
-        this.router = Router();
-        this.routes();
-    }
 
     public routes() {
         this.router.post(`${ENV.ADD_BOOK_INFO}`, (req: Request, res: Response) => {

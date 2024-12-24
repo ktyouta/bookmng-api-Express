@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Logger } from './util/service/Logger';
 import { LoggerMiddleware } from './router/service/LoggerMiddleware';
 import bodyParser from 'body-parser';
-import { CONTROLLER_LIST } from './router/conf/ControllerList';
+import { ROUTE_CONTROLLER_LIST } from './router/conf/RouteControllerList';
 
 
 const express = require('express');
@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 
 
 // コントローラーのルートを設定
-CONTROLLER_LIST.forEach((e) => {
+ROUTE_CONTROLLER_LIST.forEach((e) => {
 
     app.use('/', LoggerMiddleware.accessLogMiddleware, e.router);
 });

@@ -3,17 +3,12 @@ import ENV from '../../env.json';
 import { BookSearchService } from '../service/BookSearchService';
 import { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_OK } from '../../util/const/HttpStatusConst';
 import { GoogleBooksAPIsModelType } from '../../api/googlebookinfo/model/GoogleBooksAPIsModelType';
+import { RouteController } from '../../router/controller/RouteController';
 
 
-export class BookSearchController {
+export class BookSearchController extends RouteController {
 
-    public router: Router;
     private bookSearchService = new BookSearchService();
-
-    constructor() {
-        this.router = Router();
-        this.routes();
-    }
 
     public routes() {
         this.router.get(`${ENV.BOOK_SEARCH}`, (req: Request, res: Response) => {
