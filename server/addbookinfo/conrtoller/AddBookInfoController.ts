@@ -5,6 +5,7 @@ import { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_CREATED, HTTP_STATUS_INTERNAL_SERV
 import { GoogleBooksAPIsModelType } from '../../api/googlebookinfo/model/GoogleBooksAPIsModelType';
 import { BookInfoAddRequestModelType } from '../model/BookInfoAddRequestModelType';
 import { RouteController } from '../../router/controller/RouteController';
+import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
 
 
 export class AddBookInfoController extends RouteController {
@@ -12,9 +13,7 @@ export class AddBookInfoController extends RouteController {
     private addBookInfoService = new AddBookInfoService();
 
     public routes() {
-        this.router.post(`${ENV.ADD_BOOK_INFO}`, (req: Request, res: Response) => {
-            this.doExecute(req, res);
-        });
+        this.router.post(`${ENV.ADD_BOOK_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute));
     }
 
     /**
@@ -25,26 +24,16 @@ export class AddBookInfoController extends RouteController {
      */
     public async doExecute(req: Request, res: Response) {
 
-        try {
+        // リクエストボディ
+        let body: BookInfoAddRequestModelType = req.body;
 
-            // リクエストボディ
-            let body: BookInfoAddRequestModelType = req.body;
-
-            // 書籍情報マスタに登録用データを作成
+        // 書籍情報マスタに登録用データを作成
 
 
-            return res.status(HTTP_STATUS_CREATED).json({
-                status: HTTP_STATUS_CREATED,
-                message: "書籍情報の登録が完了しました。",
+        return res.status(HTTP_STATUS_CREATED).json({
+            status: HTTP_STATUS_CREATED,
+            message: "書籍情報の登録が完了しました。",
 
-            });
-
-        } catch (err) {
-
-            return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
-                status: HTTP_STATUS_INTERNAL_SERVER_ERROR,
-                errMessage: "予期しないエラーが発生しました。"
-            });
-        }
+        });
     }
 }
