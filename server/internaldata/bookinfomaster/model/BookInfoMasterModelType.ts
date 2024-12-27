@@ -1,4 +1,4 @@
-// 書籍マスタ情報
+// jsonファイルの書籍マスタ情報
 export type BookInfoModelType = {
     bookId: string,
     title: string,

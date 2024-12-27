@@ -6,6 +6,8 @@ import { GoogleBooksAPIsModelType } from '../../api/googlebookinfo/model/GoogleB
 import { BookInfoAddRequestModelType } from '../model/BookInfoAddRequestModelType';
 import { RouteController } from '../../router/controller/RouteController';
 import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
+import { BookInfoModelType } from '../../internaldata/bookinfomaster/model/BookInfoMasterModelType';
+import { BookAuthorsModelType } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModelType';
 
 
 export class AddBookInfoController extends RouteController {
@@ -28,12 +30,18 @@ export class AddBookInfoController extends RouteController {
         const body: BookInfoAddRequestModelType = req.body;
 
         // 書籍情報マスタからデータを取得
+        let bookInfoMasterList: BookInfoModelType[] = this.addBookInfoService.getBookMasterInfo();
 
         // 書籍著者マスタからデータを取得
-
+        let bookAuthorsMasterList: BookAuthorsModelType[] = this.addBookInfoService.getBookAuthorsMasterInfo();
 
         // 書籍情報マスタの登録用データを作成
 
+        // 書籍著者マスタの登録用データを作成
+
+        // 書籍情報マスタファイルに登録用データを書き込む
+
+        // 書籍著者情報マスタファイルに登録用データを書き込む
 
         return res.status(HTTP_STATUS_CREATED).json({
             status: HTTP_STATUS_CREATED,
