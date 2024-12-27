@@ -1,2 +1,5 @@
 [2024-12-25 22:33:20] [ERROR] GET /booksearch/v1/volumes?q=å¤ç®æ¼±ç³ | User-Agent: curl/8.9.1 | Query: {"q":"å¤ç®æ¼±ç³"} | ip: ::1 | ERROR: Error: 確認用エラー
 [2024-12-25 22:49:13] [ERROR] GET /booksearch/v1/volumes?q=å¤ç®æ¼±ç³ | User-Agent: curl/8.9.1 | Query: {"q":"å¤ç®æ¼±ç³"} | ip: ::1 | ERROR: Error: aaaaaaaaaaaaaaaa
+[2024-12-27 22:15:19] [ERROR] GET /booksearch/v1/volumes?q=å¤ç®æ¼±ç³ | User-Agent: curl/8.9.1 | Query: {"q":"å¤ç®æ¼±ç³"} | ip: ::1 | ERROR: TypeError: Cannot read properties of undefined (reading 'bookSearchService')
+[2024-12-27 22:17:25] [ERROR] GET /booksearch/v1/volumes?q=å¤ç®æ¼±ç³ | User-Agent: curl/8.9.1 | Query: {"q":"å¤ç®æ¼±ç³"} | ip: ::1 | ERROR: TypeError: Cannot read properties of undefined (reading 'bookSearchService')
+[2024-12-27 22:20:46] [ERROR] GET /booksearch/v1/volumes?q=å¤ç®æ¼±ç³ | User-Agent: curl/8.9.1 | Query: {"q":"å¤ç®æ¼±ç³"} | ip: ::1 | ERROR: TypeError: Cannot read properties of undefined (reading 'bookSearchService')

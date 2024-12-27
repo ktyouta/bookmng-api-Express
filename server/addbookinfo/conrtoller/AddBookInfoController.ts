@@ -13,7 +13,7 @@ export class AddBookInfoController extends RouteController {
     private addBookInfoService = new AddBookInfoService();
 
     public routes() {
-        this.router.post(`${ENV.ADD_BOOK_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute));
+        this.router.post(`${ENV.ADD_BOOK_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
     }
 
     /**
@@ -25,9 +25,14 @@ export class AddBookInfoController extends RouteController {
     public async doExecute(req: Request, res: Response) {
 
         // リクエストボディ
-        let body: BookInfoAddRequestModelType = req.body;
+        const body: BookInfoAddRequestModelType = req.body;
 
-        // 書籍情報マスタに登録用データを作成
+        // 書籍情報マスタからデータを取得
+
+        // 書籍著者マスタからデータを取得
+
+
+        // 書籍情報マスタの登録用データを作成
 
 
         return res.status(HTTP_STATUS_CREATED).json({

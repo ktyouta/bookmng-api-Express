@@ -1,4 +1,4 @@
-import { ERROR_LOG_FILE, INFO_LOG_FILE, LOG_PATH, WARN_LOG_FILE } from "../const/FileInfoConst";
+import { ERROR_LOG_FILE, INFO_LOG_FILE, LOG_FILE_PATH, WARN_LOG_FILE } from "../const/FileInfoConst";
 import { DateUtil } from "./DateUtil";
 import { FileOperation } from "./FileOperation";
 
@@ -13,9 +13,9 @@ export class Logger {
 
     // 出力先ファイル
     private static readonly LOG_FILE_PATH = {
-        INFO: `${LOG_PATH}${INFO_LOG_FILE}`,
-        WARN: `${LOG_PATH}${WARN_LOG_FILE}`,
-        ERROR: `${LOG_PATH}${ERROR_LOG_FILE}`,
+        INFO: `${LOG_FILE_PATH}${INFO_LOG_FILE}`,
+        WARN: `${LOG_FILE_PATH}${WARN_LOG_FILE}`,
+        ERROR: `${LOG_FILE_PATH}${ERROR_LOG_FILE}`,
     }
 
     /**
