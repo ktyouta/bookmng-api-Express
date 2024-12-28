@@ -29,8 +29,9 @@ export class BookInfoMasterCreateModel {
     private deleteFlg: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
 
 
-    constructor(title: string, publishedDate: string, description: string) {
+    constructor(bookId: BookIdModel, title: string, publishedDate: string, description: string) {
 
+        this.bookId = bookId;
         this.title = new TitleModel(title);
         this.publishedDate = new PublishedDateModel(publishedDate);
         this.description = new DescriptionModel(description);

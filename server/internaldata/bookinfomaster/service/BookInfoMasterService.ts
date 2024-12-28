@@ -1,5 +1,6 @@
 import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
 import { BOOK_INFO_MASTER_FILE_PATH } from "../const/BookInfoMasterConst";
+import { BookIdModel } from "../model/BookIdModel";
 import { BookInfoMasterCreateModel } from "../model/BookInfoMasterCreateModel";
 import { BookInfoModelType } from "../model/BookInfoMasterModelType";
 
@@ -25,9 +26,9 @@ export class BookInfoMasterService {
      * @param description 
      * @returns 
      */
-    public createBookInfoMasterCreateBody(title: string, publishedDate: string, description: string) {
+    public createBookInfoMasterCreateBody(bookId: BookIdModel, title: string, publishedDate: string, description: string) {
 
-        return new BookInfoMasterCreateModel(title, publishedDate, description);
+        return new BookInfoMasterCreateModel(bookId, title, publishedDate, description);
     }
 
 
@@ -39,8 +40,8 @@ export class BookInfoMasterService {
         bookInfoMasterList: BookInfoModelType[],
         bookInfoMasterCreateModel: BookInfoMasterCreateModel): BookInfoModelType[] {
 
-        // 書籍情報を追加する
-        bookInfoMasterList = [...bookInfoMasterList, {
+        // jsonファイル登録用の型に変換する
+        const createBookInfoMasterBody: BookInfoModelType = {
             bookId: bookInfoMasterCreateModel.getBookId().getBookId(),
             title: bookInfoMasterCreateModel.getTitle().getTitle(),
             publishedDate: bookInfoMasterCreateModel.getPublishedDate().getPublishedDate(),
@@ -48,7 +49,10 @@ export class BookInfoMasterService {
             createDate: bookInfoMasterCreateModel.getCreateDate().getCreateDate(),
             updateDate: bookInfoMasterCreateModel.getUpdateDate().getUpdateDate(),
             deleteFlg: bookInfoMasterCreateModel.getDeleteFlg().getDeleteFlg(),
-        }]
+        };
+
+        // 書籍情報を追加する
+        bookInfoMasterList = [...bookInfoMasterList, createBookInfoMasterBody];
 
         return bookInfoMasterList;
     }

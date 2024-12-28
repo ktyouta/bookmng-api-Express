@@ -2,6 +2,7 @@ import { GoogleBookInfoApis } from "../../api/googlebookinfo/service/GoogleBookI
 import { BookAuthorsModelType } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModelType";
 import { BookAuthorsMasterService } from "../../internaldata/bookauthorsmaster/service/BookAuthorsMasterService";
 import { BOOK_INFO_MASTER_FILE_PATH } from "../../internaldata/bookinfomaster/const/BookInfoMasterConst";
+import { BookIdModel } from "../../internaldata/bookinfomaster/model/BookIdModel";
 import { BookInfoMasterCreateModel } from "../../internaldata/bookinfomaster/model/BookInfoMasterCreateModel";
 import { BookInfoModelType } from "../../internaldata/bookinfomaster/model/BookInfoMasterModelType";
 import { BookInfoMasterService } from "../../internaldata/bookinfomaster/service/BookInfoMasterService";
@@ -33,9 +34,10 @@ export class AddBookInfoService {
      * @param publishedDate 
      * @param description 
      */
-    public getCreateBookInfoMasterCreateBody(requestBody: BookInfoAddRequestModelType): BookInfoMasterCreateModel {
+    public getCreateBookInfoMasterCreateBody(bookId: BookIdModel, requestBody: BookInfoAddRequestModelType): BookInfoMasterCreateModel {
 
         const bookInfoMasterCareteBody: BookInfoMasterCreateModel = this.bookInfoMasterService.createBookInfoMasterCreateBody(
+            bookId,
             requestBody.title,
             requestBody.publishedDate,
             requestBody.description);
@@ -81,5 +83,17 @@ export class AddBookInfoService {
         const errMessge = JsonFileOperation.overWriteJsonFileData(BOOK_INFO_MASTER_FILE_PATH, bookInfoMasterList);
 
         return errMessge;
+    }
+
+
+    public getCreateBookAuthorsMasterCreateBody(bookId: BookIdModel, requestBody: BookInfoAddRequestModelType): BookInfoMasterCreateModel {
+
+        const bookInfoMasterCareteBody: BookInfoMasterCreateModel = this.bookInfoMasterService.createBookInfoMasterCreateBody(
+            bookId,
+            requestBody.title,
+            requestBody.publishedDate,
+            requestBody.description);
+
+        return bookInfoMasterCareteBody;
     }
 }

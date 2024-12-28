@@ -2,3 +2,5 @@ import { MASTER_FILE_PATH, BOOK_AUTHORS_MASTER_FILE } from "../../../util/const/
 
 // 書籍著者マスタファイルのパス
 export const BOOK_AUTHROS_MASTER_FILE_PATH = `${MASTER_FILE_PATH}${BOOK_AUTHORS_MASTER_FILE}`;
+// 著者IDの接頭辞
+export const PRE_AUTHORS_ID = `authorsId-`;
