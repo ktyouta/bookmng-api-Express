@@ -10,7 +10,7 @@ export class JsonFileOperation {
      * @param data 
      * @returns 
      */
-    public static overWriteFileData<T>(filePath: string, data: T) {
+    public static overWriteJsonFileData<T>(filePath: string, data: T) {
         try {
 
             //json文字列に変換

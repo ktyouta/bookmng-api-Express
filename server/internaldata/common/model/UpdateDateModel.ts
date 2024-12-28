@@ -27,7 +27,7 @@ export class UpdateDateModel {
      * 更新日を取得する
      * @returns 
      */
-    public getPublishedDate() {
+    public getUpdateDate() {
         return this.updateDate;
     }
 

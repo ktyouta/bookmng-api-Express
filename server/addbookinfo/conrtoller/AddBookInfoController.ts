@@ -27,7 +27,7 @@ export class AddBookInfoController extends RouteController {
     public async doExecute(req: Request, res: Response) {
 
         // リクエストボディ
-        const body: BookInfoAddRequestModelType = req.body;
+        const requestBody: BookInfoAddRequestModelType = req.body;
 
         // 書籍情報マスタからデータを取得
         let bookInfoMasterList: BookInfoModelType[] = this.addBookInfoService.getBookMasterInfo();
@@ -36,10 +36,21 @@ export class AddBookInfoController extends RouteController {
         let bookAuthorsMasterList: BookAuthorsModelType[] = this.addBookInfoService.getBookAuthorsMasterInfo();
 
         // 書籍情報マスタの登録用データを作成
+        const bookInfoMasterCareteBody = this.addBookInfoService.getCreateBookInfoMasterCreateBody(requestBody);
+
+        // 書籍情報マスタ書き込み用データを作成
+        bookInfoMasterList = this.addBookInfoService.createBookInfoMasterWriteData(bookInfoMasterList, bookInfoMasterCareteBody);
 
         // 書籍著者マスタの登録用データを作成
 
+        // 書籍著者マスタ書き込み用データを作成
+
         // 書籍情報マスタファイルに登録用データを書き込む
+        let errMessge = this.addBookInfoService.overWriteBookInfoMaster(bookInfoMasterList);
+
+        if (errMessge) {
+
+        }
 
         // 書籍著者情報マスタファイルに登録用データを書き込む
 

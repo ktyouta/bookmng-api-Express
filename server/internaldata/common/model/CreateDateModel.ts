@@ -1,6 +1,6 @@
 import { DateUtil } from "../../../util/service/DateUtil";
 
-export class CreateDaateModel {
+export class CreateDateModel {
 
     private createDate: string;
 
@@ -27,7 +27,7 @@ export class CreateDaateModel {
      * 作成日を取得する
      * @returns 
      */
-    public getPublishedDate() {
+    public getCreateDate() {
         return this.createDate;
     }
 
