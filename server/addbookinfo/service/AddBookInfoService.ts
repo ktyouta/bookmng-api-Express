@@ -1,4 +1,6 @@
 import { GoogleBookInfoApis } from "../../api/googlebookinfo/service/GoogleBookInfoApis";
+import { BOOK_AUTHROS_MASTER_FILE_PATH } from "../../internaldata/bookauthorsmaster/const/BookAuthrosMasterConst";
+import { BookAuthorsMasterCreateModel } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterCreateModel";
 import { BookAuthorsModelType } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModelType";
 import { BookAuthorsMasterService } from "../../internaldata/bookauthorsmaster/service/BookAuthorsMasterService";
 import { BOOK_INFO_MASTER_FILE_PATH } from "../../internaldata/bookinfomaster/const/BookInfoMasterConst";
@@ -34,7 +36,7 @@ export class AddBookInfoService {
      * @param publishedDate 
      * @param description 
      */
-    public getCreateBookInfoMasterCreateBody(bookId: BookIdModel, requestBody: BookInfoAddRequestModelType): BookInfoMasterCreateModel {
+    public createBookInfoMasterCreateBody(bookId: BookIdModel, requestBody: BookInfoAddRequestModelType): BookInfoMasterCreateModel {
 
         const bookInfoMasterCareteBody: BookInfoMasterCreateModel = this.bookInfoMasterService.createBookInfoMasterCreateBody(
             bookId,
@@ -86,14 +88,72 @@ export class AddBookInfoService {
     }
 
 
-    public getCreateBookAuthorsMasterCreateBody(bookId: BookIdModel, requestBody: BookInfoAddRequestModelType): BookInfoMasterCreateModel {
+    /**
+     * リクエストボディから書籍情報登録用のリストを作成する
+     * @param bookId 
+     * @param requestBody 
+     * @returns 
+     */
+    public createBookAuthorsMasterCreateBodyList(bookId: BookIdModel, requestBody: BookInfoAddRequestModelType)
+        : BookAuthorsMasterCreateModel[] {
 
-        const bookInfoMasterCareteBody: BookInfoMasterCreateModel = this.bookInfoMasterService.createBookInfoMasterCreateBody(
+        // 著者IDリスト
+        const authorIdList: string[] = requestBody.authorIdList;
+
+        // 書籍著者マスタ登録用データを作成する
+        const bookAuthorsMasterCreateModelList: BookAuthorsMasterCreateModel[] = authorIdList.map((e) => {
+
+            return this.createBookAuthorsMasterCreateBody(
+                bookId,
+                e
+            );
+        });
+
+        return bookAuthorsMasterCreateModelList;
+    }
+
+
+    /**
+     * リクエストボディから書籍情報登録用のデータを作成する
+     * @param bookId 
+     * @param authorId 
+     * @returns 
+     */
+    private createBookAuthorsMasterCreateBody(bookId: BookIdModel, authorId: string): BookAuthorsMasterCreateModel {
+
+        const bookAuthorsMasterCreateModel: BookAuthorsMasterCreateModel = this.bookAuthorsMasterService.createBookAuthorsMasterCreateBody(
             bookId,
-            requestBody.title,
-            requestBody.publishedDate,
-            requestBody.description);
+            authorId);
 
-        return bookInfoMasterCareteBody;
+        return bookAuthorsMasterCreateModel;
+    }
+
+
+    /**
+     * 書籍著者情報マスタに対する書き込み用データの作成
+     * @param bookId 
+     * @param requestBody 
+     * @returns 
+     */
+    public createBookAuthorsMasterWriteData(
+        bookAuthorsMasterList: BookAuthorsModelType[],
+        bookAuthorsMasterCreateBody: BookAuthorsMasterCreateModel[]): BookAuthorsModelType[] {
+
+        bookAuthorsMasterList = this.bookAuthorsMasterService.createBookInfoMasterWriteData(bookAuthorsMasterList, bookAuthorsMasterCreateBody);
+
+        return bookAuthorsMasterList;
+    }
+
+
+    /**
+     * 書籍著者情報マスタファイルにデータを書き込む
+     * @param bookInfoMasterList 
+     * @returns 
+     */
+    public overWriteBookAuthorsMaster(bookAuthorsMasterList: BookAuthorsModelType[]): string {
+
+        const errMessge = JsonFileOperation.overWriteJsonFileData(BOOK_AUTHROS_MASTER_FILE_PATH, bookAuthorsMasterList);
+
+        return errMessge;
     }
 }

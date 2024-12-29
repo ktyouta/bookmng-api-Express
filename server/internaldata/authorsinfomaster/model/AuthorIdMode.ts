@@ -1,6 +1,6 @@
-import { PRE_AUTHORS_ID } from "../const/BookAuthrosMasterConst";
-import { BookAuthorsMasterService } from "../service/BookAuthorsMasterService";
-import { BookAuthorsModelType } from "./BookAuthorsMasterModelType";
+import { PRE_AUTHORS_ID } from "../../bookauthorsmaster/const/BookAuthrosMasterConst";
+import { BookAuthorsMasterService } from "../../bookauthorsmaster/service/BookAuthorsMasterService";
+import { BookAuthorsModelType } from "../../bookauthorsmaster/model/BookAuthorsMasterModelType";
 
 export class AuthorIdMode {
 

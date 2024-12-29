@@ -9,6 +9,7 @@ import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
 import { BookInfoModelType } from '../../internaldata/bookinfomaster/model/BookInfoMasterModelType';
 import { BookAuthorsModelType } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModelType';
 import { BookIdModel } from '../../internaldata/bookinfomaster/model/BookIdModel';
+import { BookAuthorsMasterCreateModel } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterCreateModel';
 
 
 export class AddBookInfoController extends RouteController {
@@ -40,23 +41,38 @@ export class AddBookInfoController extends RouteController {
         let bookAuthorsMasterList: BookAuthorsModelType[] = this.addBookInfoService.getBookAuthorsMasterInfo();
 
         // 書籍情報マスタの登録用データを作成
-        const bookInfoMasterCareteBody = this.addBookInfoService.getCreateBookInfoMasterCreateBody(bookId, requestBody);
+        const bookInfoMasterCareteBody = this.addBookInfoService.createBookInfoMasterCreateBody(bookId, requestBody);
 
         // 書籍情報マスタ書き込み用データを作成
         bookInfoMasterList = this.addBookInfoService.createBookInfoMasterWriteData(bookInfoMasterList, bookInfoMasterCareteBody);
 
         // 書籍著者マスタの登録用データを作成
+        const bookAuthorsMasterCreateBody: BookAuthorsMasterCreateModel[] = this.addBookInfoService.createBookAuthorsMasterCreateBodyList(bookId, requestBody);
 
         // 書籍著者マスタ書き込み用データを作成
+        bookAuthorsMasterList = this.addBookInfoService.createBookAuthorsMasterWriteData(bookAuthorsMasterList, bookAuthorsMasterCreateBody);
 
         // 書籍情報マスタファイルに登録用データを書き込む
         let errMessge = this.addBookInfoService.overWriteBookInfoMaster(bookInfoMasterList);
 
         if (errMessge) {
+            return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
+                status: HTTP_STATUS_INTERNAL_SERVER_ERROR,
+                message: errMessge,
 
+            });
         }
 
         // 書籍著者情報マスタファイルに登録用データを書き込む
+        errMessge = this.addBookInfoService.overWriteBookAuthorsMaster(bookAuthorsMasterList);
+
+        if (errMessge) {
+            return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
+                status: HTTP_STATUS_INTERNAL_SERVER_ERROR,
+                message: errMessge,
+
+            });
+        }
 
         return res.status(HTTP_STATUS_CREATED).json({
             status: HTTP_STATUS_CREATED,

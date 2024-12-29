@@ -1,7 +1,7 @@
 // 書籍情報登録時のリクエストの型
 export type BookInfoAddRequestModelType = {
     title: string,
-    authros: string[],
+    authorIdList: string[],
     description: string,
     publishedDate: string,
 }

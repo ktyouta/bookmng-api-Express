@@ -14,7 +14,7 @@ import { TitleModel } from "./TitleModel";
 export class BookInfoMasterCreateModel {
 
     // 書籍ID
-    private bookId: BookIdModel = new BookIdModel();
+    private bookId: BookIdModel;
     // 書籍タイトル
     private title: TitleModel;
     // 発売日
