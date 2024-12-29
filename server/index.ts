@@ -15,38 +15,51 @@ app.use(bodyParser.json());
 
 
 // コントローラーアクセス時のログ出力
-function accessLogMiddleware(req: Request, res: Response, next: NextFunction) {
+function accessLogMiddleware(req: Request) {
+
     const userAgent = req.headers['user-agent'];
     const ip = req.ip;
     const queryParams = JSON.stringify(req.query);
+    const requestBody = JSON.stringify(req.body);
     // 出力内容
-    const output = `${req.method} ${req.originalUrl} | User-Agent: ${userAgent} | Query: ${queryParams} | ip: ${ip}`;
+    const output = `${req.method} ${req.originalUrl} | User-Agent: ${userAgent} | Query: ${queryParams} | Request Body: ${requestBody} | ip: ${ip}`;
 
     // ログに出力
     Logger.info(output);
-    next();
 };
 
 
 // エラー時のログ出力
 function errorLogMiddleware(err: Error, req: Request) {
+
     const userAgent = req.headers['user-agent'];
     const ip = req.ip;
     const queryParams = JSON.stringify(req.query);
+    const requestBody = JSON.stringify(req.body);
     // 出力内容
-    const output = `${req.method} ${req.originalUrl} | User-Agent: ${userAgent} | Query: ${queryParams} | ip: ${ip} | ERROR: ${err}`;
+    const output = `${req.method} ${req.originalUrl} | User-Agent: ${userAgent} | Query: ${queryParams} | Request Body: ${requestBody} | ip: ${ip} | ERROR: ${err}`;
 
     // エラーログに出力
     Logger.error(output);
 };
 
 
-// コントローラーのルートを設定
-ROUTE_CONTROLLER_LIST.forEach((e) => {
 
-    app.use('/', accessLogMiddleware, e.router);
+
+//コントローラーアクセス時のログ出力
+app.use((req: Request, res: Response, next: NextFunction) => {
+
+    // アクセスログを出力
+    accessLogMiddleware(req);
+
+    next();
 });
 
+
+// コントローラーのルートを設定
+ROUTE_CONTROLLER_LIST.forEach((e) => {
+    app.use('/', e.router);
+});
 
 
 // エラー時共通処理

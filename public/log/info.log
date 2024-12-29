@@ -62,3 +62,13 @@
 [2024-12-29 22:00:41] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1
 [2024-12-29 22:01:09] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1
 [2024-12-29 22:01:09] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1
+[2024-12-30 00:34:09] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | Request Body: [object Object] | ip: ::1
+[2024-12-30 00:34:09] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | Request Body: [object Object] | ip: ::1
+[2024-12-30 00:36:39] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | Request Body: [object Object] | ip: ::1
+[2024-12-30 00:36:39] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | Request Body: [object Object] | ip: ::1
+[2024-12-30 00:38:40] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | Request Body: {"title":"Test Book Title","authorIdList":["authorId-1","authorId-2"],"description":"description of test book.","publishedDate":"20241227"} | ip: ::1
+[2024-12-30 00:38:40] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | Request Body: {"title":"Test Book Title","authorIdList":["authorId-1","authorId-2"],"description":"description of test book.","publishedDate":"20241227"} | ip: ::1
+[2024-12-30 00:41:03] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | Request Body: {"title":"Test Book Title","authorIdList":["authorId-1","authorId-2"],"description":"description of test book.","publishedDate":"20241227"} | ip: ::1
+[2024-12-30 00:41:03] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | Request Body: {"title":"Test Book Title","authorIdList":["authorId-1","authorId-2"],"description":"description of test book.","publishedDate":"20241227"} | ip: ::1
+[2024-12-30 00:45:56] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | Request Body: {"title":"Test Book Title","authorIdList":["authorId-1","authorId-2"],"description":"description of test book.","publishedDate":"20241227"} | ip: ::1
+[2024-12-30 00:50:24] [INFO] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | Request Body: {"title":"Test Book Title","authorIdList":["authorId-1","authorId-2"],"description":"description of test book.","publishedDate":"20241227"} | ip: ::1
