@@ -3,3 +3,5 @@
 [2024-12-27 22:15:19] [ERROR] GET /booksearch/v1/volumes?q=å¤ç®æ¼±ç³ | User-Agent: curl/8.9.1 | Query: {"q":"å¤ç®æ¼±ç³"} | ip: ::1 | ERROR: TypeError: Cannot read properties of undefined (reading 'bookSearchService')
 [2024-12-27 22:17:25] [ERROR] GET /booksearch/v1/volumes?q=å¤ç®æ¼±ç³ | User-Agent: curl/8.9.1 | Query: {"q":"å¤ç®æ¼±ç³"} | ip: ::1 | ERROR: TypeError: Cannot read properties of undefined (reading 'bookSearchService')
 [2024-12-27 22:20:46] [ERROR] GET /booksearch/v1/volumes?q=å¤ç®æ¼±ç³ | User-Agent: curl/8.9.1 | Query: {"q":"å¤ç®æ¼±ç³"} | ip: ::1 | ERROR: TypeError: Cannot read properties of undefined (reading 'bookSearchService')
+[2024-12-29 15:52:12] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: SyntaxError: Unexpected end of JSON input
+[2024-12-29 15:53:28] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: SyntaxError: Unexpected end of JSON input

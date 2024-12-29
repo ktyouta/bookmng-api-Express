@@ -39,7 +39,7 @@ export const HTTP_STATUS_NOT_FOUND = 404;
 export const HTTP_STATUS_METHOD_NOT_ALLOWED = 405;
 // 競合（リソース状態の矛盾）
 export const HTTP_STATUS_CONFLICT = 409;
-// 処理できないエンティティ（バリデーションエラーなど）
+// 処理できないエンティティ（バリデーションエラー、業務的なルール違反など）
 export const HTTP_STATUS_UNPROCESSABLE_ENTITY = 422;
 
 // --- Server Error Responses (5xx) ---

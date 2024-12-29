@@ -30,3 +30,5 @@ export const ERROR_LOG_FILE = `error.log`;
 export const BOOK_INFO_MASTER_FILE = "book_info_master.json";
 // 書籍著者マスタファイル名
 export const BOOK_AUTHORS_MASTER_FILE = "book_authors_master.json";
+// 著者マスタファイル名
+export const AUTHORS_MASTER_FILE = "authors_master.json";

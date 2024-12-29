@@ -1,24 +1,25 @@
-import { PRE_AUTHORS_ID } from "../../bookauthorsmaster/const/BookAuthrosMasterConst";
-import { BookAuthorsMasterService } from "../../bookauthorsmaster/service/BookAuthorsMasterService";
-import { BookAuthorsModelType } from "../../bookauthorsmaster/model/BookAuthorsMasterModelType";
+import { AuthorsMasterService } from "../service/AuthorsMasterService";
+import { AuthorsMasterModeType } from "./AuthorsMasterModeType";
+import { PRE_AUTHOR_ID } from "../const/AuthorsMasterConst";
+
 
 export class AuthorIdMode {
 
     private authorId: string;
-    private authorAuthorsMasterService = new BookAuthorsMasterService();
+    private authorsMasterService = new AuthorsMasterService();
 
 
     constructor() {
 
-        // 著者ID採番用に著者著者情報マスタからデータを取得する
-        const authorInfoMasterList: BookAuthorsModelType[] = this.authorAuthorsMasterService.getBookAuthorsMaster();
+        // 著者ID採番用に著者情報マスタからデータを取得する
+        const authorsMasterModel: AuthorsMasterModeType[] = this.authorsMasterService.getAuthorsMaster();
 
-        if (!authorInfoMasterList) {
-            throw Error("著者IDの採番に必要な著者著者情報マスタが取得できませんでした。");
+        if (!authorsMasterModel) {
+            throw Error("著者IDの採番に必要な著者情報マスタが取得できませんでした。");
         }
 
         // 著者IDを採番する
-        const latestAuthorsId = this.createLatestBookId(authorInfoMasterList);
+        const latestAuthorsId = this.createLatestAuthorsId(authorsMasterModel);
 
         if (!latestAuthorsId) {
             throw Error("著者IDの採番に失敗しました。");
@@ -32,7 +33,7 @@ export class AuthorIdMode {
      * 著者IDを取得する
      * @returns 
      */
-    public getBookId() {
+    public getAuthorId() {
 
         return this.authorId;
     }
@@ -41,15 +42,15 @@ export class AuthorIdMode {
     /**
      * 著者IDを採番する
      */
-    private createLatestBookId(authorInfoList: BookAuthorsModelType[]): string {
+    private createLatestAuthorsId(authorsMasterModel: AuthorsMasterModeType[]): string {
 
         //IDが最大のNOを取得
-        let maxNo = authorInfoList.reduce<number>((prev: number, current: BookAuthorsModelType) => {
+        let maxNo = authorsMasterModel.reduce<number>((prev: number, current: AuthorsMasterModeType) => {
 
-            let currentNm = parseInt(current.authorId.replace(`${PRE_AUTHORS_ID}`, ""));
+            let currentNm = parseInt(current.authorId.replace(`${PRE_AUTHOR_ID}`, ""));
             return Math.max(prev, currentNm);
         }, 0);
 
-        return `${PRE_AUTHORS_ID}${maxNo + 1}`;
+        return `${PRE_AUTHOR_ID}${maxNo + 1}`;
     }
 }

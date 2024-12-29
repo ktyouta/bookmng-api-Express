@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import ENV from '../../env.json';
 import { AddBookInfoService } from '../service/AddBookInfoService';
-import { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_CREATED, HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_OK } from '../../util/const/HttpStatusConst';
+import { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_CREATED, HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_OK, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
 import { GoogleBooksAPIsModelType } from '../../api/googlebookinfo/model/GoogleBooksAPIsModelType';
 import { BookInfoAddRequestModelType } from '../model/BookInfoAddRequestModelType';
 import { RouteController } from '../../router/controller/RouteController';
@@ -10,6 +10,7 @@ import { BookInfoModelType } from '../../internaldata/bookinfomaster/model/BookI
 import { BookAuthorsModelType } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModelType';
 import { BookIdModel } from '../../internaldata/bookinfomaster/model/BookIdModel';
 import { BookAuthorsMasterCreateModel } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterCreateModel';
+import { AuthorsMasterModeType } from '../../internaldata/authorsinfomaster/model/AuthorsMasterModeType';
 
 
 export class AddBookInfoController extends RouteController {
@@ -30,6 +31,22 @@ export class AddBookInfoController extends RouteController {
 
         // リクエストボディ
         const requestBody: BookInfoAddRequestModelType = req.body;
+        // 著者IDリスト
+        const authorIdList: string[] = requestBody.authorIdList;
+
+        // 著者情報マスタからデータを取得
+        const authorsMasterlist: AuthorsMasterModeType[] = this.addBookInfoService.getAuthorsMasterInfo();
+
+        // 著者IDのマスタ存在チェック
+        let errMessge = this.addBookInfoService.checkAuthorIdExists(authorsMasterlist, authorIdList);
+
+        // 著者マスタにIDが存在しない
+        if (errMessge) {
+            return res.status(HTTP_STATUS_UNPROCESSABLE_ENTITY).json({
+                status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
+                message: errMessge,
+            });
+        }
 
         // 書籍IDを採番する
         const bookId: BookIdModel = new BookIdModel();
@@ -53,31 +70,30 @@ export class AddBookInfoController extends RouteController {
         bookAuthorsMasterList = this.addBookInfoService.createBookAuthorsMasterWriteData(bookAuthorsMasterList, bookAuthorsMasterCreateBody);
 
         // 書籍情報マスタファイルに登録用データを書き込む
-        let errMessge = this.addBookInfoService.overWriteBookInfoMaster(bookInfoMasterList);
+        errMessge = this.addBookInfoService.overWriteBookInfoMaster(bookInfoMasterList);
 
+        // 書籍情報マスタへの書き込みに失敗
         if (errMessge) {
             return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
                 status: HTTP_STATUS_INTERNAL_SERVER_ERROR,
                 message: errMessge,
-
             });
         }
 
         // 書籍著者情報マスタファイルに登録用データを書き込む
         errMessge = this.addBookInfoService.overWriteBookAuthorsMaster(bookAuthorsMasterList);
 
+        // 書籍著者情報マスタへの書き込みに失敗
         if (errMessge) {
             return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
                 status: HTTP_STATUS_INTERNAL_SERVER_ERROR,
                 message: errMessge,
-
             });
         }
 
         return res.status(HTTP_STATUS_CREATED).json({
             status: HTTP_STATUS_CREATED,
             message: "書籍情報の登録が完了しました。",
-
         });
     }
 }

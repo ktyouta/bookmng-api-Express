@@ -1,4 +1,6 @@
 import { GoogleBookInfoApis } from "../../api/googlebookinfo/service/GoogleBookInfoApis";
+import { AuthorsMasterModeType } from "../../internaldata/authorsinfomaster/model/AuthorsMasterModeType";
+import { AuthorsMasterService } from "../../internaldata/authorsinfomaster/service/AuthorsMasterService";
 import { BOOK_AUTHROS_MASTER_FILE_PATH } from "../../internaldata/bookauthorsmaster/const/BookAuthrosMasterConst";
 import { BookAuthorsMasterCreateModel } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterCreateModel";
 import { BookAuthorsModelType } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModelType";
@@ -16,6 +18,7 @@ export class AddBookInfoService {
 
     private bookInfoMasterService = new BookInfoMasterService();
     private bookAuthorsMasterService = new BookAuthorsMasterService();
+    private authorsMasterService = new AuthorsMasterService();
 
 
     /**
@@ -153,6 +156,43 @@ export class AddBookInfoService {
     public overWriteBookAuthorsMaster(bookAuthorsMasterList: BookAuthorsModelType[]): string {
 
         const errMessge = JsonFileOperation.overWriteJsonFileData(BOOK_AUTHROS_MASTER_FILE_PATH, bookAuthorsMasterList);
+
+        return errMessge;
+    }
+
+
+    /**
+     * マスタから著者情報を取得する
+     * @returns 
+     */
+    public getAuthorsMasterInfo(): AuthorsMasterModeType[] {
+
+        const authorsMasterList: AuthorsMasterModeType[] = this.authorsMasterService.getAuthorsMaster();
+
+        return authorsMasterList;
+    }
+
+
+    /**
+     * 著者IDのマスタ存在チェック
+     */
+    public checkAuthorIdExists(authorsMasterList: AuthorsMasterModeType[], authorIdList: string[]): string {
+
+        let errMessge = "";
+
+        authorIdList.some((e: string) => {
+
+            // 著者マスタにIDが存在するか確認する
+            const authorMaster = authorsMasterList.find((e1: AuthorsMasterModeType) => {
+
+                return e1.authorId === e;
+            });
+
+            if (!authorMaster) {
+                errMessge = "著者マスタに存在しない著者が選択されています。";
+                return true;
+            }
+        });
 
         return errMessge;
     }
