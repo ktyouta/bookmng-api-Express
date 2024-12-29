@@ -4,19 +4,19 @@ export class UpdateDateModel {
 
     private updateDate: string;
 
-    constructor() {
+    constructor(target: string) {
 
         // 現在日付を取得する
         const updateDate = DateUtil.getNowDateYYYYMMDD();
 
         // 正規表現チェック
         if (!this.checkFormat(updateDate)) {
-            throw Error("データ更新日のフォーマットが不正です。");
+            throw Error(`${target}データ更新日のフォーマットが不正です。`);
         }
 
         // 日付の妥当性チェック
-        if (this.chechDateValid(updateDate)) {
-            throw Error("データ更新日が正しくありません。");
+        if (!this.chechDateValid(updateDate)) {
+            throw Error(`${target}データ更新日が正しくありません。`);
         }
 
         this.updateDate = updateDate;

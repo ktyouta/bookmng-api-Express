@@ -5,3 +5,13 @@
 [2024-12-27 22:20:46] [ERROR] GET /booksearch/v1/volumes?q=å¤ç®æ¼±ç³ | User-Agent: curl/8.9.1 | Query: {"q":"å¤ç®æ¼±ç³"} | ip: ::1 | ERROR: TypeError: Cannot read properties of undefined (reading 'bookSearchService')
 [2024-12-29 15:52:12] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: SyntaxError: Unexpected end of JSON input
 [2024-12-29 15:53:28] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: SyntaxError: Unexpected end of JSON input
+[2024-12-29 21:10:13] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: SyntaxError: Unexpected end of JSON input
+[2024-12-29 21:25:48] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: SyntaxError: Unexpected end of JSON input
+[2024-12-29 21:32:26] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: SyntaxError: Unexpected end of JSON input
+[2024-12-29 21:36:14] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: SyntaxError: Unexpected end of JSON input
+[2024-12-29 21:37:02] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: SyntaxError: Unexpected end of JSON input
+[2024-12-29 21:38:01] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: SyntaxError: Unexpected end of JSON input
+[2024-12-29 21:54:49] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: SyntaxError: Bad escaped character in JSON at position 52
+[2024-12-29 21:56:26] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: Error: データ作成日が正しくありません。
+[2024-12-29 21:59:28] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: Error: データ更新日が正しくありません。
+[2024-12-29 22:00:41] [ERROR] POST /addbookinfo/v1/volumes | User-Agent: curl/8.9.1 | Query: {} | ip: ::1 | ERROR: Error: 発売日が正しくありません。

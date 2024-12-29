@@ -16,9 +16,9 @@ export class BookAuthorsMasterCreateModel {
     // 著者ID
     private authorId: string;
     // データ作成日
-    private createDate: CreateDateModel = new CreateDateModel();
+    private createDate: CreateDateModel = new CreateDateModel(`書籍著者情報マスタ`);
     // データ更新日
-    private updateDate: UpdateDateModel = new UpdateDateModel();
+    private updateDate: UpdateDateModel = new UpdateDateModel(`書籍著者情報マスタ`);
     // 削除フラグ
     private deleteFlg: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
 

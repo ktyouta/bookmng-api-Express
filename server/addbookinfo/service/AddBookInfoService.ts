@@ -172,6 +172,18 @@ export class AddBookInfoService {
         return authorsMasterList;
     }
 
+    /**
+     * 未削除の著者マスタを取得する
+     * @param authorsMasterList 
+     * @returns 
+     */
+    public getActiveAuthorsMaster(authorsMasterList: AuthorsMasterModeType[]): AuthorsMasterModeType[] {
+
+        const activeAuthorsMasterList = this.authorsMasterService.getActiveAuthorsMaster(authorsMasterList);
+
+        return activeAuthorsMasterList;
+    }
+
 
     /**
      * 著者IDのマスタ存在チェック

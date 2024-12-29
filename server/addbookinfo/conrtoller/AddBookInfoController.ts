@@ -35,10 +35,13 @@ export class AddBookInfoController extends RouteController {
         const authorIdList: string[] = requestBody.authorIdList;
 
         // 著者情報マスタからデータを取得
-        const authorsMasterlist: AuthorsMasterModeType[] = this.addBookInfoService.getAuthorsMasterInfo();
+        const authorsMasterList: AuthorsMasterModeType[] = this.addBookInfoService.getAuthorsMasterInfo();
+
+        // 未削除の著者情報マスタを取得
+        const activeAuthorsMasterList: AuthorsMasterModeType[] = this.addBookInfoService.getActiveAuthorsMaster(authorsMasterList);
 
         // 著者IDのマスタ存在チェック
-        let errMessge = this.addBookInfoService.checkAuthorIdExists(authorsMasterlist, authorIdList);
+        let errMessge = this.addBookInfoService.checkAuthorIdExists(activeAuthorsMasterList, authorIdList);
 
         // 著者マスタにIDが存在しない
         if (errMessge) {

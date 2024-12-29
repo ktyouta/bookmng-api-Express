@@ -4,7 +4,7 @@ import { BookInfoModelType } from "./BookInfoMasterModelType";
 
 export class BookIdModel {
 
-    private bookId: string;
+    private readonly _bookId: string;
     private bookInfoMasterService: BookInfoMasterService = new BookInfoMasterService();
 
 
@@ -24,7 +24,7 @@ export class BookIdModel {
             throw Error("書籍IDの採番に失敗しました。");
         }
 
-        this.bookId = latestBookId;
+        this._bookId = latestBookId;
     }
 
 
@@ -32,11 +32,9 @@ export class BookIdModel {
      * 書籍IDを取得する
      * @returns 
      */
-    public getBookId() {
-
-        return this.bookId;
+    public get bookId() {
+        return this._bookId;
     }
-
 
     /**
      * 書籍IDを採番する

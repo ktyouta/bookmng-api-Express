@@ -42,9 +42,9 @@ export class BookInfoMasterService {
 
         // jsonファイル登録用の型に変換する
         const createBookInfoMasterBody: BookInfoModelType = {
-            bookId: bookInfoMasterCreateModel.getBookId().getBookId(),
+            bookId: bookInfoMasterCreateModel.getBookId().bookId,
             title: bookInfoMasterCreateModel.getTitle().getTitle(),
-            publishedDate: bookInfoMasterCreateModel.getPublishedDate().getPublishedDate(),
+            publishedDate: bookInfoMasterCreateModel.getPublishedDate().publishedDate,
             description: bookInfoMasterCreateModel.getdDescription().getDescription(),
             createDate: bookInfoMasterCreateModel.getCreateDate().getCreateDate(),
             updateDate: bookInfoMasterCreateModel.getUpdateDate().getUpdateDate(),

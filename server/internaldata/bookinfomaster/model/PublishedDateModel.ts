@@ -1,6 +1,6 @@
 export class PublishedDateModel {
 
-    private publishedDate: string;
+    private readonly _publishedDate: string;
 
     constructor(publishedDate: string) {
 
@@ -10,11 +10,11 @@ export class PublishedDateModel {
         }
 
         // 日付の妥当性チェック
-        if (this.chechDateValid(publishedDate)) {
+        if (!this.chechDateValid(publishedDate)) {
             throw Error("発売日が正しくありません。");
         }
 
-        this.publishedDate = publishedDate;
+        this._publishedDate = publishedDate;
     }
 
 
@@ -22,8 +22,8 @@ export class PublishedDateModel {
      * 発売日を取得する
      * @returns 
      */
-    public getPublishedDate() {
-        return this.publishedDate;
+    get publishedDate() {
+        return this._publishedDate;
     }
 
 

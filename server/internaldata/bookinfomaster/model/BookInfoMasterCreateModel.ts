@@ -22,9 +22,9 @@ export class BookInfoMasterCreateModel {
     // 書籍詳細
     private description: DescriptionModel;
     // データ作成日
-    private createDate: CreateDateModel = new CreateDateModel();
+    private createDate: CreateDateModel = new CreateDateModel(`書籍情報マスタ`);
     // データ更新日
-    private updateDate: UpdateDateModel = new UpdateDateModel();
+    private updateDate: UpdateDateModel = new UpdateDateModel(`書籍情報マスタ`);
     // 削除フラグ
     private deleteFlg: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
 

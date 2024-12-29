@@ -1,3 +1,11 @@
 [
-    
+	{
+		"bookId": "bookId-1",
+		"title": "Test Book Title",
+		"publishedDate": "20241227",
+		"description": "description of test book.",
+		"createDate": "20241229",
+		"updateDate": "20241229",
+		"deleteFlg": "0"
+	}
 ]

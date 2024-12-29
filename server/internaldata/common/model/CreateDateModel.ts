@@ -4,19 +4,19 @@ export class CreateDateModel {
 
     private createDate: string;
 
-    constructor() {
+    constructor(target: string) {
 
         // 現在日付を取得する
         const createDate = DateUtil.getNowDateYYYYMMDD();
 
         // 正規表現チェック
         if (!this.checkFormat(createDate)) {
-            throw Error("データ作成日のフォーマットが不正です。");
+            throw Error(`${target}データ作成日のフォーマットが不正です。`);
         }
 
         // 日付の妥当性チェック
-        if (this.chechDateValid(createDate)) {
-            throw Error("データ作成日が正しくありません。");
+        if (!this.chechDateValid(createDate)) {
+            throw Error(`${target}データ作成日が正しくありません。`);
         }
 
         this.createDate = createDate;
