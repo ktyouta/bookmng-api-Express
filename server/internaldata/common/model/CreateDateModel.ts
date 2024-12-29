@@ -2,7 +2,7 @@ import { DateUtil } from "../../../util/service/DateUtil";
 
 export class CreateDateModel {
 
-    private createDate: string;
+    private _createDate: string;
 
     constructor(target: string) {
 
@@ -19,7 +19,7 @@ export class CreateDateModel {
             throw Error(`${target}データ作成日が正しくありません。`);
         }
 
-        this.createDate = createDate;
+        this._createDate = createDate;
     }
 
 
@@ -27,8 +27,8 @@ export class CreateDateModel {
      * 作成日を取得する
      * @returns 
      */
-    public getCreateDate() {
-        return this.createDate;
+    public get createDate() {
+        return this._createDate;
     }
 
 

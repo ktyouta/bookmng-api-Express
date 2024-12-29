@@ -51,14 +51,19 @@ export class AddBookInfoController extends RouteController {
             });
         }
 
-        // 書籍IDを採番する
-        const bookId: BookIdModel = new BookIdModel();
-
         // 書籍情報マスタからデータを取得
         let bookInfoMasterList: BookInfoModelType[] = this.addBookInfoService.getBookMasterInfo();
 
+        // 未削除の書籍情報データを取得
+        const acticeBookInfoMasterList: BookInfoModelType[] = this.addBookInfoService.getActiveBookMasterInfo(bookInfoMasterList);
+
         // 書籍著者マスタからデータを取得
         let bookAuthorsMasterList: BookAuthorsModelType[] = this.addBookInfoService.getBookAuthorsMasterInfo();
+
+        // 書籍情報の重複チェック
+
+        // 書籍IDを採番する
+        const bookId: BookIdModel = new BookIdModel();
 
         // 書籍情報マスタの登録用データを作成
         const bookInfoMasterCareteBody = this.addBookInfoService.createBookInfoMasterCreateBody(bookId, requestBody);

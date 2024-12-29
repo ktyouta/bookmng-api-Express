@@ -34,6 +34,18 @@ export class AddBookInfoService {
 
 
     /**
+     * 未削除の書籍情報データを取得
+     * @returns 
+     */
+    public getActiveBookMasterInfo(bookInfoMasterList: BookInfoModelType[]): BookInfoModelType[] {
+
+        const activeBookInfoMasterList: BookInfoModelType[] = this.bookInfoMasterService.getActiveBookInfoMaster(bookInfoMasterList);
+
+        return activeBookInfoMasterList;
+    }
+
+
+    /**
      * リクエストボディから書籍情報登録用のデータを作成する
      * @param title 
      * @param publishedDate 

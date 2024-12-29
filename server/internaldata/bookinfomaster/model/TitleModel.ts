@@ -1,11 +1,11 @@
 export class TitleModel {
 
-    private title: string;
+    private _title: string;
 
 
     constructor(title: string) {
 
-        this.title = title;
+        this._title = title;
     }
 
 
@@ -13,8 +13,8 @@ export class TitleModel {
      * 書籍タイトルを取得する
      * @returns 
      */
-    public getTitle() {
+    public get title() {
 
-        return this.title;
+        return this._title;
     }
 }

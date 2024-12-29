@@ -1,11 +1,11 @@
 export class DescriptionModel {
 
-    private description: string;
+    private readonly _description: string;
 
 
     constructor(description: string) {
 
-        this.description = description;
+        this._description = description;
     }
 
 
@@ -13,8 +13,8 @@ export class DescriptionModel {
      * 書籍説明を取得する
      * @returns 
      */
-    public getDescription() {
+    public get description() {
 
-        return this.description;
+        return this._description;
     }
 }

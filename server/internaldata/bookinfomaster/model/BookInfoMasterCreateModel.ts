@@ -14,54 +14,54 @@ import { TitleModel } from "./TitleModel";
 export class BookInfoMasterCreateModel {
 
     // 書籍ID
-    private bookId: BookIdModel;
+    private readonly _bookId: BookIdModel;
     // 書籍タイトル
-    private title: TitleModel;
+    private readonly _title: TitleModel;
     // 発売日
-    private publishedDate: PublishedDateModel;
+    private readonly _publishedDate: PublishedDateModel;
     // 書籍詳細
-    private description: DescriptionModel;
+    private readonly _description: DescriptionModel;
     // データ作成日
-    private createDate: CreateDateModel = new CreateDateModel(`書籍情報マスタ`);
+    private readonly _createDate: CreateDateModel = new CreateDateModel(`書籍情報マスタ`);
     // データ更新日
-    private updateDate: UpdateDateModel = new UpdateDateModel(`書籍情報マスタ`);
+    private readonly _updateDate: UpdateDateModel = new UpdateDateModel(`書籍情報マスタ`);
     // 削除フラグ
-    private deleteFlg: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
+    private readonly _deleteFlg: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
 
 
     constructor(bookId: BookIdModel, title: string, publishedDate: string, description: string) {
 
-        this.bookId = bookId;
-        this.title = new TitleModel(title);
-        this.publishedDate = new PublishedDateModel(publishedDate);
-        this.description = new DescriptionModel(description);
+        this._bookId = bookId;
+        this._title = new TitleModel(title);
+        this._publishedDate = new PublishedDateModel(publishedDate);
+        this._description = new DescriptionModel(description);
     }
 
-    public getBookId() {
-        return this.bookId;
+    public get bookId() {
+        return this._bookId;
     }
 
-    public getTitle() {
-        return this.title;
+    public get title() {
+        return this._title;
     }
 
-    public getPublishedDate() {
-        return this.publishedDate;
+    public get publishedDate() {
+        return this._publishedDate;
     }
 
-    public getdDescription() {
-        return this.description;
+    public get description() {
+        return this._description;
     }
 
-    public getCreateDate() {
-        return this.createDate;
+    public get createDate() {
+        return this._createDate;
     }
 
-    public getUpdateDate() {
-        return this.updateDate;
+    public get updateDate() {
+        return this._updateDate;
     }
 
-    public getDeleteFlg() {
-        return this.deleteFlg;
+    public get deleteFlg() {
+        return this._deleteFlg;
     }
 }

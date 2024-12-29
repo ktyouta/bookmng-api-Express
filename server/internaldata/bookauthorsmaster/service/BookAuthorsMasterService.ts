@@ -46,11 +46,11 @@ export class BookAuthorsMasterService {
         const createBookInfoMasterBodyList: BookAuthorsModelType[] = bookAuthorsMasterCreateModel.map((e) => {
 
             return {
-                bookId: e.getBookId().bookId,
-                authorId: e.getAuthorId(),
-                createDate: e.getCreateDate().getCreateDate(),
-                updateDate: e.getUpdateDate().getUpdateDate(),
-                deleteFlg: e.getDeleteFlg().getDeleteFlg(),
+                bookId: e.getBookId.bookId,
+                authorId: e.getAuthorId,
+                createDate: e.getCreateDate.createDate,
+                updateDate: e.getUpdateDate.updateDate,
+                deleteFlg: e.getDeleteFlg.deleteFlg,
             }
         });
 

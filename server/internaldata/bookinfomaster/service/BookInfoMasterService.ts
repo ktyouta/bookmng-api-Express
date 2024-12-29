@@ -1,3 +1,4 @@
+import { FLG } from "../../../util/const/CommonConst";
 import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
 import { BOOK_INFO_MASTER_FILE_PATH } from "../const/BookInfoMasterConst";
 import { BookIdModel } from "../model/BookIdModel";
@@ -16,6 +17,22 @@ export class BookInfoMasterService {
         const bookInfoMasterList: BookInfoModelType[] = JsonFileOperation.getFileObj(BOOK_INFO_MASTER_FILE_PATH);
 
         return bookInfoMasterList;
+    }
+
+
+    /**
+     * 未削除の書籍情報データを取得
+     * @returns 
+     */
+    public getActiveBookInfoMaster(bookInfoMasterList: BookInfoModelType[]) {
+
+        // 未削除の書籍情報を取得
+        const activeBookInfoMasterList = bookInfoMasterList.filter((e: BookInfoModelType) => {
+
+            return e.deleteFlg !== FLG.ON;
+        });
+
+        return activeBookInfoMasterList;
     }
 
 
@@ -42,13 +59,13 @@ export class BookInfoMasterService {
 
         // jsonファイル登録用の型に変換する
         const createBookInfoMasterBody: BookInfoModelType = {
-            bookId: bookInfoMasterCreateModel.getBookId().bookId,
-            title: bookInfoMasterCreateModel.getTitle().getTitle(),
-            publishedDate: bookInfoMasterCreateModel.getPublishedDate().publishedDate,
-            description: bookInfoMasterCreateModel.getdDescription().getDescription(),
-            createDate: bookInfoMasterCreateModel.getCreateDate().getCreateDate(),
-            updateDate: bookInfoMasterCreateModel.getUpdateDate().getUpdateDate(),
-            deleteFlg: bookInfoMasterCreateModel.getDeleteFlg().getDeleteFlg(),
+            bookId: bookInfoMasterCreateModel.bookId.bookId,
+            title: bookInfoMasterCreateModel.title.title,
+            publishedDate: bookInfoMasterCreateModel.publishedDate.publishedDate,
+            description: bookInfoMasterCreateModel.description.description,
+            createDate: bookInfoMasterCreateModel.createDate.createDate,
+            updateDate: bookInfoMasterCreateModel.updateDate.updateDate,
+            deleteFlg: bookInfoMasterCreateModel.deleteFlg.deleteFlg,
         };
 
         // 書籍情報を追加する

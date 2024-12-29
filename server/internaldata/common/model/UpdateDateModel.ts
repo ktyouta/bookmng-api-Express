@@ -2,7 +2,7 @@ import { DateUtil } from "../../../util/service/DateUtil";
 
 export class UpdateDateModel {
 
-    private updateDate: string;
+    private readonly _updateDate: string;
 
     constructor(target: string) {
 
@@ -19,7 +19,7 @@ export class UpdateDateModel {
             throw Error(`${target}データ更新日が正しくありません。`);
         }
 
-        this.updateDate = updateDate;
+        this._updateDate = updateDate;
     }
 
 
@@ -27,8 +27,8 @@ export class UpdateDateModel {
      * 更新日を取得する
      * @returns 
      */
-    public getUpdateDate() {
-        return this.updateDate;
+    public get updateDate() {
+        return this._updateDate;
     }
 
 

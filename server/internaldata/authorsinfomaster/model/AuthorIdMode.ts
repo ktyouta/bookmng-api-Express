@@ -5,7 +5,7 @@ import { PRE_AUTHOR_ID } from "../const/AuthorsMasterConst";
 
 export class AuthorIdMode {
 
-    private authorId: string;
+    private readonly _authorId: string;
     private authorsMasterService = new AuthorsMasterService();
 
 
@@ -25,7 +25,7 @@ export class AuthorIdMode {
             throw Error("著者IDの採番に失敗しました。");
         }
 
-        this.authorId = latestAuthorsId;
+        this._authorId = latestAuthorsId;
     }
 
 
@@ -34,8 +34,7 @@ export class AuthorIdMode {
      * @returns 
      */
     public getAuthorId() {
-
-        return this.authorId;
+        return this._authorId;
     }
 
 

@@ -12,40 +12,40 @@ import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 export class BookAuthorsMasterCreateModel {
 
     // 書籍ID
-    private bookId: BookIdModel;
+    private readonly _bookId: BookIdModel;
     // 著者ID
-    private authorId: string;
+    private readonly _authorId: string;
     // データ作成日
-    private createDate: CreateDateModel = new CreateDateModel(`書籍著者情報マスタ`);
+    private readonly _createDate: CreateDateModel = new CreateDateModel(`書籍著者情報マスタ`);
     // データ更新日
-    private updateDate: UpdateDateModel = new UpdateDateModel(`書籍著者情報マスタ`);
+    private readonly _updateDate: UpdateDateModel = new UpdateDateModel(`書籍著者情報マスタ`);
     // 削除フラグ
-    private deleteFlg: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
+    private readonly _deleteFlg: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
 
 
     constructor(bookId: BookIdModel, authorId: string) {
 
-        this.bookId = bookId;
-        this.authorId = authorId;
+        this._bookId = bookId;
+        this._authorId = authorId;
     }
 
-    public getBookId() {
-        return this.bookId;
+    public get getBookId() {
+        return this._bookId;
     }
 
-    public getAuthorId() {
-        return this.authorId;
+    public get getAuthorId() {
+        return this._authorId;
     }
 
-    public getCreateDate() {
-        return this.createDate;
+    public get getCreateDate() {
+        return this._createDate;
     }
 
-    public getUpdateDate() {
-        return this.updateDate;
+    public get getUpdateDate() {
+        return this._updateDate;
     }
 
-    public getDeleteFlg() {
-        return this.deleteFlg;
+    public get getDeleteFlg() {
+        return this._deleteFlg;
     }
 }

@@ -1,6 +1,6 @@
 export class DeleteFlgModel {
 
-    private deleteFlgModel: string;
+    private _deleteFlgModel: string;
 
     private FLG = {
         OFF: "0",
@@ -13,7 +13,7 @@ export class DeleteFlgModel {
             throw Error("削除フラグが不正です。");
         }
 
-        this.deleteFlgModel = deleteFlg;
+        this._deleteFlgModel = deleteFlg;
     }
 
 
@@ -31,9 +31,9 @@ export class DeleteFlgModel {
     /**
      * 削除フラグを取得する
      */
-    public getDeleteFlg() {
+    public get deleteFlg() {
 
-        return this.deleteFlgModel;
+        return this._deleteFlgModel;
     }
 
 
@@ -41,7 +41,7 @@ export class DeleteFlgModel {
      * 削除フラグをオフにする
      */
     public switchOff() {
-        this.deleteFlgModel = this.FLG.OFF;
+        this._deleteFlgModel = this.FLG.OFF;
     }
 
 
@@ -49,6 +49,6 @@ export class DeleteFlgModel {
      * 削除フラグをオンにする
      */
     public switchOn() {
-        this.deleteFlgModel = this.FLG.ON;
+        this._deleteFlgModel = this.FLG.ON;
     }
 }
