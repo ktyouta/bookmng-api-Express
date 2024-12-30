@@ -60,14 +60,14 @@ export class BookAuthorsMasterService {
         bookAuthorsMasterCreateModel: BookAuthorsMasterCreateModel[]): BookAuthorsModelType[] {
 
         // jsonファイル登録用の型に変換する
-        const createBookInfoMasterBodyList: BookAuthorsModelType[] = bookAuthorsMasterCreateModel.map((e) => {
+        const createBookInfoMasterBodyList: BookAuthorsModelType[] = bookAuthorsMasterCreateModel.map((e: BookAuthorsMasterCreateModel) => {
 
             return {
-                bookId: e.getBookId.bookId,
-                authorId: e.getAuthorId,
-                createDate: e.getCreateDate.createDate,
-                updateDate: e.getUpdateDate.updateDate,
-                deleteFlg: e.getDeleteFlg.deleteFlg,
+                bookId: e.bookId.bookId,
+                authorId: e.authorId,
+                createDate: e.createDate.createDate,
+                updateDate: e.updateDate.updateDate,
+                deleteFlg: e.deleteFlg.deleteFlg,
             }
         });
 

@@ -1,5 +1,5 @@
 import { FLG } from "../../../util/const/CommonConst";
-import { AuthorIdMode } from "../../authorsinfomaster/model/AuthorIdMode";
+import { AuthorIdModel } from "../../authorsinfomaster/model/AuthorIdMode";
 import { BookIdModel } from "../../bookinfomaster/model/BookIdModel";
 import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
@@ -29,23 +29,23 @@ export class BookAuthorsMasterCreateModel {
         this._authorId = authorId;
     }
 
-    public get getBookId() {
+    public get bookId() {
         return this._bookId;
     }
 
-    public get getAuthorId() {
+    public get authorId() {
         return this._authorId;
     }
 
-    public get getCreateDate() {
+    public get createDate() {
         return this._createDate;
     }
 
-    public get getUpdateDate() {
+    public get updateDate() {
         return this._updateDate;
     }
 
-    public get getDeleteFlg() {
+    public get deleteFlg() {
         return this._deleteFlg;
     }
 }

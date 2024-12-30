@@ -3,7 +3,7 @@ import { AuthorsMasterModeType } from "./AuthorsMasterModeType";
 import { PRE_AUTHOR_ID } from "../const/AuthorsMasterConst";
 
 
-export class AuthorIdMode {
+export class AuthorIdModel {
 
     private readonly _authorId: string;
     private authorsMasterService = new AuthorsMasterService();
@@ -33,7 +33,7 @@ export class AuthorIdMode {
      * 著者IDを取得する
      * @returns 
      */
-    public getAuthorId() {
+    public get authorId() {
         return this._authorId;
     }
 
