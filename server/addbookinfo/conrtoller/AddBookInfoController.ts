@@ -60,7 +60,19 @@ export class AddBookInfoController extends RouteController {
         // 書籍著者マスタからデータを取得
         let bookAuthorsMasterList: BookAuthorsModelType[] = this.addBookInfoService.getBookAuthorsMasterInfo();
 
+        // 未削除の書籍著者情報データを取得
+        const acticeBookAuthorsMasterList = this.addBookInfoService.getActiveBookAuthorsMasterInfo(bookAuthorsMasterList);
+
         // 書籍情報の重複チェック
+        errMessge = this.addBookInfoService.checkBookInfoExists(acticeBookInfoMasterList, acticeBookAuthorsMasterList, requestBody);
+
+        // 登録しようとしている書籍情報が既に存在する
+        if (errMessge) {
+            return res.status(HTTP_STATUS_UNPROCESSABLE_ENTITY).json({
+                status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
+                message: errMessge,
+            });
+        }
 
         // 書籍IDを採番する
         const bookId: BookIdModel = new BookIdModel();

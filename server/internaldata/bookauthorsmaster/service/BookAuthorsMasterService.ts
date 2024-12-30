@@ -1,3 +1,4 @@
+import { FLG } from "../../../util/const/CommonConst";
 import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
 import { BookIdModel } from "../../bookinfomaster/model/BookIdModel";
 import { BOOK_AUTHROS_MASTER_FILE_PATH } from "../const/BookAuthrosMasterConst";
@@ -17,6 +18,22 @@ export class BookAuthorsMasterService {
         const bookAuthorsMasterList: BookAuthorsModelType[] = JsonFileOperation.getFileObj(BOOK_AUTHROS_MASTER_FILE_PATH);
 
         return bookAuthorsMasterList;
+    }
+
+
+    /**
+     * 未削除の書籍著者マスタデータを取得
+     * @returns 
+     */
+    public getActiveBookAuthorsMaster(bookAuthorsMasterList: BookAuthorsModelType[]) {
+
+        // 書籍著者マスタファイルからデータを取得
+        const activeBookAuthorsMasterList: BookAuthorsModelType[] = bookAuthorsMasterList.filter((e: BookAuthorsModelType) => {
+
+            return e.deleteFlg !== FLG.ON;
+        });
+
+        return activeBookAuthorsMasterList;
     }
 
 

@@ -10,6 +10,7 @@ import { BookIdModel } from "../../internaldata/bookinfomaster/model/BookIdModel
 import { BookInfoMasterCreateModel } from "../../internaldata/bookinfomaster/model/BookInfoMasterCreateModel";
 import { BookInfoModelType } from "../../internaldata/bookinfomaster/model/BookInfoMasterModelType";
 import { BookInfoMasterService } from "../../internaldata/bookinfomaster/service/BookInfoMasterService";
+import { ArrayUtil } from "../../util/service/ArrayUtil";
 import { FileOperation } from "../../util/service/FileOperation";
 import { JsonFileOperation } from "../../util/service/JsonFileOperation";
 import { BookInfoAddRequestModelType } from "../model/BookInfoAddRequestModelType";
@@ -72,6 +73,19 @@ export class AddBookInfoService {
         let bookAuthrosMasterList: BookAuthorsModelType[] = this.bookAuthorsMasterService.getBookAuthorsMaster();
 
         return bookAuthrosMasterList;
+    }
+
+
+    /**
+     * 未削除の書籍著者マスタデータを取得
+     * @param bookAuthrosMasterList 
+     * @returns 
+     */
+    public getActiveBookAuthorsMasterInfo(bookAuthrosMasterList: BookAuthorsModelType[]): BookAuthorsModelType[] {
+
+        const activeBookInfoMasterList: BookAuthorsModelType[] = this.bookAuthorsMasterService.getActiveBookAuthorsMaster(bookAuthrosMasterList);
+
+        return activeBookInfoMasterList;
     }
 
 
@@ -219,5 +233,59 @@ export class AddBookInfoService {
         });
 
         return errMessge;
+    }
+
+
+
+    /**
+     * 書籍情報の重複チェック
+     * @param acticeBookInfoMasterList 
+     * @param activeBookAuthorsMasterList 
+     * @param requestBody 
+     */
+    public checkBookInfoExists(activeBookInfoMasterList: BookInfoModelType[],
+        activeBookAuthorsMasterList: BookAuthorsModelType[], requestBody: BookInfoAddRequestModelType): string {
+
+        let errMessage = "";
+        // リクエストボディから値を取得
+        const title = requestBody.title;
+        const publishedDate = requestBody.publishedDate;
+        const authorIdList = requestBody.authorIdList;
+
+        // リクエストのタイトルと発売日に一致する書籍情報を取得する
+        const possibleDuplicateBooksInfoList = activeBookInfoMasterList.filter((e: BookInfoModelType) => {
+
+            return e.title === title && e.publishedDate === publishedDate;
+        });
+
+        // 著者IDがすべて一致する書籍情報を取得する
+        possibleDuplicateBooksInfoList.some((e: BookInfoModelType) => {
+
+            // 書籍IDの一致する書籍著者リストを取得する
+            const activeBookAuthorsMaster: BookAuthorsModelType[] = activeBookAuthorsMasterList.filter((e1: BookAuthorsModelType) => {
+
+                return e1.bookId === e.bookId;
+            });
+
+            if (activeBookAuthorsMaster.length === 0) {
+                return true;
+            }
+
+            // 書籍著者情報マスタの著者IDリスト
+            const masterAuthorIdList = activeBookAuthorsMaster.map((e1: BookAuthorsModelType) => {
+
+                return e1.authorId;
+            });
+
+            // リクエストの著者IDリストと書籍著者マスタの著者IDリストが完全に一致している場合はエラーとする
+            if (ArrayUtil.checkArrayEqual(authorIdList, masterAuthorIdList)) {
+
+                errMessage = "登録しようとしている書籍情報が既に存在しています。"
+                return true;
+            }
+
+        });
+
+        return errMessage;
     }
 }
