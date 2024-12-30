@@ -1,8 +1,8 @@
-import { CommonFileOperation } from "./CommonFileOperation";
+import * as fs from 'fs';
 
 export class FileOperation {
 
-    private static readonly fs = require('fs');
+    private static readonly fs = fs;
 
     /**
      * ファイル書き込み

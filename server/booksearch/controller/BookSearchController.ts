@@ -1,10 +1,12 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import ENV from '../../env.json';
 import { BookSearchService } from '../service/BookSearchService';
-import { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_OK } from '../../util/const/HttpStatusConst';
-import { GoogleBooksAPIsModelType } from '../../api/googlebookinfo/model/GoogleBooksAPIsModelType';
+import { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_OK, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
+import { GoogleBooksAPIsModelType } from '../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelType';
 import { RouteController } from '../../router/controller/RouteController';
 import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
+import { BookSearchQueryParameterSchema } from '../model/BookSearchQueryParameterSchema';
+import { ZodIssue } from 'zod';
 
 
 export class BookSearchController extends RouteController {
@@ -24,17 +26,27 @@ export class BookSearchController extends RouteController {
     public async doExecute(req: Request, res: Response) {
 
         // クエリパラメータを取得
-        let query = req.query;
-        // キーワードを取得
-        let keyword = typeof query[`q`] === "string" ? query[`q`] : "";
+        const query = req.query;
 
-        // クエリがない場合
-        if (!keyword) {
-            return res.status(HTTP_STATUS_BAD_REQUEST).json({
-                status: HTTP_STATUS_BAD_REQUEST,
-                errMessage: "キーワードを設定してください。"
+        // クエリパラメータのバリデーションチェック
+        const validateResult = BookSearchQueryParameterSchema.safeParse(query);
+
+        // バリデーションエラー
+        if (!validateResult.success) {
+
+            // エラーメッセージを取得
+            const validatErrMessage = validateResult.error.errors.map((e: ZodIssue) => {
+                return e.message;
+            }).join(`,`);
+
+            return res.status(HTTP_STATUS_UNPROCESSABLE_ENTITY).json({
+                status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
+                message: validatErrMessage,
             });
         }
+
+        // キーワードを取得
+        const keyword = query[`q`] as string;
 
         // Google Books Apiから書籍情報を取得する
         let googleBookInfoList: GoogleBooksAPIsModelType = await this.bookSearchService.callGoogleBookApi(keyword);

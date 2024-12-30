@@ -1,4 +1,4 @@
-import { GoogleBookInfoApis } from "../../api/googlebookinfo/service/GoogleBookInfoApis";
+import { GoogleBookInfoApis } from "../../externalapi/googlebookinfo/service/GoogleBookInfoApis";
 
 export class BookSearchService {
 
