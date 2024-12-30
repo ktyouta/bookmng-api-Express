@@ -11,6 +11,8 @@ import { BookAuthorsModelType } from '../../internaldata/bookauthorsmaster/model
 import { BookIdModel } from '../../internaldata/bookinfomaster/model/BookIdModel';
 import { BookAuthorsMasterCreateModel } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterCreateModel';
 import { AuthorsMasterModeType } from '../../internaldata/authorsinfomaster/model/AuthorsMasterModeType';
+import { BookInfoAddRequestModelSchema } from '../model/BookInfoAddRequestModelSchema';
+import { ZodIssue } from 'zod';
 
 
 export class AddBookInfoController extends RouteController {
@@ -33,6 +35,23 @@ export class AddBookInfoController extends RouteController {
         const requestBody: BookInfoAddRequestModelType = req.body;
         // 著者IDリスト
         const authorIdList: string[] = requestBody.authorIdList;
+
+        // リクエストのバリデーションチェック
+        const validateResult = BookInfoAddRequestModelSchema.safeParse(requestBody);
+
+        // バリデーションエラー
+        if (!validateResult.success) {
+
+            // エラーメッセージを取得
+            const validatErrMessage = validateResult.error.errors.map((e: ZodIssue) => {
+                return e.message;
+            }).join(`,`);
+
+            return res.status(HTTP_STATUS_UNPROCESSABLE_ENTITY).json({
+                status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
+                message: validatErrMessage,
+            });
+        }
 
         // 著者情報マスタからデータを取得
         const authorsMasterList: AuthorsMasterModeType[] = this.addBookInfoService.getAuthorsMasterInfo();
