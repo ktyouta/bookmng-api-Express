@@ -1,22 +1,21 @@
-import { GOOGLE_BOOK_API_ACCESS_HISTORY_TRANSACTION_FILE } from "../../../util/const/FileInfoConst";
 import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
-import { GOOGLE_BOOK_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH } from "../const/GoogleBooksApiAccessHistoryConst";
+import { GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH } from "../const/GoogleBooksApiAccessHistoryConst";
 import { AccessDateModel } from "../model/AccessDateModel";
 import { GoogleBooksApiAccessHistoryCreateModel } from "../model/GoogleBooksApiAccessHistoryCreateModel";
 import { GoogleBooksApiAccessHistoryModelType } from "../model/GoogleBooksApiAccessHistoryModelType";
 import { KeywordModel } from "../model/KeywordModel";
 
-export class GoogleBookApiAccessHistory {
+export class GoogleBookApiAccessHistoryService {
 
 
     /**
      * Google Books Apiアクセス情報ファイルのデータを取得
      * @returns 
      */
-    public getGoogleBookApiAccessHistory() {
+    public GoogleBookApiAccessHistoryService() {
 
         // GoogleBookApiアクセス情報ファイルからデータを取得
-        const googleBookApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[] = JsonFileOperation.getFileObj(GOOGLE_BOOK_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH);
+        const googleBookApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[] = JsonFileOperation.getFileObj(GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH);
 
         return googleBookApiAccessHistoryList;
     }

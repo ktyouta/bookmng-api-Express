@@ -62,9 +62,9 @@ export class GoogleBookInfoApis {
         queryBuilder.addQuery(`${ENV.GOOGLE_BOOKS_API_QUERYKEY_KEYWORD}`, `${keyword}`);
 
         // クエリパラメータを作成
-        let queryPrm = queryBuilder.createQueryStr();
+        const queryPrm = queryBuilder.createQueryStr();
         // Google Books Api 呼び出し用URL 
-        let callApiUrl = `${this.GOOGLE_BOOK_API_BASE_URL}${queryPrm ? `?${queryPrm}` : ""}`;
+        const callApiUrl = `${this.GOOGLE_BOOK_API_BASE_URL}${queryPrm ? `?${queryPrm}` : ""}`;
 
         try {
             // Google Books Apiを呼び出す

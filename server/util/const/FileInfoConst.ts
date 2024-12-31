@@ -33,4 +33,4 @@ export const BOOK_AUTHORS_MASTER_FILE = "book_authors_master.json";
 // 著者マスタファイル名
 export const AUTHORS_MASTER_FILE = "authors_master.json";
 // Google Books Apiアクセストランザクションファイル名
-export const GOOGLE_BOOK_API_ACCESS_HISTORY_TRANSACTION_FILE = "google_book_api_access_history_transaction.json";
+export const GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE = "google_books_api_access_history_transaction.json";
