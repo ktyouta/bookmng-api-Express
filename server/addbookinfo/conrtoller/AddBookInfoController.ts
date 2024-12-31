@@ -108,26 +108,10 @@ export class AddBookInfoController extends RouteController {
         bookAuthorsMasterList = this.addBookInfoService.createBookAuthorsMasterWriteData(bookAuthorsMasterList, bookAuthorsMasterCreateBody);
 
         // 書籍情報マスタファイルに登録用データを書き込む
-        errMessge = this.addBookInfoService.overWriteBookInfoMaster(bookInfoMasterList);
-
-        // 書籍情報マスタへの書き込みに失敗
-        if (errMessge) {
-            return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
-                status: HTTP_STATUS_INTERNAL_SERVER_ERROR,
-                message: errMessge,
-            });
-        }
+        this.addBookInfoService.overWriteBookInfoMaster(bookInfoMasterList);
 
         // 書籍著者情報マスタファイルに登録用データを書き込む
-        errMessge = this.addBookInfoService.overWriteBookAuthorsMaster(bookAuthorsMasterList);
-
-        // 書籍著者情報マスタへの書き込みに失敗
-        if (errMessge) {
-            return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
-                status: HTTP_STATUS_INTERNAL_SERVER_ERROR,
-                message: errMessge,
-            });
-        }
+        this.addBookInfoService.overWriteBookAuthorsMaster(bookAuthorsMasterList);
 
         return res.status(HTTP_STATUS_CREATED).json({
             status: HTTP_STATUS_CREATED,

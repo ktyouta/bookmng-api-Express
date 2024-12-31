@@ -76,4 +76,20 @@ export class BookAuthorsMasterService {
 
         return bookAuthorsMasterList;
     }
+
+
+    /**
+     * 書籍著者情報マスタファイルにデータを書き込む
+     * @param bookAuthorsMasterList 
+     */
+    public overWriteBookAuthorsMaster(bookAuthorsMasterList: BookAuthorsModelType[]) {
+
+        try {
+
+            JsonFileOperation.overWriteJsonFileData(BOOK_AUTHROS_MASTER_FILE_PATH, bookAuthorsMasterList);
+        } catch (err) {
+
+            throw Error(`書籍著者情報マスタファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);
+        }
+    }
 }

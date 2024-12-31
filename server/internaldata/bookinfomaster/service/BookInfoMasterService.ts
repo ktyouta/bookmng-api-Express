@@ -73,4 +73,21 @@ export class BookInfoMasterService {
 
         return bookInfoMasterList;
     }
+
+
+
+    /**
+     * 書籍情報マスタファイルにデータを書き込む
+     * @param bookInfoMasterList 
+     */
+    public overWriteBookInfoMaster(bookInfoMasterList: BookInfoModelType[]) {
+
+        try {
+
+            JsonFileOperation.overWriteJsonFileData(BOOK_INFO_MASTER_FILE_PATH, bookInfoMasterList);
+        } catch (err) {
+
+            throw Error(`書籍情報マスタファイルのデータ書き込み処理中にエラーが発生しました。ERROR:${err}`);
+        }
+    }
 }

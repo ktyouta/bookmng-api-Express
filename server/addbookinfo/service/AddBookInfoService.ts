@@ -14,6 +14,8 @@ import { ArrayUtil } from "../../util/service/ArrayUtil";
 import { FileOperation } from "../../util/service/FileOperation";
 import { JsonFileOperation } from "../../util/service/JsonFileOperation";
 import { BookInfoAddRequestModelType } from "../model/BookInfoAddRequestModelType";
+import ENV from '../../env.json';
+
 
 export class AddBookInfoService {
 
@@ -109,11 +111,15 @@ export class AddBookInfoService {
      * 書籍情報マスタファイルにデータを書き込む
      * @param bookInfoMasterList 
      */
-    public overWriteBookInfoMaster(bookInfoMasterList: BookInfoModelType[]): string {
+    public overWriteBookInfoMaster(bookInfoMasterList: BookInfoModelType[]) {
 
-        const errMessge = JsonFileOperation.overWriteJsonFileData(BOOK_INFO_MASTER_FILE_PATH, bookInfoMasterList);
+        try {
 
-        return errMessge;
+            this.bookInfoMasterService.overWriteBookInfoMaster(bookInfoMasterList);
+        } catch (err) {
+
+            throw Error(`${err} endpoint:${ENV.ADD_BOOK_INFO}`);
+        }
     }
 
 
@@ -179,11 +185,15 @@ export class AddBookInfoService {
      * @param bookInfoMasterList 
      * @returns 
      */
-    public overWriteBookAuthorsMaster(bookAuthorsMasterList: BookAuthorsModelType[]): string {
+    public overWriteBookAuthorsMaster(bookAuthorsMasterList: BookAuthorsModelType[]) {
 
-        const errMessge = JsonFileOperation.overWriteJsonFileData(BOOK_AUTHROS_MASTER_FILE_PATH, bookAuthorsMasterList);
+        try {
 
-        return errMessge;
+            this.bookAuthorsMasterService.overWriteBookAuthorsMaster(bookAuthorsMasterList);
+        } catch (err) {
+
+            throw Error(`${err} endpoint:${ENV.ADD_BOOK_INFO}`);
+        }
     }
 
 

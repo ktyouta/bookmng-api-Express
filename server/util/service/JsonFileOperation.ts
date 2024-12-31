@@ -17,10 +17,9 @@ export class JsonFileOperation {
             //json文字列に変換
             const stream: string = JSON.stringify(data, null, '\t');
             this.fs.writeFileSync(filePath, stream);
-
-            return "";
         } catch (err) {
-            return "ファイルの書き込みに失敗しました。";
+
+            throw Error(`JsonFileOperation overWriteJsonFileData filePath:${filePath} err:${err}`);
         }
     }
 

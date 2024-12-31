@@ -4,20 +4,21 @@ export class FileOperation {
 
     private static readonly fs = fs;
 
+
     /**
      * ファイル書き込み
      * @param filePath 
      * @param data 
      * @returns 
      */
-    public static overWriteFileData<T>(filePath: string, data: string) {
+    public static overWriteFileData(filePath: string, data: string) {
+
         try {
 
             this.fs.writeFileSync(filePath, data, { encoding: 'utf8' });
-
-            return "";
         } catch (err) {
-            return "ファイルの書き込みに失敗しました。";
+
+            throw Error(`FileOperation overWriteFileData filePath:${filePath} err:${err}`);
         }
     }
 
@@ -29,13 +30,13 @@ export class FileOperation {
      * @returns 
      */
     public static addWriteFileData<T>(filePath: string, data: string) {
+
         try {
 
             this.fs.appendFileSync(filePath, data, { encoding: 'utf8' });
-
-            return "";
         } catch (err) {
-            return `ファイルの追記に失敗しました。(${err})`;
+
+            throw Error(`FileOperation addWriteFileData filePath:${filePath} err:${err}`);
         }
     }
 }
