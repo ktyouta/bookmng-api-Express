@@ -52,10 +52,27 @@ export class GoogleBooksApiSmallThumbnailCacheService {
             updateDate: googleBooksApiSmallThumbnailCacheCreateModel.updateDate.updateDate,
         };
 
-        // Google Books Api書籍キャッシュ情報を追加する
+        // Google Books Apiサムネイル(小)キャッシュ情報を追加する
         googleBooksApiSmallThumbnailCacheList = [...googleBooksApiSmallThumbnailCacheList, createGoogleBooksApiSmallThumbnailCacheBody];
 
         return googleBooksApiSmallThumbnailCacheList;
+    }
+
+
+    /**
+     * Google Books Apiサムネイル(小)キャッシュ情報ファイルにデータを書き込む
+     * @param googleBooksApiAuthorsCacheList 
+     */
+    public overWriteGoogleBooksApiSmallThumbnailCache(googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[]) {
+
+        try {
+
+            JsonFileOperation.overWriteJsonFileData(GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE_PATH,
+                googleBooksApiSmallThumbnailCacheList);
+        } catch (err) {
+
+            throw Error(`Google Books Apiサムネイル(小)キャッシュ情報ファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);
+        }
     }
 
 }

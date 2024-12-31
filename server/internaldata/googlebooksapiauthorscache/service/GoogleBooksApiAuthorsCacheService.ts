@@ -1,6 +1,7 @@
 import { GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE } from "../../../util/const/FileInfoConst";
 import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
 import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/model/GoogleBooksApiIdModel";
+import { GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH } from "../const/GoogleBooksApiAuthorCacheConst";
 import { GoogleBooksApiAuthorNameModel } from "../model/GoogleBooksApiAuthorNameModel";
 import { GoogleBooksApiAuthorNoModel } from "../model/GoogleBooksApiAuthorNoModel";
 import { GoogleBooksApiAuthorsCacheModelType } from "../model/GoogleBooksApiAuthorsCacheModelType";
@@ -16,7 +17,7 @@ export class GoogleBooksApiAuthorsCacheService {
     public getGoogleBooksApiAuthorsCache() {
 
         // Google Books Api著者キャッシュ情報ファイルからデータを取得
-        const googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[] = JsonFileOperation.getFileObj(GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE);
+        const googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[] = JsonFileOperation.getFileObj(GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH);
 
         return googleBooksApiAuthorsCacheList;
     }
@@ -57,5 +58,21 @@ export class GoogleBooksApiAuthorsCacheService {
         googleBooksApiAuthorsCacheList = [...googleBooksApiAuthorsCacheList, createGoogleBooksApiAuthorsCacheBody];
 
         return googleBooksApiAuthorsCacheList;
+    }
+
+
+    /**
+     * Google Books Api著者キャッシュ情報ファイルにデータを書き込む
+     * @param googleBooksApiAuthorsCacheList 
+     */
+    public overWriteGoogleBooksApiAuthorsCache(googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[]) {
+
+        try {
+
+            JsonFileOperation.overWriteJsonFileData(GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH, googleBooksApiAuthorsCacheList);
+        } catch (err) {
+
+            throw Error(`Google Books Api著者キャッシュ情報ファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);
+        }
     }
 }

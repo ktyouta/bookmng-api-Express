@@ -72,4 +72,20 @@ export class GoogleBookApiAccessHistoryService {
 
         return googleBookApiAccessHistoryList;
     }
+
+
+    /**
+     * Google Books Apiアクセス情報ファイルにデータを書き込む
+     * @param googleBookApiAccessHistoryList 
+     */
+    public overWriteGoogleBookApiAccessHistory(googleBookApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[]) {
+
+        try {
+
+            JsonFileOperation.overWriteJsonFileData(GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH, googleBookApiAccessHistoryList);
+        } catch (err) {
+
+            throw Error(`Google Books Apiアクセス情報ファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);
+        }
+    }
 }

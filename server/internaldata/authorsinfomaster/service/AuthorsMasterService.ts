@@ -76,4 +76,20 @@ export class AuthorsMasterService {
 
         return authorsMasterList;
     }
+
+
+    /**
+     * 著者情報マスタファイルにデータを書き込む
+     * @param authorsMasterList 
+     */
+    public overWriteAuthorsMaster(authorsMasterList: AuthorsMasterModeType[]) {
+
+        try {
+
+            JsonFileOperation.overWriteJsonFileData(AUTHROS_MASTER_FILE_PATH, authorsMasterList);
+        } catch (err) {
+
+            throw Error(`著者情報マスタファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);
+        }
+    }
 }

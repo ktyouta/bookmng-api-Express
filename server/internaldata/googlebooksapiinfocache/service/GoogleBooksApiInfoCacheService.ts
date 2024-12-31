@@ -61,4 +61,19 @@ export class GoogleBooksApiInfoCacheService {
         return googleBooksApiInfoCacheList;
     }
 
+
+    /**
+     * Google Books Api書籍キャッシュ情報ファイルにデータを書き込む
+     * @param googleBooksApiAuthorsCacheList 
+     */
+    public overWriteGoogleBooksApiInfoCache(googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[]) {
+
+        try {
+
+            JsonFileOperation.overWriteJsonFileData(GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH, googleBooksApiInfoCacheList);
+        } catch (err) {
+
+            throw Error(`Google Books Api書籍キャッシュ情報ファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);
+        }
+    }
 }
