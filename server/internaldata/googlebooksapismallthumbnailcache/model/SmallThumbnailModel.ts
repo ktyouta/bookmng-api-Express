@@ -6,7 +6,7 @@ export class SmallThumbnailModel {
         this._smallThumbnail = smallThumbnail;
     }
 
-    public get thumbnail() {
+    public get smallThumbnail() {
         return this._smallThumbnail;
     }
 }

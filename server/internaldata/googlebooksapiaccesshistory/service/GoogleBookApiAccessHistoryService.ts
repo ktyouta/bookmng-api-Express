@@ -12,7 +12,7 @@ export class GoogleBookApiAccessHistoryService {
      * Google Books Apiアクセス情報ファイルのデータを取得
      * @returns 
      */
-    public GoogleBookApiAccessHistoryService() {
+    public GoogleBookApiAccessHistory() {
 
         // GoogleBookApiアクセス情報ファイルからデータを取得
         const googleBookApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[] = JsonFileOperation.getFileObj(GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH);
