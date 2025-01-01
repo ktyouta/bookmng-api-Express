@@ -26,12 +26,12 @@ export class GoogleBookApiAccessHistoryService {
      * @returns 
      */
     public getAccessHistoryByKeywordAndDate(googleBookApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[],
-        keyword: string, accessDate: string,) {
+        keywordModel: KeywordModel, accessDateModel: AccessDateModel,) {
 
         // 日付とキーワードでフィルターする
         const filterdAccessHistoryList: GoogleBooksApiAccessHistoryModelType[] = googleBookApiAccessHistoryList.filter((e: GoogleBooksApiAccessHistoryModelType) => {
 
-            return e.keyword === keyword && e.accessDate === accessDate;
+            return e.keyword === keywordModel.keyword && e.accessDate === accessDateModel.accessDate;
         });
 
         return filterdAccessHistoryList;

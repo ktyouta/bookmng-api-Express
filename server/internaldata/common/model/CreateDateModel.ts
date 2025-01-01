@@ -4,7 +4,7 @@ export class CreateDateModel {
 
     private _createDate: string;
 
-    constructor(target: string) {
+    constructor(target?: string) {
 
         // 現在日付を取得する
         const createDate = DateUtil.getNowDateYYYYMMDD();

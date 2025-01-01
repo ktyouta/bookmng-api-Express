@@ -1,4 +1,5 @@
 import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
+import { KeywordModel } from "../../googlebooksapiaccesshistory/model/KeywordModel";
 import { GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH } from "../const/GoogleBooksApiInfoCacheConst";
 import { GoogleBooksApiDescriptionModel } from "../model/GoogleBooksApiDescriptionModel";
 import { GoogleBooksApiIdModel } from "../model/GoogleBooksApiIdModel";
@@ -20,6 +21,23 @@ export class GoogleBooksApiInfoCacheService {
         const googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[] = JsonFileOperation.getFileObj(GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH);
 
         return googleBooksApiInfoCacheList;
+    }
+
+
+    /**
+     * Google Books Api著者キャッシュ情報ファイルをキーワードでフィルターする
+     * @returns 
+     */
+    public getGoogleBooksApiInfoCacheByKeyword(googleBooksApiAuthorsCacheList: GoogleBooksApiInfoCacheModelType[],
+        keywordModel: KeywordModel) {
+
+        // タイトルと説明に対してキーワードでフィルターする
+        googleBooksApiAuthorsCacheList = googleBooksApiAuthorsCacheList.filter((e: GoogleBooksApiInfoCacheModelType) => {
+
+            return e.title?.includes(keywordModel.keyword) || e.description?.includes(keywordModel.keyword);
+        });
+
+        return googleBooksApiAuthorsCacheList;
     }
 
 

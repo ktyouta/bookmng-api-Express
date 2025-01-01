@@ -7,6 +7,14 @@ import { RouteController } from '../../router/controller/RouteController';
 import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
 import { BookSearchQueryParameterSchema } from '../model/BookSearchQueryParameterSchema';
 import { ZodIssue } from 'zod';
+import { CreateDateModel } from '../../internaldata/common/model/CreateDateModel';
+import { GoogleBooksApiAccessHistoryModelType } from '../../internaldata/googlebooksapiaccesshistory/model/GoogleBooksApiAccessHistoryModelType';
+import { AccessDateModel } from '../../internaldata/googlebooksapiaccesshistory/model/AccessDateModel';
+import { KeywordModel } from '../../internaldata/googlebooksapiaccesshistory/model/KeywordModel';
+import { GoogleBooksApiInfoCacheModelType } from '../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheModelType';
+import { GoogleBooksApiAuthorsCacheModelType } from '../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheModelType';
+import { GoogleBooksApiSmallThumbnailCacheModelType } from '../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheModelType';
+import { GoogleBooksApiThumbnailCacheModelType } from '../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheModelType';
 
 
 export class BookSearchController extends RouteController {
@@ -47,24 +55,63 @@ export class BookSearchController extends RouteController {
 
         // キーワードを取得
         const keyword = query[`q`] as string;
+        const keywordModel = new KeywordModel(keyword);
 
-        // Google Books Apiから書籍情報を取得する
-        let googleBookInfoList: GoogleBooksAPIsModelType = await this.bookSearchService.callGoogleBookApi(keyword);
+        // 返却用の書籍情報
+        let retBookInfoList: GoogleBooksAPIsModelType[] = [];
 
-        // Google Books Apiからの書籍情報が存在しない
-        if (!googleBookInfoList || googleBookInfoList.totalItems === 0) {
+        // Google Books Apiの書籍キャッシュ情報を取得する
+        let googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[] = this.bookSearchService.getGoogleBooksApiInfoCache();
 
-            return res.status(HTTP_STATUS_OK).json({
-                status: HTTP_STATUS_OK,
-                message: "検索結果が存在しません。",
-                data: googleBookInfoList
-            });
+        // Google Books Apiの書籍キャッシュ情報を取得する
+        let googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[] = this.bookSearchService.getGoogleBooksApiAuthorsCache();
+
+        // Google Books Apiのサムネイルキャッシュ情報を取得する
+        let googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[] = this.bookSearchService.getGoogleBooksApiSmallThumbnailCache();
+
+        // Google Books Apiのサムネイル(小)キャッシュ情報を取得する
+        let googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheModelType[] = this.bookSearchService.getGoogleBooksApiThumbnailCache();
+
+        // 現在日付を取得する
+        const accessDateModel = new AccessDateModel();
+
+        // Google Books Apiのアクセス履歴を取得する
+        let googleBooksApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[] = this.bookSearchService.getGoogleBooksApiAccessHistory();
+
+        /** キーワードと日付でGoogle Books Apiのアクセス履歴をチェックする */
+        if (this.bookSearchService.checkAccessHistoryByKeywordAndDate(googleBooksApiAccessHistoryList, keywordModel, accessDateModel)) {
+
+            // アクセス履歴が存在する場合は書籍キャッシュ情報をキーワードでフィルターする
+            googleBooksApiInfoCacheList = this.bookSearchService.getGoogleBooksApiAuthorsCacheByKeyword(googleBooksApiInfoCacheList, keywordModel);
+
+            // キャッシュ情報をマージする
+
         }
+        else {
+
+            // アクセス履歴が存在しない場合はGoogle Books Apiから書籍情報を取得する
+            const googleBookInfoList: GoogleBooksAPIsModelType = await this.bookSearchService.callGoogleBookApi(keyword);
+
+            // Google Books Apiの書籍キャッシュ情報にデータを追加/更新する
+
+            // Google Books Apiの著者キャッシュ情報にデータを追加/更新する
+
+            // Google Books Apiのサムネイルキャッシュ情報にデータを追加/更新する
+
+            // Google Books Apiのサムネイル(小)キャッシュ情報にデータを追加/更新する
+
+            // Google Books Apiのアクセス履歴にデータを追加する
+
+        }
+
+        // 書籍マスタ情報を取得する
+
+        // 書籍情報マスタとマージする
 
         return res.status(HTTP_STATUS_OK).json({
             status: HTTP_STATUS_OK,
             message: "Data found",
-            data: googleBookInfoList
+            data: retBookInfoList
         });
     }
 }

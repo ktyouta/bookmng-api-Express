@@ -1,8 +1,34 @@
 import { GoogleBookInfoApis } from "../../externalapi/googlebookinfo/service/GoogleBookInfoApis";
+import ENV from '../../env.json';
+import { CreateDateModel } from "../../internaldata/common/model/CreateDateModel";
+import { GoogleBookApiAccessHistoryService } from "../../internaldata/googlebooksapiaccesshistory/service/GoogleBookApiAccessHistoryService";
+import { GoogleBooksApiAccessHistoryModelType } from "../../internaldata/googlebooksapiaccesshistory/model/GoogleBooksApiAccessHistoryModelType";
+import { KeywordModel } from "../../internaldata/googlebooksapiaccesshistory/model/KeywordModel";
+import { AccessDateModel } from "../../internaldata/googlebooksapiaccesshistory/model/AccessDateModel";
+import { GoogleBooksApiInfoCacheService } from "../../internaldata/googlebooksapiinfocache/service/GoogleBooksApiInfoCacheService";
+import { GoogleBooksApiAuthorsCacheService } from "../../internaldata/googlebooksapiauthorscache/service/GoogleBooksApiAuthorsCacheService";
+import { GoogleBooksApiSmallThumbnailCacheService } from "../../internaldata/googlebooksapismallthumbnailcache/service/GoogleBooksApiSmallThumbnailCacheService";
+import { GoogleBooksApiThumbnailCacheService } from "../../internaldata/googlebooksapithumbnail/service/GoogleBooksApiThumbnailCacheService";
+import { GoogleBooksApiInfoCacheModelType } from "../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheModelType";
+import { GoogleBooksApiAuthorsCacheModelType } from "../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheModelType";
+import { GoogleBooksApiSmallThumbnailCacheModelType } from "../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheModelType";
+import { GoogleBooksApiThumbnailCacheModelType } from "../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheModelType";
+
 
 export class BookSearchService {
 
+    // Google Books Apiデータ取得
     private googleBookInfoApis: GoogleBookInfoApis = new GoogleBookInfoApis();
+    // Google Books Apiアクセス履歴
+    private googleBookApiAccessHistoryService = new GoogleBookApiAccessHistoryService();
+    // Google Books Api書籍情報キャッシュ
+    private googleBooksApiInfoCacheService = new GoogleBooksApiInfoCacheService();
+    // Google Books Api著者情報キャッシュ
+    private googleBooksApiAuthorsCacheService = new GoogleBooksApiAuthorsCacheService();
+    // Google Books Apiサムネイル(小)情報キャッシュ
+    private googleBooksApiSmallThumbnailCacheService = new GoogleBooksApiSmallThumbnailCacheService();
+    // Google Books Apiサムネイル情報キャッシュ
+    private googleBooksApiThumbnailCacheService = new GoogleBooksApiThumbnailCacheService();
 
 
     /**
@@ -18,7 +44,110 @@ export class BookSearchService {
             return googleBookInfoList;
 
         } catch (err) {
-            throw Error(`err:${err}`);
+            throw Error(`ERROR:${err} endpoing:${ENV.BOOK_SEARCH} keyword:${keyword}`);
         }
+    }
+
+
+    /**
+     * Google Books Apiのアクセス履歴を取得する
+     */
+    public getGoogleBooksApiAccessHistory() {
+
+        const googleBookApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[] =
+            this.googleBookApiAccessHistoryService.GoogleBookApiAccessHistory();
+
+        return googleBookApiAccessHistoryList;
+    }
+
+
+    /**
+     * キーワードと日付でGoogle Books Apiのアクセス履歴をチェックする
+     * @param googleBooksApiAccessHistoryList 
+     * @param keywordModel 
+     * @param accessDateModel 
+     */
+    public checkAccessHistoryByKeywordAndDate(googleBooksApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[],
+        keywordModel: KeywordModel, accessDateModel: AccessDateModel,) {
+
+        const filterdAccessHistoryList: GoogleBooksApiAccessHistoryModelType[] =
+            this.googleBookApiAccessHistoryService.getAccessHistoryByKeywordAndDate(googleBooksApiAccessHistoryList,
+                keywordModel, accessDateModel
+            );
+
+        // キーワードと日付に一致するデータが存在する
+        return filterdAccessHistoryList && filterdAccessHistoryList.length > 0
+    }
+
+
+    /**
+     * Google Books Api書籍キャッシュ情報ファイルからデータを取得
+     * @returns 
+     */
+    public getGoogleBooksApiInfoCache() {
+
+        // Google Books Api著者キャッシュ情報ファイルからデータを取得
+        const googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[] =
+            this.googleBooksApiInfoCacheService.getGoogleBooksApiInfoCache();
+
+        return googleBooksApiInfoCacheList;
+    }
+
+
+    /**
+     * Google Books Api著者キャッシュ情報ファイルからデータを取得
+     * @returns 
+     */
+    public getGoogleBooksApiAuthorsCache() {
+
+        // Google Books Api著者キャッシュ情報ファイルからデータを取得
+        const googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[] =
+            this.googleBooksApiAuthorsCacheService.getGoogleBooksApiAuthorsCache();
+
+        return googleBooksApiAuthorsCacheList;
+    }
+
+
+    /**
+     * Google Books Apiサムネイル(小)キャッシュ情報ファイルからデータを取得
+     * @returns 
+     */
+    public getGoogleBooksApiSmallThumbnailCache() {
+
+        // Google Books Apiサムネイル(小)キャッシュ情報ファイルからデータを取得
+        const googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[]
+            = this.googleBooksApiSmallThumbnailCacheService.getGoogleBooksApiSmallThumbnailCache();
+
+        return googleBooksApiSmallThumbnailCacheList;
+    }
+
+
+    /**
+     * Google Books Apiサムネイルキャッシュ情報ファイルからデータを取得
+     * @returns 
+     */
+    public getGoogleBooksApiThumbnailCache() {
+
+        // Google Books Apiサムネイルキャッシュ情報ファイルからデータを取得
+        const googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheModelType[]
+            = this.googleBooksApiThumbnailCacheService.getGoogleBooksApiThumbnailCache();
+
+        return googleBooksApiThumbnailCacheList;
+    }
+
+
+    /**
+     * Google Books Api著者キャッシュ情報ファイルをキーワードでフィルターする
+     * @param googleBooksApiAuthorsCacheList 
+     * @param keywordModel 
+     * @returns 
+     */
+    public getGoogleBooksApiAuthorsCacheByKeyword(googleBooksApiAuthorsCacheList: GoogleBooksApiInfoCacheModelType[],
+        keywordModel: KeywordModel) {
+
+        // タイトルと説明に対してキーワードでフィルターする
+        googleBooksApiAuthorsCacheList = this.googleBooksApiInfoCacheService.getGoogleBooksApiInfoCacheByKeyword(googleBooksApiAuthorsCacheList, keywordModel);
+
+        return googleBooksApiAuthorsCacheList;
     }
 }

@@ -12,7 +12,7 @@ export class GoogleBooksApiSmallThumbnailCacheService {
      * Google Books Apiサムネイル(小)キャッシュ情報ファイルからデータを取得
      * @returns 
      */
-    public getGoogleBooksApiInfoCache() {
+    public getGoogleBooksApiSmallThumbnailCache() {
 
         // Google Books Apiサムネイル(小)キャッシュ情報ファイルからデータを取得
         const googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[]
