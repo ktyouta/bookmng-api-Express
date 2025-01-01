@@ -4,6 +4,7 @@ import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/model/Googl
 import { GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE_PATH } from "../const/GoogleBooksApiThumbnailCacheConst";
 import { GoogleBooksApiThumbnailCacheCreateModel } from "../model/GoogleBooksApiThumbnailCacheCreateModel";
 import { GoogleBooksApiThumbnailCacheModelType } from "../model/GoogleBooksApiThumbnailCacheModelType";
+import { GoogleBooksApiThumbnailCacheUpdateModel } from "../model/GoogleBooksApiThumbnailCacheUpdateModel";
 import { ThumbnailModel } from "../model/ThumbnailModel";
 
 export class GoogleBooksApiThumbnailCacheService {
@@ -31,9 +32,9 @@ export class GoogleBooksApiThumbnailCacheService {
      * @returns 
      */
     public GoogleBooksApiThumbnailCacheCreateModel(bookId: GoogleBooksApiIdModel,
-        smallThumbnail: ThumbnailModel): GoogleBooksApiThumbnailCacheCreateModel {
+        thumbnail: ThumbnailModel): GoogleBooksApiThumbnailCacheCreateModel {
 
-        return new GoogleBooksApiThumbnailCacheCreateModel(bookId, smallThumbnail);
+        return new GoogleBooksApiThumbnailCacheCreateModel(bookId, thumbnail);
     }
 
 
@@ -41,20 +42,20 @@ export class GoogleBooksApiThumbnailCacheService {
      * Google Books Apiサムネイルキャッシュ情報に対する書き込み用データの作成
      * @param bookInfoMasterCreateModel 
      */
-    public createGoogleBooksApiInfoCacheWriteData(
+    public createGoogleBooksApiThumbnailCacheWriteData(
         googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheModelType[],
-        googleBooksApiSmallThumbnailCacheCreateModel: GoogleBooksApiThumbnailCacheCreateModel): GoogleBooksApiThumbnailCacheModelType[] {
+        googleBooksApiThumbnailCacheCreateModel: GoogleBooksApiThumbnailCacheCreateModel): GoogleBooksApiThumbnailCacheModelType[] {
 
         // jsonファイル登録用の型に変換する
-        const createGoogleBooksApiSmallThumbnailCacheBody: GoogleBooksApiThumbnailCacheModelType = {
-            bookId: googleBooksApiSmallThumbnailCacheCreateModel.bookId.bookId,
-            thumbnail: googleBooksApiSmallThumbnailCacheCreateModel.thumbnail.thumbnail,
-            createDate: googleBooksApiSmallThumbnailCacheCreateModel.createDate.createDate,
-            updateDate: googleBooksApiSmallThumbnailCacheCreateModel.updateDate.updateDate,
+        const createGoogleBooksApiThumbnailCacheBody: GoogleBooksApiThumbnailCacheModelType = {
+            bookId: googleBooksApiThumbnailCacheCreateModel.bookId.bookId,
+            thumbnail: googleBooksApiThumbnailCacheCreateModel.thumbnail.thumbnail,
+            createDate: googleBooksApiThumbnailCacheCreateModel.createDate.createDate,
+            updateDate: googleBooksApiThumbnailCacheCreateModel.updateDate.updateDate,
         };
 
         // Google Books Api書籍キャッシュ情報を追加する
-        googleBooksApiThumbnailCacheList = [...googleBooksApiThumbnailCacheList, createGoogleBooksApiSmallThumbnailCacheBody];
+        googleBooksApiThumbnailCacheList = [...googleBooksApiThumbnailCacheList, createGoogleBooksApiThumbnailCacheBody];
 
         return googleBooksApiThumbnailCacheList;
     }
@@ -76,4 +77,41 @@ export class GoogleBooksApiThumbnailCacheService {
         }
     }
 
+
+    /**
+     * Google Books Apiサムネイルキャッシュ情報更新用データの作成
+     * @param bookId 
+     * @param smallThumbnail 
+     * @returns 
+     */
+    public GoogleBooksApiThumbnailCacheUpdateModel(bookId: GoogleBooksApiIdModel,
+        thumbnail: ThumbnailModel): GoogleBooksApiThumbnailCacheUpdateModel {
+
+        return new GoogleBooksApiThumbnailCacheUpdateModel(bookId, thumbnail);
+    }
+
+
+    /**
+     * Google Books Apiサムネイルキャッシュ情報に対する書き込み用データ(更新)の作成
+     * @param googleBooksApiThumbnailCacheList 
+     * @param googleBooksApiThumbnailCacheCreateModel 
+     * @returns 
+     */
+    public createGoogleBooksApiThumbnailCacheUpdateWriteData(
+        googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheModelType[],
+        googleBooksApiThumbnailCacheUpdateModel: GoogleBooksApiThumbnailCacheUpdateModel): GoogleBooksApiThumbnailCacheModelType[] {
+
+        // 書籍IDに一致するデータを更新する
+        const googleBooksApiThumbnailCache = googleBooksApiThumbnailCacheList.find((e: GoogleBooksApiThumbnailCacheModelType) => {
+
+            return e.bookId === googleBooksApiThumbnailCacheUpdateModel.bookId.bookId;
+        });
+
+        if (googleBooksApiThumbnailCache) {
+            googleBooksApiThumbnailCache.thumbnail = googleBooksApiThumbnailCacheUpdateModel.thumbnail.thumbnail;
+            googleBooksApiThumbnailCache.updateDate = googleBooksApiThumbnailCacheUpdateModel.updateDate.updateDate;
+        }
+
+        return googleBooksApiThumbnailCacheList;
+    }
 }

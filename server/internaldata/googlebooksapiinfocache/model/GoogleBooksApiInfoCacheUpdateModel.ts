@@ -6,8 +6,8 @@ import { GoogleBooksApiPublishedDateModel } from "./GoogleBooksApiPublishedDateM
 import { GoogleBooksApiTitleModel } from "./GoogleBooksApiTitleModel";
 
 
-// jsonファイルのGoogle Books Api の書籍キャッシュ登録情報
-export class GoogleBooksApiInfoCacheCreateModel {
+// jsonファイルのGoogle Books Api の書籍キャッシュ更新情報
+export class GoogleBooksApiInfoCacheUpdateModel {
 
     // Google Books Apiの書籍ID
     private readonly _bookId: GoogleBooksApiIdModel;
@@ -17,7 +17,6 @@ export class GoogleBooksApiInfoCacheCreateModel {
     private readonly _publishedDate: GoogleBooksApiPublishedDateModel;
     // Google Books Apiの書籍説明
     private readonly _description: GoogleBooksApiDescriptionModel;
-    private readonly _createDate: CreateDateModel = new CreateDateModel(`Google Books Api書籍キャッシュ情報`);
     private readonly _updateDate: UpdateDateModel = new UpdateDateModel(`Google Books Api書籍キャッシュ情報`);
 
 
@@ -44,10 +43,6 @@ export class GoogleBooksApiInfoCacheCreateModel {
 
     public get description() {
         return this._description;
-    }
-
-    public get createDate() {
-        return this._createDate;
     }
 
     public get updateDate() {

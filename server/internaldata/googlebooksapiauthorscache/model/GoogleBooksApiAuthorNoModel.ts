@@ -1,12 +1,8 @@
 export class GoogleBooksApiAuthorNoModel {
 
-    private readonly _authorNo: string;
+    private readonly _authorNo: number;
 
-    constructor(authorNo: string) {
-
-        if (isNaN(Number(authorNo))) {
-            throw Error("Google Books Apiの著者Noが数値ではありません。");
-        }
+    constructor(authorNo: number) {
 
         this._authorNo = authorNo;
     }

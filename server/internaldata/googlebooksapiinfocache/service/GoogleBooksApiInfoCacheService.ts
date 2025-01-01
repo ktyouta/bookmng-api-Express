@@ -5,8 +5,11 @@ import { GoogleBooksApiDescriptionModel } from "../model/GoogleBooksApiDescripti
 import { GoogleBooksApiIdModel } from "../model/GoogleBooksApiIdModel";
 import { GoogleBooksApiInfoCacheCreateModel } from "../model/GoogleBooksApiInfoCacheCreateModel";
 import { GoogleBooksApiInfoCacheModelType } from "../model/GoogleBooksApiInfoCacheModelType";
+import { GoogleBooksApiInfoCacheUpdateModel } from "../model/GoogleBooksApiInfoCacheUpdateModel";
 import { GoogleBooksApiPublishedDateModel } from "../model/GoogleBooksApiPublishedDateModel";
 import { GoogleBooksApiTitleModel } from "../model/GoogleBooksApiTitleModel";
+
+
 
 export class GoogleBooksApiInfoCacheService {
 
@@ -48,7 +51,7 @@ export class GoogleBooksApiInfoCacheService {
      * @param authorName 
      * @returns 
      */
-    public GoogleBooksApiInfoCacheCreateModel(bookId: GoogleBooksApiIdModel, title: GoogleBooksApiTitleModel,
+    public createGoogleBooksApiInfoCacheCreateModel(bookId: GoogleBooksApiIdModel, title: GoogleBooksApiTitleModel,
         publishedDate: GoogleBooksApiPublishedDateModel, description: GoogleBooksApiDescriptionModel): GoogleBooksApiInfoCacheCreateModel {
 
         return new GoogleBooksApiInfoCacheCreateModel(bookId, title, publishedDate, description);
@@ -56,10 +59,10 @@ export class GoogleBooksApiInfoCacheService {
 
 
     /**
-     * Google Books Api書籍キャッシュ情報に対する書き込み用データの作成
+     * Google Books Api書籍キャッシュ情報に対する書き込み用データ(登録)の作成
      * @param bookInfoMasterCreateModel 
      */
-    public createGoogleBooksApiInfoCacheWriteData(
+    public createGoogleBooksApiInfoCacheCreateWriteData(
         googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[],
         googleBooksApiInfoCacheCreateModel: GoogleBooksApiInfoCacheCreateModel): GoogleBooksApiInfoCacheModelType[] {
 
@@ -93,5 +96,48 @@ export class GoogleBooksApiInfoCacheService {
 
             throw Error(`Google Books Api書籍キャッシュ情報ファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);
         }
+    }
+
+
+    /**
+     * Google Books Api書籍キャッシュ情報更新用データの作成
+     * @param bookId 
+     * @param title 
+     * @param publishedDate 
+     * @param description 
+     * @returns 
+     */
+    public createGoogleBooksApiInfoCacheUpdateModel(bookId: GoogleBooksApiIdModel, title: GoogleBooksApiTitleModel,
+        publishedDate: GoogleBooksApiPublishedDateModel, description: GoogleBooksApiDescriptionModel): GoogleBooksApiInfoCacheUpdateModel {
+
+        return new GoogleBooksApiInfoCacheUpdateModel(bookId, title, publishedDate, description);
+    }
+
+
+    /**
+     * Google Books Api書籍キャッシュ情報に対する書き込み用データ(更新)の作成
+     * @param googleBooksApiInfoCacheList 
+     * @param googleBooksApiInfoCacheCreateModel 
+     * @returns 
+     */
+    public createGoogleBooksApiInfoCacheUpdateWriteData(
+        googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[],
+        googleBooksApiInfoCacheCreateModel: GoogleBooksApiInfoCacheCreateModel): GoogleBooksApiInfoCacheModelType[] {
+
+        // 書籍IDに一致するデータを更新する
+        let updateGoogleBooksApiInfoCache = googleBooksApiInfoCacheList.find((e: GoogleBooksApiInfoCacheModelType) => {
+
+            return e.bookId === googleBooksApiInfoCacheCreateModel.bookId.bookId;
+        });
+
+        if (updateGoogleBooksApiInfoCache) {
+
+            updateGoogleBooksApiInfoCache.title = googleBooksApiInfoCacheCreateModel.title.title;
+            updateGoogleBooksApiInfoCache.publishedDate = googleBooksApiInfoCacheCreateModel.publishedDate.publishedDate;
+            updateGoogleBooksApiInfoCache.description = googleBooksApiInfoCacheCreateModel.description.description;
+            updateGoogleBooksApiInfoCache.updateDate = googleBooksApiInfoCacheCreateModel.updateDate.updateDate;
+        }
+
+        return googleBooksApiInfoCacheList;
     }
 }

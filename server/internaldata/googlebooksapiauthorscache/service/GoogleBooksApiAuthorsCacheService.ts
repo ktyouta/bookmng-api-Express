@@ -6,6 +6,7 @@ import { GoogleBooksApiAuthorNameModel } from "../model/GoogleBooksApiAuthorName
 import { GoogleBooksApiAuthorNoModel } from "../model/GoogleBooksApiAuthorNoModel";
 import { GoogleBooksApiAuthorsCacheModelType } from "../model/GoogleBooksApiAuthorsCacheModelType";
 import { GoogleBooksApiInfoAuthorCreateModel } from "../model/GoogleBooksApiInfoAuthorCreateModel";
+import { GoogleBooksApiInfoAuthorUpdateModel } from "../model/GoogleBooksApiInfoAuthorUpdateModel";
 
 export class GoogleBooksApiAuthorsCacheService {
 
@@ -38,10 +39,10 @@ export class GoogleBooksApiAuthorsCacheService {
 
 
     /**
-     * Google Books Api著者キャッシュ情報に対する書き込み用データの作成
+     * Google Books Api著者キャッシュ情報に対する書き込み用データ(登録)の作成
      * @param bookInfoMasterCreateModel 
      */
-    public createGoogleBooksApiAuthorsCacheWriteData(
+    public createGoogleBooksApiAuthorsCacheCreateWriteData(
         googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[],
         googleBooksApiAuthorsCacheCreateModel: GoogleBooksApiInfoAuthorCreateModel): GoogleBooksApiAuthorsCacheModelType[] {
 
@@ -74,5 +75,45 @@ export class GoogleBooksApiAuthorsCacheService {
 
             throw Error(`Google Books Api著者キャッシュ情報ファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);
         }
+    }
+
+
+    /**
+     * Google Books Api著者キャッシュ情報に対する書き込み用データ(更新)の作成
+     * @param googleBooksApiAuthorsCacheList 
+     * @param googleBooksApiAuthorsCacheCreateModel 
+     * @returns 
+     */
+    public createGoogleBooksApiAuthorsCacheUpdateWriteData(
+        googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[],
+        googleBooksApiAuthorsCacheUpdateModelList: GoogleBooksApiInfoAuthorUpdateModel[]): GoogleBooksApiAuthorsCacheModelType[] {
+
+        // フィルター対象の書籍IDリスト
+        const filterTargetBookIdList = Array.from(new Set(googleBooksApiAuthorsCacheUpdateModelList.map((e: GoogleBooksApiInfoAuthorUpdateModel) => {
+            return e.bookId.bookId;
+        })));
+
+        // 更新対象の著者を一度削除する
+        googleBooksApiAuthorsCacheList = googleBooksApiAuthorsCacheList.filter((e: GoogleBooksApiAuthorsCacheModelType) => {
+            return !filterTargetBookIdList.includes(e.bookId);
+        });
+
+        // jsonファイル更新用の型に変換する
+        const jsonGoogleBooksApiAuthorsCacheUpdateModelList: GoogleBooksApiAuthorsCacheModelType[] =
+            googleBooksApiAuthorsCacheUpdateModelList.map((e: GoogleBooksApiInfoAuthorUpdateModel) => {
+
+                return {
+                    bookId: e.bookId.bookId,
+                    authorNo: e.authorNo.authorNo,
+                    authorName: e.authorName.authorName,
+                    createDate: e.createDate.createDate,
+                    updateDate: e.updateDate.updateDate,
+                }
+            });
+
+        // 削除後に著者情報を追加する
+        googleBooksApiAuthorsCacheList = [...googleBooksApiAuthorsCacheList, ...jsonGoogleBooksApiAuthorsCacheUpdateModelList];
+
+        return googleBooksApiAuthorsCacheList;
     }
 }
