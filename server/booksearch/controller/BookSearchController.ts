@@ -17,6 +17,7 @@ import { GoogleBooksApiSmallThumbnailCacheModelType } from '../../internaldata/g
 import { GoogleBooksApiThumbnailCacheModelType } from '../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheModelType';
 import { GoogleBooksApiCacheMergedModelType } from '../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheMergedModelType';
 import { GoogleBooksAPIsModelItemsType } from '../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType';
+import { GOOGLE_BOOKS_API_KIND } from '../const/BookSearchConst';
 
 
 export class BookSearchController extends RouteController {
@@ -59,8 +60,12 @@ export class BookSearchController extends RouteController {
         const keyword = query[`q`] as string;
         const keywordModel = new KeywordModel(keyword);
 
-        // 返却用の書籍情報
-        let retBookInfo: GoogleBooksAPIsModelType;
+        // レスポンスの書籍情報
+        let retBookInfo: GoogleBooksAPIsModelType = {
+            kind: GOOGLE_BOOKS_API_KIND,
+            totalItems: 0,
+            items: []
+        };
 
         // Google Books Apiの書籍キャッシュ情報を取得する
         let googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[] = this.bookSearchService.getGoogleBooksApiInfoCache();
@@ -96,11 +101,14 @@ export class BookSearchController extends RouteController {
             // フィルターしたキャッシュ情報をGoogle Books Apiの型に変換する
             const googleBooksAPIsModelItemsTypeList: GoogleBooksAPIsModelItemsType[] =
                 this.bookSearchService.convertGoogleBooksApiInfoCache(GoogleBooksApiCacheMergedList);
+
+            // レスポンスの型に変換する
+            retBookInfo = this.bookSearchService.convertRetGoogleBooksApiInfo(retBookInfo, googleBooksAPIsModelItemsTypeList);
         }
         else {
 
             // アクセス履歴が存在しない場合はGoogle Books Apiから書籍情報を取得する
-            const googleBookInfoList: GoogleBooksAPIsModelType = await this.bookSearchService.callGoogleBookApi(keyword);
+            retBookInfo = await this.bookSearchService.callGoogleBookApi(keyword);
 
             // Google Books Apiの書籍キャッシュ情報にデータを追加/更新する
 
@@ -111,7 +119,7 @@ export class BookSearchController extends RouteController {
             // Google Books Apiのサムネイル(小)キャッシュ情報にデータを追加/更新する
 
             // Google Books Apiのアクセス履歴にデータを追加する
-
+            this.bookSearchService.overWriteGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList, keywordModel, accessDateModel);
         }
 
         // 書籍マスタ情報を取得する
@@ -121,7 +129,7 @@ export class BookSearchController extends RouteController {
         return res.status(HTTP_STATUS_OK).json({
             status: HTTP_STATUS_OK,
             message: "Book Data found",
-            data: []
+            data: retBookInfo
         });
     }
 }

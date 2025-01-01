@@ -16,6 +16,8 @@ import { GoogleBooksApiThumbnailCacheModelType } from "../../internaldata/google
 import { GoogleBooksApiCacheOperationService } from "../../internaldata/googlebooksapicacheoperation/service/GoogleBooksApiCacheOperationService";
 import { GoogleBooksApiCacheMergedModelType } from "../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheMergedModelType";
 import { GoogleBooksAPIsModelItemsType } from "../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType";
+import { GoogleBooksAPIsModelType } from "../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelType";
+import { GoogleBooksApiAccessHistoryCreateModel } from "../../internaldata/googlebooksapiaccesshistory/model/GoogleBooksApiAccessHistoryCreateModel";
 
 
 export class BookSearchService {
@@ -194,5 +196,46 @@ export class BookSearchService {
             this.googleBooksApiCacheOperationService.convertGoogleBooksApiInfoCache(googleBooksApiCacheMergedList);
 
         return googleBooksAPIsModelItemsTypeList;
+    }
+
+
+    /**
+     * 書籍情報をレスポンス用の型に変換する
+     * @param retBookInfo 
+     * @param googleBooksAPIsModelItemsTypeList 
+     */
+    public convertRetGoogleBooksApiInfo(retBookInfo: GoogleBooksAPIsModelType,
+        googleBooksAPIsModelItemsTypeList: GoogleBooksAPIsModelItemsType[]) {
+
+        retBookInfo.items = googleBooksAPIsModelItemsTypeList;
+        retBookInfo.totalItems = googleBooksAPIsModelItemsTypeList.length;
+
+        return retBookInfo
+    }
+
+
+    /**
+     * Google Books Apiアクセス情報にデータを追加する
+     * @param bookInfoMasterCreateModel 
+     */
+    public overWriteGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[],
+        keywordModel: KeywordModel, accessDateModel: AccessDateModel) {
+
+        // Google Books Apiアクセス情報登録用データを作成
+        const GoogleBookApiAccessHistoryCreateBody: GoogleBooksApiAccessHistoryCreateModel =
+            this.googleBookApiAccessHistoryService.createGoogleBookApiAccessHistoryCreateBody(keywordModel, accessDateModel);
+
+        // 登録用データをリストに追加    
+        googleBooksApiAccessHistoryList = this.googleBookApiAccessHistoryService.createGoogleBookApiAccessHistoryWriteData(googleBooksApiAccessHistoryList,
+            GoogleBookApiAccessHistoryCreateBody
+        );
+
+        try {
+
+            // Google Books Apiアクセス情報ファイルにデータを書き込む
+            this.googleBookApiAccessHistoryService.overWriteGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList);
+        } catch (err) {
+            throw Error(`${err} endpoint:${ENV.BOOK_SEARCH}`);
+        }
     }
 }
