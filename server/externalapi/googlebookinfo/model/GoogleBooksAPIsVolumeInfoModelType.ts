@@ -4,7 +4,7 @@ import { GoogleBooksAPIsImageLinksModelType } from "./GoogleBooksAPIsImageLinksM
 export type GoogleBooksAPIsVolumeInfoModelType = {
     title?: string,
     authors?: string[],
-    publishedDate: string,
+    publishedDate?: string,
     imageLinks?: GoogleBooksAPIsImageLinksModelType,
     description?: string,
 }

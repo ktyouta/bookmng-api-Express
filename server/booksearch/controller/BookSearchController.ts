@@ -15,6 +15,8 @@ import { GoogleBooksApiInfoCacheModelType } from '../../internaldata/googlebooks
 import { GoogleBooksApiAuthorsCacheModelType } from '../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheModelType';
 import { GoogleBooksApiSmallThumbnailCacheModelType } from '../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheModelType';
 import { GoogleBooksApiThumbnailCacheModelType } from '../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheModelType';
+import { GoogleBooksApiCacheMergedModelType } from '../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheMergedModelType';
+import { GoogleBooksAPIsModelItemsType } from '../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType';
 
 
 export class BookSearchController extends RouteController {
@@ -58,7 +60,7 @@ export class BookSearchController extends RouteController {
         const keywordModel = new KeywordModel(keyword);
 
         // 返却用の書籍情報
-        let retBookInfoList: GoogleBooksAPIsModelType[] = [];
+        let retBookInfo: GoogleBooksAPIsModelType;
 
         // Google Books Apiの書籍キャッシュ情報を取得する
         let googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[] = this.bookSearchService.getGoogleBooksApiInfoCache();
@@ -81,11 +83,19 @@ export class BookSearchController extends RouteController {
         /** キーワードと日付でGoogle Books Apiのアクセス履歴をチェックする */
         if (this.bookSearchService.checkAccessHistoryByKeywordAndDate(googleBooksApiAccessHistoryList, keywordModel, accessDateModel)) {
 
-            // アクセス履歴が存在する場合は書籍キャッシュ情報をキーワードでフィルターする
-            googleBooksApiInfoCacheList = this.bookSearchService.getGoogleBooksApiAuthorsCacheByKeyword(googleBooksApiInfoCacheList, keywordModel);
-
             // キャッシュ情報をマージする
+            let GoogleBooksApiCacheMergedList: GoogleBooksApiCacheMergedModelType[] = this.bookSearchService.mergeGoogleBooksApiCacheInfo(googleBooksApiInfoCacheList,
+                googleBooksApiAuthorsCacheList,
+                googleBooksApiSmallThumbnailCacheList,
+                googleBooksApiThumbnailCacheList
+            );
 
+            // アクセス履歴が存在する場合は書籍キャッシュ情報をキーワードでフィルターする
+            GoogleBooksApiCacheMergedList = this.bookSearchService.getGoogleBooksApiAuthorsCacheByKeyword(googleBooksApiInfoCacheList, keywordModel);
+
+            // フィルターしたキャッシュ情報をGoogle Books Apiの型に変換する
+            const googleBooksAPIsModelItemsTypeList: GoogleBooksAPIsModelItemsType[] =
+                this.bookSearchService.convertGoogleBooksApiInfoCache(GoogleBooksApiCacheMergedList);
         }
         else {
 
@@ -110,8 +120,8 @@ export class BookSearchController extends RouteController {
 
         return res.status(HTTP_STATUS_OK).json({
             status: HTTP_STATUS_OK,
-            message: "Data found",
-            data: retBookInfoList
+            message: "Book Data found",
+            data: []
         });
     }
 }

@@ -13,6 +13,9 @@ import { GoogleBooksApiInfoCacheModelType } from "../../internaldata/googlebooks
 import { GoogleBooksApiAuthorsCacheModelType } from "../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheModelType";
 import { GoogleBooksApiSmallThumbnailCacheModelType } from "../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheModelType";
 import { GoogleBooksApiThumbnailCacheModelType } from "../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheModelType";
+import { GoogleBooksApiCacheOperationService } from "../../internaldata/googlebooksapicacheoperation/service/GoogleBooksApiCacheOperationService";
+import { GoogleBooksApiCacheMergedModelType } from "../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheMergedModelType";
+import { GoogleBooksAPIsModelItemsType } from "../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType";
 
 
 export class BookSearchService {
@@ -29,6 +32,8 @@ export class BookSearchService {
     private googleBooksApiSmallThumbnailCacheService = new GoogleBooksApiSmallThumbnailCacheService();
     // Google Books Apiサムネイル情報キャッシュ
     private googleBooksApiThumbnailCacheService = new GoogleBooksApiThumbnailCacheService();
+    // Google Books Apiキャッシュ情報マージ用
+    private googleBooksApiCacheOperationService = new GoogleBooksApiCacheOperationService();
 
 
     /**
@@ -137,17 +142,57 @@ export class BookSearchService {
 
 
     /**
-     * Google Books Api著者キャッシュ情報ファイルをキーワードでフィルターする
+     * Google Books Apiキャッシュ情報ファイルをキーワードでフィルターする
      * @param googleBooksApiAuthorsCacheList 
      * @param keywordModel 
      * @returns 
      */
-    public getGoogleBooksApiAuthorsCacheByKeyword(googleBooksApiAuthorsCacheList: GoogleBooksApiInfoCacheModelType[],
+    public getGoogleBooksApiAuthorsCacheByKeyword(GoogleBooksApiCacheMergedList: GoogleBooksApiCacheMergedModelType[],
         keywordModel: KeywordModel) {
 
-        // タイトルと説明に対してキーワードでフィルターする
-        googleBooksApiAuthorsCacheList = this.googleBooksApiInfoCacheService.getGoogleBooksApiInfoCacheByKeyword(googleBooksApiAuthorsCacheList, keywordModel);
+        // タイトル、説明、著者に対してキーワードでフィルターする
+        const filterdGoogleBooksApiCacheMergedList = this.googleBooksApiCacheOperationService.getGoogleBooksApiInfoCacheByKeyword(
+            GoogleBooksApiCacheMergedList, keywordModel);
 
-        return googleBooksApiAuthorsCacheList;
+        return filterdGoogleBooksApiCacheMergedList;
+    }
+
+
+    /**
+     * Google Books Apiのキャッシュ情報をマージする
+     * @param googleBooksApiInfoCacheList 
+     * @param googleBooksApiAuthorsCacheList 
+     * @param googleBooksApiSmallThumbnailCacheList 
+     * @param googleBooksApiThumbnailCacheList 
+     * @returns 
+     */
+    public mergeGoogleBooksApiCacheInfo(googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[],
+        googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[],
+        googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[],
+        googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheModelType[]): GoogleBooksApiCacheMergedModelType[] {
+
+        // キャッシュ情報をマージ
+        const GoogleBooksApiCacheMergedList: GoogleBooksApiCacheMergedModelType[] =
+            this.googleBooksApiCacheOperationService.mergeGoogleBooksApiCacheInfo(googleBooksApiInfoCacheList,
+                googleBooksApiAuthorsCacheList,
+                googleBooksApiSmallThumbnailCacheList,
+                googleBooksApiThumbnailCacheList
+            );
+
+        return GoogleBooksApiCacheMergedList;
+    }
+
+
+    /**
+     * キャッシュ情報をGoogle Books Api用の型に変換する
+     * @param googleBooksApiCacheMergedList 
+     * @returns 
+     */
+    public convertGoogleBooksApiInfoCache(googleBooksApiCacheMergedList: GoogleBooksApiCacheMergedModelType[]) {
+
+        const googleBooksAPIsModelItemsTypeList: GoogleBooksAPIsModelItemsType[] =
+            this.googleBooksApiCacheOperationService.convertGoogleBooksApiInfoCache(googleBooksApiCacheMergedList);
+
+        return googleBooksAPIsModelItemsTypeList;
     }
 }
