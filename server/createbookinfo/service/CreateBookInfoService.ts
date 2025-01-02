@@ -13,11 +13,11 @@ import { BookInfoMasterService } from "../../internaldata/bookinfomaster/service
 import { ArrayUtil } from "../../util/service/ArrayUtil";
 import { FileOperation } from "../../util/service/FileOperation";
 import { JsonFileOperation } from "../../util/service/JsonFileOperation";
-import { BookInfoAddRequestModelType } from "../model/BookInfoAddRequestModelType";
+import { BookInfoCreateRequestModelType } from "../model/BookInfoCreateRequestModelType";
 import ENV from '../../env.json';
 
 
-export class AddBookInfoService {
+export class CreateBookInfoService {
 
     private bookInfoMasterService = new BookInfoMasterService();
     private bookAuthorsMasterService = new BookAuthorsMasterService();
@@ -54,7 +54,7 @@ export class AddBookInfoService {
      * @param publishedDate 
      * @param description 
      */
-    public createBookInfoMasterCreateBody(bookId: BookIdModel, requestBody: BookInfoAddRequestModelType): BookInfoMasterCreateModel {
+    public createBookInfoMasterCreateBody(bookId: BookIdModel, requestBody: BookInfoCreateRequestModelType): BookInfoMasterCreateModel {
 
         const bookInfoMasterCareteBody: BookInfoMasterCreateModel = this.bookInfoMasterService.createBookInfoMasterCreateBody(
             bookId,
@@ -129,7 +129,7 @@ export class AddBookInfoService {
      * @param requestBody 
      * @returns 
      */
-    public createBookAuthorsMasterCreateBodyList(bookId: BookIdModel, requestBody: BookInfoAddRequestModelType)
+    public createBookAuthorsMasterCreateBodyList(bookId: BookIdModel, requestBody: BookInfoCreateRequestModelType)
         : BookAuthorsMasterCreateModel[] {
 
         // 著者IDリスト
@@ -254,7 +254,7 @@ export class AddBookInfoService {
      * @param requestBody 
      */
     public checkBookInfoExists(activeBookInfoMasterList: BookInfoModelType[],
-        activeBookAuthorsMasterList: BookAuthorsModelType[], requestBody: BookInfoAddRequestModelType): string {
+        activeBookAuthorsMasterList: BookAuthorsModelType[], requestBody: BookInfoCreateRequestModelType): string {
 
         let errMessage = "";
         // リクエストボディから値を取得

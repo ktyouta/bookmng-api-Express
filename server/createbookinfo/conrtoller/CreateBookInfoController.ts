@@ -1,8 +1,6 @@
 import { Router, Request, Response } from 'express';
 import ENV from '../../env.json';
-import { AddBookInfoService } from '../service/AddBookInfoService';
 import { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_CREATED, HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_OK, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
-import { BookInfoAddRequestModelType } from '../model/BookInfoAddRequestModelType';
 import { RouteController } from '../../router/controller/RouteController';
 import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
 import { BookInfoModelType } from '../../internaldata/bookinfomaster/model/BookInfoMasterModelType';
@@ -10,13 +8,15 @@ import { BookAuthorsModelType } from '../../internaldata/bookauthorsmaster/model
 import { BookIdModel } from '../../internaldata/bookinfomaster/model/BookIdModel';
 import { BookAuthorsMasterCreateModel } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterCreateModel';
 import { AuthorsMasterModeType } from '../../internaldata/authorsinfomaster/model/AuthorsMasterModeType';
-import { BookInfoAddRequestModelSchema } from '../model/BookInfoAddRequestModelSchema';
+import { BookInfoCreateRequestModelSchema } from '../model/BookInfoCreateRequestModelSchema';
 import { ZodIssue } from 'zod';
+import { CreateBookInfoService } from '../service/CreateBookInfoService';
+import { BookInfoCreateRequestModelType } from '../model/BookInfoCreateRequestModelType';
 
 
-export class AddBookInfoController extends RouteController {
+export class CreateBookInfoController extends RouteController {
 
-    private addBookInfoService = new AddBookInfoService();
+    private addBookInfoService = new CreateBookInfoService();
 
     public routes() {
         this.router.post(`${ENV.ADD_BOOK_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
@@ -31,12 +31,12 @@ export class AddBookInfoController extends RouteController {
     public doExecute(req: Request, res: Response) {
 
         // リクエストボディ
-        const requestBody: BookInfoAddRequestModelType = req.body;
+        const requestBody: BookInfoCreateRequestModelType = req.body;
         // 著者IDリスト
         const authorIdList: string[] = requestBody.authorIdList;
 
         // リクエストのバリデーションチェック
-        const validateResult = BookInfoAddRequestModelSchema.safeParse(requestBody);
+        const validateResult = BookInfoCreateRequestModelSchema.safeParse(requestBody);
 
         // バリデーションエラー
         if (!validateResult.success) {
