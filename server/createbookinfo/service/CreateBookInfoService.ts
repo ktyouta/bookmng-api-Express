@@ -246,7 +246,6 @@ export class CreateBookInfoService {
     }
 
 
-
     /**
      * 書籍情報の重複チェック
      * @param acticeBookInfoMasterList 

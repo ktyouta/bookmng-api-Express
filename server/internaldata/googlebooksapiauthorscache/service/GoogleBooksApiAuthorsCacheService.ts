@@ -116,4 +116,18 @@ export class GoogleBooksApiAuthorsCacheService {
 
         return googleBooksApiAuthorsCacheList;
     }
+
+
+    /**
+     * Google Books Api著者キャッシュ情報更新用データの作成
+     * @param bookId 
+     * @param authorNo 
+     * @param authorName 
+     * @returns 
+     */
+    public createGoogleBooksApiAuthorsCacheUpdateBody(bookId: GoogleBooksApiIdModel,
+        authorNo: GoogleBooksApiAuthorNoModel, authorName: GoogleBooksApiAuthorNameModel) {
+
+        return new GoogleBooksApiInfoAuthorUpdateModel(bookId, authorNo, authorName);
+    }
 }

@@ -24,6 +24,8 @@ import { GoogleBooksApiTitleModel } from "../../internaldata/googlebooksapiinfoc
 import { GoogleBooksApiPublishedDateModel } from "../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiPublishedDateModel";
 import { GoogleBooksApiDescriptionModel } from "../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiDescriptionModel";
 import { GoogleBooksApiInfoCacheCreateModel } from "../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheCreateModel";
+import { GoogleBooksApiInfoAuthorUpdateModel } from "../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiInfoAuthorUpdateModel";
+import { GoogleBooksApiInfoAuthorCreateModel } from "../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiInfoAuthorCreateModel";
 
 
 export class BookSearchService {
@@ -321,6 +323,78 @@ export class BookSearchService {
 
             // Google Books Apiアクセス情報ファイルにデータを書き込む
             this.googleBooksApiInfoCacheService.overWriteGoogleBooksApiInfoCache(googleBooksApiInfoCacheList);
+        } catch (err) {
+            throw Error(`${err} endpoint:${ENV.BOOK_SEARCH}`);
+        }
+    }
+
+
+    /**
+     * Google Books Apiの著者キャッシュ情報の追加/更新データを作成する
+     * @param googleBooksApiInfoCacheList 
+     * @param bookItems 
+     * @returns 
+     */
+    public createOrUpdateGoogleBooksApiAuthorsCache(googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[],
+        bookItems: GoogleBooksAPIsModelItemsType[]): GoogleBooksApiAuthorsCacheModelType[] {
+
+        // 登録用キャッシュデータリスト
+        let createGoogleBooksApiAuthorsCacheList: GoogleBooksAPIsModelItemsType[] = [];
+
+        // Google Books Apiから取得した著者情報をキャッシュに登録/更新する
+        bookItems.forEach((e: GoogleBooksAPIsModelItemsType) => {
+
+            let googleBooksApiAuthorsCache = googleBooksApiAuthorsCacheList.filter((e1: GoogleBooksApiInfoCacheModelType) => {
+                return e1.bookId === e.id;
+            });
+
+            // 書籍IDの一致するデータが存在する場合は更新する
+            if (googleBooksApiAuthorsCache && googleBooksApiAuthorsCache.length > 0) {
+
+                // Google Books Apiの型を著者キャッシュ更新用の型に変換する
+                const googleBooksApiAuthorsCacheUpdateModelList: GoogleBooksApiInfoAuthorUpdateModel[] =
+                    this.googleBooksApiCacheOperationService.parseGoogleBooksApiAuthorsCacheUpdate(e);
+
+                // 著者キャッシュ情報を更新する
+                googleBooksApiAuthorsCacheList = this.googleBooksApiAuthorsCacheService.createGoogleBooksApiAuthorsCacheUpdateWriteData(
+                    googleBooksApiAuthorsCacheList, googleBooksApiAuthorsCacheUpdateModelList);
+            }
+            // キャッシュ登録用のリストに追加する
+            else {
+                createGoogleBooksApiAuthorsCacheList = [...createGoogleBooksApiAuthorsCacheList, e];
+            }
+
+        });
+
+        // 登録用のリストを著者キャッシュ情報の型に変換する
+        const parsedGoogleBooksApiAuthorsCacheCreateList: GoogleBooksApiInfoAuthorCreateModel[] =
+            createGoogleBooksApiAuthorsCacheList.flatMap((e: GoogleBooksAPIsModelItemsType) => {
+
+                // Google Books Apiの型を著者キャッシュ登録用の型に変換する
+                return this.googleBooksApiCacheOperationService.parseGoogleBooksApiAuthorsCacheCreate(e);
+            });
+
+        // 著者キャッシュ情報登録用データを作成する
+        parsedGoogleBooksApiAuthorsCacheCreateList.forEach((e: GoogleBooksApiInfoAuthorCreateModel) => {
+
+            googleBooksApiAuthorsCacheList = this.googleBooksApiAuthorsCacheService.createGoogleBooksApiAuthorsCacheCreateWriteData(
+                googleBooksApiAuthorsCacheList, e);
+        });
+
+        return googleBooksApiAuthorsCacheList;
+    }
+
+
+    /**
+     * Google Books Api著者キャッシュ情報ファイルにデータを書き込む
+     * @param googleBooksApiInfoCacheList 
+     */
+    public overWriteGoogleBooksApiAuthorsCache(googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[]) {
+
+        try {
+
+            // Google Books Api著者キャッシュ情報ファイルにデータを書き込む
+            this.googleBooksApiAuthorsCacheService.overWriteGoogleBooksApiAuthorsCache(googleBooksApiAuthorsCacheList);
         } catch (err) {
             throw Error(`${err} endpoint:${ENV.BOOK_SEARCH}`);
         }
