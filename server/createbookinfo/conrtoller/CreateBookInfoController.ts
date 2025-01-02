@@ -73,7 +73,7 @@ export class CreateBookInfoController extends RouteController {
         let bookInfoMasterList: BookInfoModelType[] = this.addBookInfoService.getBookMasterInfo();
 
         // 未削除の書籍情報データを取得
-        const acticeBookInfoMasterList: BookInfoModelType[] = this.addBookInfoService.getActiveBookMasterInfo(bookInfoMasterList);
+        const activeBookInfoMasterList: BookInfoModelType[] = this.addBookInfoService.getActiveBookMasterInfo(bookInfoMasterList);
 
         // 書籍著者マスタからデータを取得
         let bookAuthorsMasterList: BookAuthorsModelType[] = this.addBookInfoService.getBookAuthorsMasterInfo();
@@ -82,7 +82,7 @@ export class CreateBookInfoController extends RouteController {
         const acticeBookAuthorsMasterList = this.addBookInfoService.getActiveBookAuthorsMasterInfo(bookAuthorsMasterList);
 
         // 書籍情報の重複チェック
-        errMessge = this.addBookInfoService.checkBookInfoExists(acticeBookInfoMasterList, acticeBookAuthorsMasterList, requestBody);
+        errMessge = this.addBookInfoService.checkBookInfoExists(activeBookInfoMasterList, acticeBookAuthorsMasterList, requestBody);
 
         // 登録しようとしている書籍情報が既に存在する
         if (errMessge) {

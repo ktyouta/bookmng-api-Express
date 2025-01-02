@@ -19,6 +19,9 @@ import { GoogleBooksApiCacheMergedModelType } from '../../internaldata/googleboo
 import { GoogleBooksAPIsModelItemsType } from '../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType';
 import { GOOGLE_BOOKS_API_KIND } from '../const/BookSearchConst';
 import { BookInfoModelType } from '../../internaldata/bookinfomaster/model/BookInfoMasterModelType';
+import { BookAuthorsModelType } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModelType';
+import { AuthorsMasterModeType } from '../../internaldata/authorsinfomaster/model/AuthorsMasterModeType';
+import { BookInfoMergedModelType } from '../../internaldata/bookinfomerge/model/BookInfoMergedModelType';
 
 
 export class BookSearchController extends RouteController {
@@ -149,8 +152,8 @@ export class BookSearchController extends RouteController {
             this.bookSearchService.overWriteGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList);
         }
 
-        // 書籍情報マスタからデータを取得
-        const bookInfoMasterList: BookInfoModelType[] = this.bookSearchService.getBookMasterInfo();
+        // 書籍のマスタ情報をマージする
+        const mergedBookInfoList: BookInfoMergedModelType[] = this.bookSearchService.getMergedBookInfoMaster();
 
         // 書籍情報マスタとマージする
 
