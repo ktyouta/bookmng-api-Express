@@ -116,8 +116,8 @@ export class GoogleBooksApiCacheOperationService {
 
             // タイトル、説明、著者に対してキーワードでデータを取得する
             return e.title?.includes(keyword) || e.description?.includes(keyword) || e.authors?.some((e1) => {
-                e1.includes(keyword);
-            })
+                return e1.includes(keyword);
+            });
         });
 
         return filterGoogleBooksApiCacheMergedList;

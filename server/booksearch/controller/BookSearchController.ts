@@ -70,6 +70,8 @@ export class BookSearchController extends RouteController {
             totalItems: 0,
             items: []
         };
+        // Google Books Apiの書籍情報リスト
+        let googleBooksApiItems: GoogleBooksAPIsModelItemsType[] = [];
 
         // Google Books Apiの書籍キャッシュ情報を取得する
         let googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[] = this.bookSearchService.getGoogleBooksApiInfoCache();
@@ -103,11 +105,7 @@ export class BookSearchController extends RouteController {
             GoogleBooksApiCacheMergedList = this.bookSearchService.getGoogleBooksApiAuthorsCacheByKeyword(googleBooksApiInfoCacheList, keywordModel);
 
             // フィルターしたキャッシュ情報をGoogle Books Apiの型に変換する
-            const googleBooksAPIsModelItemsTypeList: GoogleBooksAPIsModelItemsType[] =
-                this.bookSearchService.parseGoogleBooksAPIsModelItems(GoogleBooksApiCacheMergedList);
-
-            // レスポンスの型に変換する
-            retBookInfo = this.bookSearchService.parseRetGoogleBooksApiInfo(retBookInfo, googleBooksAPIsModelItemsTypeList);
+            googleBooksApiItems = this.bookSearchService.parseGoogleBooksAPIsModelItems(GoogleBooksApiCacheMergedList);
         }
         else {
 
@@ -115,32 +113,32 @@ export class BookSearchController extends RouteController {
             retBookInfo = await this.bookSearchService.callGoogleBookApi(keyword);
 
             // Google Books Apiの書籍情報リスト
-            const bookItems: GoogleBooksAPIsModelItemsType[] = retBookInfo.items;
+            googleBooksApiItems = retBookInfo.items;
 
             // Google Books Apiの書籍キャッシュ情報の追加/更新データを作成する
             googleBooksApiInfoCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiInfoCache(
-                googleBooksApiInfoCacheList, bookItems);
+                googleBooksApiInfoCacheList, googleBooksApiItems);
 
             // Google Books Api書籍キャッシュ情報ファイルにデータを書き込む
             this.bookSearchService.overWriteGoogleBooksApiInfoCache(googleBooksApiInfoCacheList);
 
             // Google Books Apiの著者キャッシュ情報の追加/更新データを作成する
             googleBooksApiAuthorsCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiAuthorsCache(
-                googleBooksApiAuthorsCacheList, bookItems);
+                googleBooksApiAuthorsCacheList, googleBooksApiItems);
 
             // Google Books Api著者キャッシュにデータを書き込む
             this.bookSearchService.overWriteGoogleBooksApiAuthorsCache(googleBooksApiAuthorsCacheList);
 
             // Google Books Apiのサムネイル(小)キャッシュ情報の追加/更新データを作成する
             googleBooksApiSmallThumbnailCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiSmallThumbnailCache(
-                googleBooksApiSmallThumbnailCacheList, bookItems);
+                googleBooksApiSmallThumbnailCacheList, googleBooksApiItems);
 
             // Google Books Apiのサムネイル(小)キャッシュにデータを書き込む
             this.bookSearchService.overWriteGoogleBooksApiSmallThumbnailCache(googleBooksApiSmallThumbnailCacheList);
 
             // Google Books Apiのサムネイルキャッシュ情報の追加/更新データを作成する
             googleBooksApiThumbnailCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiThumbnailCache(
-                googleBooksApiThumbnailCacheList, bookItems);
+                googleBooksApiThumbnailCacheList, googleBooksApiItems);
 
             // Google Books Apiサムネイルキャッシュにデータを書き込む
             this.bookSearchService.overWriteGoogleBooksApiThumbnailCache(googleBooksApiThumbnailCacheList);
@@ -152,10 +150,22 @@ export class BookSearchController extends RouteController {
             this.bookSearchService.overWriteGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList);
         }
 
-        // 書籍のマスタ情報をマージする
-        const mergedBookInfoList: BookInfoMergedModelType[] = this.bookSearchService.getMergedBookInfoMaster();
+        // マージした書籍情報をキーワードでフィルターする
+        const filterdMergedBookInfoMasterList: BookInfoMergedModelType[] =
+            this.bookSearchService.filterdMergedBookInfoMasterByKeyword(keywordModel);
 
-        // 書籍情報マスタとマージする
+        // フィルターした書籍情報をGoogle Books Apiの型に変換する
+        const parsedBookInfoMasterList: GoogleBooksAPIsModelItemsType[] =
+            this.bookSearchService.parseGoogleBooksApiBookInfoMaster(filterdMergedBookInfoMasterList);
+
+        // 書籍情報マスタとGoogle Books Apiの書籍情報をマージする
+        const mergedBookInfoList: GoogleBooksAPIsModelItemsType[] = this.bookSearchService.mergeGoogleBooksApiAndBookInfoMaster(
+            googleBooksApiItems, parsedBookInfoMasterList
+        );
+
+        // レスポンスにデータをセットする
+        retBookInfo.totalItems = mergedBookInfoList.length;
+        retBookInfo.items = mergedBookInfoList;
 
         return res.status(HTTP_STATUS_OK).json({
             status: HTTP_STATUS_OK,

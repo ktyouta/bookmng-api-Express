@@ -43,6 +43,9 @@ import { AuthorsMasterModeType } from "../../internaldata/authorsinfomaster/mode
 import { AuthorsMasterService } from "../../internaldata/authorsinfomaster/service/AuthorsMasterService";
 import { BookInfoMergeService } from "../../internaldata/bookinfomerge/service/BookInfoMergeService";
 import { BookInfoMergedModelType } from "../../internaldata/bookinfomerge/model/BookInfoMergedModelType";
+import { BookInfoOperationService } from "../../internaldata/bookinfooperation/service/BookInfoOperationService";
+import { GoogleBooksApiBookInfoMasterParseService } from "../../internaldata/googlebooksapibookinfomasterparse/service/GoogleBooksApiBookInfoMasterParseService";
+import { ArrayUtil } from "../../util/service/ArrayUtil";
 
 
 export class BookSearchService {
@@ -79,6 +82,10 @@ export class BookSearchService {
     private googleBooksApiMergedCacheService = new GoogleBooksApiMergedCacheService();
     // 書籍情報マージ
     private bookInfoMergeService = new BookInfoMergeService();
+    // 書籍マスタ操作
+    private BookInfoOperationService = new BookInfoOperationService();
+    // マージ済みの書籍マスタ情報 → Google Books Api
+    private googleBooksApiBookInfoMasterParseService = new GoogleBooksApiBookInfoMasterParseService();
 
 
     /**
@@ -239,21 +246,6 @@ export class BookSearchService {
             this.googleBooksApiMergedCacheService.parseGoogleBooksAPIsModelItems(googleBooksApiCacheMergedList);
 
         return googleBooksAPIsModelItemsTypeList;
-    }
-
-
-    /**
-     * 書籍情報をレスポンス用の型に変換する
-     * @param retBookInfo 
-     * @param googleBooksAPIsModelItemsTypeList 
-     */
-    public parseRetGoogleBooksApiInfo(retBookInfo: GoogleBooksAPIsModelType,
-        googleBooksAPIsModelItemsTypeList: GoogleBooksAPIsModelItemsType[]) {
-
-        retBookInfo.items = googleBooksAPIsModelItemsTypeList;
-        retBookInfo.totalItems = googleBooksAPIsModelItemsTypeList.length;
-
-        return retBookInfo
     }
 
 
@@ -626,9 +618,11 @@ export class BookSearchService {
 
 
     /**
-     * 書籍のマスタ情報をマージして返却する
+     * マージした書籍マスタ情報をキーワードでフィルターする
+     * @param mergedBookInfoList 
+     * @param keywordModel 
      */
-    public getMergedBookInfoMaster() {
+    public filterdMergedBookInfoMasterByKeyword(keywordModel: KeywordModel) {
 
         // 未削除の書籍情報を取得
         const bookInfoMasterList: BookInfoModelType[] = this.getActiveBookMasterInfo();
@@ -643,6 +637,61 @@ export class BookSearchService {
         const mergedBookInfoList: BookInfoMergedModelType[] = this.bookInfoMergeService.megrgeBookInfoMaster(
             bookInfoMasterList, activeBookAuthorsMasterList, activeAuthorsMasterList);
 
-        return mergedBookInfoList;
+        // タイトル、説明、著者に対してキーワードでフィルターする
+        const filterdMergedBookInfoMasterList: BookInfoMergedModelType[] =
+            this.BookInfoOperationService.filterdMergedBookInfoMasterByKeyword(mergedBookInfoList, keywordModel);
+
+        return filterdMergedBookInfoMasterList;
     }
+
+
+    /**
+     * 書籍マスタ情報をGoogle Books Apiの型に変換する
+     * @param mergedBookInfoMasterList 
+     * @returns 
+     */
+    public parseGoogleBooksApiBookInfoMaster(
+        mergedBookInfoMasterList: BookInfoMergedModelType[]): GoogleBooksAPIsModelItemsType[] {
+
+        const googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType[] =
+            this.googleBooksApiBookInfoMasterParseService.parseGoogleBooksApiBookInfoMaster(mergedBookInfoMasterList);
+
+        return googleBooksAPIsModelItems;
+    }
+
+
+    /**
+     * 書籍情報マスタとGoogle Books Apiの書籍情報をマージする
+     * @param googleBooksApiItems 
+     * @param parsedBookInfoMasterList 
+     */
+    public mergeGoogleBooksApiAndBookInfoMaster(googleBooksApiItems: GoogleBooksAPIsModelItemsType[],
+        parsedBookInfoMasterList: GoogleBooksAPIsModelItemsType[]
+    ): GoogleBooksAPIsModelItemsType[] {
+
+        // 書籍情報マスタとGoogle Books Apiで同一の書籍が存在する場合は書籍情報マスタを優先する
+        const mergedBookInfoList: GoogleBooksAPIsModelItemsType[] =
+            parsedBookInfoMasterList.filter((e: GoogleBooksAPIsModelItemsType) => {
+
+                // タイトルと著者が一致する場合は同一の書籍とする
+                const googleBooksAPIsVolume = e.googleBooksAPIsVolumeInfoModel;
+                const googleBooksAPIsTitle = googleBooksAPIsVolume.title;
+                const googleBooksAPIsAuthorsList = googleBooksAPIsVolume.authors ?? [];
+
+                const googleBooksApiItem = googleBooksApiItems.find((e1: GoogleBooksAPIsModelItemsType) => {
+
+                    const bookInfoMasterVolume = e1.googleBooksAPIsVolumeInfoModel;
+                    const bookInfoMasterTitle = bookInfoMasterVolume.title;
+                    const bookInfoMasterAuthorsList = bookInfoMasterVolume.authors ?? [];
+
+                    return !(bookInfoMasterTitle === googleBooksAPIsTitle &&
+                        ArrayUtil.checkArrayEqual(bookInfoMasterAuthorsList, googleBooksAPIsAuthorsList));
+                });
+
+                return !googleBooksApiItem;
+            });
+
+        return [...googleBooksApiItems, ...mergedBookInfoList];
+    }
+
 }
