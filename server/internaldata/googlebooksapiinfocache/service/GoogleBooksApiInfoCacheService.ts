@@ -121,23 +121,14 @@ export class GoogleBooksApiInfoCacheService {
      * @returns 
      */
     public createGoogleBooksApiInfoCacheUpdateWriteData(
-        googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[],
-        googleBooksApiInfoCacheCreateModel: GoogleBooksApiInfoCacheCreateModel): GoogleBooksApiInfoCacheModelType[] {
+        updateGoogleBooksApiInfoCache: GoogleBooksApiInfoCacheModelType,
+        googleBooksApiInfoCacheCreateModel: GoogleBooksApiInfoCacheUpdateModel): GoogleBooksApiInfoCacheModelType {
 
-        // 書籍IDに一致するデータを更新する
-        let updateGoogleBooksApiInfoCache = googleBooksApiInfoCacheList.find((e: GoogleBooksApiInfoCacheModelType) => {
+        updateGoogleBooksApiInfoCache.title = googleBooksApiInfoCacheCreateModel.title.title;
+        updateGoogleBooksApiInfoCache.publishedDate = googleBooksApiInfoCacheCreateModel.publishedDate.publishedDate;
+        updateGoogleBooksApiInfoCache.description = googleBooksApiInfoCacheCreateModel.description.description;
+        updateGoogleBooksApiInfoCache.updateDate = googleBooksApiInfoCacheCreateModel.updateDate.updateDate;
 
-            return e.bookId === googleBooksApiInfoCacheCreateModel.bookId.bookId;
-        });
-
-        if (updateGoogleBooksApiInfoCache) {
-
-            updateGoogleBooksApiInfoCache.title = googleBooksApiInfoCacheCreateModel.title.title;
-            updateGoogleBooksApiInfoCache.publishedDate = googleBooksApiInfoCacheCreateModel.publishedDate.publishedDate;
-            updateGoogleBooksApiInfoCache.description = googleBooksApiInfoCacheCreateModel.description.description;
-            updateGoogleBooksApiInfoCache.updateDate = googleBooksApiInfoCacheCreateModel.updateDate.updateDate;
-        }
-
-        return googleBooksApiInfoCacheList;
+        return updateGoogleBooksApiInfoCache;
     }
 }

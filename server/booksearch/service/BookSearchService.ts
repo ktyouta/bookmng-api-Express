@@ -18,6 +18,12 @@ import { GoogleBooksApiCacheMergedModelType } from "../../internaldata/googleboo
 import { GoogleBooksAPIsModelItemsType } from "../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType";
 import { GoogleBooksAPIsModelType } from "../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelType";
 import { GoogleBooksApiAccessHistoryCreateModel } from "../../internaldata/googlebooksapiaccesshistory/model/GoogleBooksApiAccessHistoryCreateModel";
+import { GoogleBooksApiInfoCacheUpdateModel } from "../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheUpdateModel";
+import { GoogleBooksApiIdModel } from "../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiIdModel";
+import { GoogleBooksApiTitleModel } from "../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiTitleModel";
+import { GoogleBooksApiPublishedDateModel } from "../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiPublishedDateModel";
+import { GoogleBooksApiDescriptionModel } from "../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiDescriptionModel";
+import { GoogleBooksApiInfoCacheCreateModel } from "../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheCreateModel";
 
 
 export class BookSearchService {
@@ -34,7 +40,7 @@ export class BookSearchService {
     private googleBooksApiSmallThumbnailCacheService = new GoogleBooksApiSmallThumbnailCacheService();
     // Google Books Apiサムネイル情報キャッシュ
     private googleBooksApiThumbnailCacheService = new GoogleBooksApiThumbnailCacheService();
-    // Google Books Apiキャッシュ情報マージ用
+    // Google Books Apiとキャッシュ情報操作
     private googleBooksApiCacheOperationService = new GoogleBooksApiCacheOperationService();
 
 
@@ -190,10 +196,10 @@ export class BookSearchService {
      * @param googleBooksApiCacheMergedList 
      * @returns 
      */
-    public convertGoogleBooksApiInfoCache(googleBooksApiCacheMergedList: GoogleBooksApiCacheMergedModelType[]) {
+    public parseGoogleBooksAPIsModelItems(googleBooksApiCacheMergedList: GoogleBooksApiCacheMergedModelType[]) {
 
         const googleBooksAPIsModelItemsTypeList: GoogleBooksAPIsModelItemsType[] =
-            this.googleBooksApiCacheOperationService.convertGoogleBooksApiInfoCache(googleBooksApiCacheMergedList);
+            this.googleBooksApiCacheOperationService.parseGoogleBooksAPIsModelItems(googleBooksApiCacheMergedList);
 
         return googleBooksAPIsModelItemsTypeList;
     }
@@ -204,7 +210,7 @@ export class BookSearchService {
      * @param retBookInfo 
      * @param googleBooksAPIsModelItemsTypeList 
      */
-    public convertRetGoogleBooksApiInfo(retBookInfo: GoogleBooksAPIsModelType,
+    public parseRetGoogleBooksApiInfo(retBookInfo: GoogleBooksAPIsModelType,
         googleBooksAPIsModelItemsTypeList: GoogleBooksAPIsModelItemsType[]) {
 
         retBookInfo.items = googleBooksAPIsModelItemsTypeList;
@@ -218,7 +224,7 @@ export class BookSearchService {
      * Google Books Apiアクセス情報にデータを追加する
      * @param bookInfoMasterCreateModel 
      */
-    public overWriteGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[],
+    public createGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[],
         keywordModel: KeywordModel, accessDateModel: AccessDateModel) {
 
         // Google Books Apiアクセス情報登録用データを作成
@@ -230,6 +236,16 @@ export class BookSearchService {
             GoogleBookApiAccessHistoryCreateBody
         );
 
+        return googleBooksApiAccessHistoryList;
+    }
+
+
+    /**
+     * Google Books Apiアクセス情報ファイルにデータを書き込む
+     * @param bookAuthorsMasterList 
+     */
+    public overWriteGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[]) {
+
         try {
 
             // Google Books Apiアクセス情報ファイルにデータを書き込む
@@ -238,4 +254,76 @@ export class BookSearchService {
             throw Error(`${err} endpoint:${ENV.BOOK_SEARCH}`);
         }
     }
+
+
+    /**
+     * Google Books Apiの書籍キャッシュ情報の追加/更新データを作成する
+     * @param googleBooksApiInfoCacheList 
+     * @param bookItems 
+     */
+    public createOrUpdateGoogleBooksApiInfoCache(googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[],
+        bookItems: GoogleBooksAPIsModelItemsType[]): GoogleBooksApiInfoCacheModelType[] {
+
+        // 登録用キャッシュデータリスト
+        let createGoogleBooksApiInfoCacheList: GoogleBooksAPIsModelItemsType[] = [];
+
+        // Google Books Apiから取得した書籍情報をキャッシュに登録/更新する
+        bookItems.forEach((e: GoogleBooksAPIsModelItemsType) => {
+
+            let googleBooksApiInfoCache = googleBooksApiInfoCacheList.find((e1: GoogleBooksApiInfoCacheModelType) => {
+                return e1.bookId === e.id;
+            });
+
+            // 書籍IDの一致するデータが存在する場合は更新する
+            if (googleBooksApiInfoCache) {
+
+                // Google Books Apiの型を書籍キャッシュ更新用の型に変換する
+                const googleBooksApiInfoCacheUpdateModel: GoogleBooksApiInfoCacheUpdateModel =
+                    this.googleBooksApiCacheOperationService.parseGoogleBooksApiInfoCacheUpdate(e);
+
+                // 書籍キャッシュ情報を更新する
+                googleBooksApiInfoCache = this.googleBooksApiInfoCacheService.createGoogleBooksApiInfoCacheUpdateWriteData(
+                    googleBooksApiInfoCache, googleBooksApiInfoCacheUpdateModel);
+            }
+            // キャッシュ登録用のリストに追加する
+            else {
+                createGoogleBooksApiInfoCacheList = [...createGoogleBooksApiInfoCacheList, e];
+            }
+
+        });
+
+        // 登録用のリストを書籍キャッシュ情報の型に変換する
+        const parsedGoogleBooksApiInfoCacheCreateList: GoogleBooksApiInfoCacheCreateModel[] =
+            createGoogleBooksApiInfoCacheList.map((e: GoogleBooksAPIsModelItemsType) => {
+
+                // Google Books Apiの型を書籍キャッシュ登録用の型に変換する
+                return this.googleBooksApiCacheOperationService.parseGoogleBooksApiInfoCacheCreate(e);
+            });
+
+        // 書籍キャッシュ情報登録用データを作成する
+        parsedGoogleBooksApiInfoCacheCreateList.forEach((e: GoogleBooksApiInfoCacheCreateModel) => {
+
+            googleBooksApiInfoCacheList = this.googleBooksApiInfoCacheService.createGoogleBooksApiInfoCacheCreateWriteData(
+                googleBooksApiInfoCacheList, e);
+        });
+
+        return googleBooksApiInfoCacheList;
+    }
+
+
+    /**
+     * Google Books Api書籍キャッシュ情報ファイルにデータを書き込む
+     * @param googleBooksApiAccessHistoryList 
+     */
+    public overWriteGoogleBooksApiInfoCache(googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[]) {
+
+        try {
+
+            // Google Books Apiアクセス情報ファイルにデータを書き込む
+            this.googleBooksApiInfoCacheService.overWriteGoogleBooksApiInfoCache(googleBooksApiInfoCacheList);
+        } catch (err) {
+            throw Error(`${err} endpoint:${ENV.BOOK_SEARCH}`);
+        }
+    }
+
 }

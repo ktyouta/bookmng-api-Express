@@ -100,17 +100,24 @@ export class BookSearchController extends RouteController {
 
             // フィルターしたキャッシュ情報をGoogle Books Apiの型に変換する
             const googleBooksAPIsModelItemsTypeList: GoogleBooksAPIsModelItemsType[] =
-                this.bookSearchService.convertGoogleBooksApiInfoCache(GoogleBooksApiCacheMergedList);
+                this.bookSearchService.parseGoogleBooksAPIsModelItems(GoogleBooksApiCacheMergedList);
 
             // レスポンスの型に変換する
-            retBookInfo = this.bookSearchService.convertRetGoogleBooksApiInfo(retBookInfo, googleBooksAPIsModelItemsTypeList);
+            retBookInfo = this.bookSearchService.parseRetGoogleBooksApiInfo(retBookInfo, googleBooksAPIsModelItemsTypeList);
         }
         else {
 
             // アクセス履歴が存在しない場合はGoogle Books Apiから書籍情報を取得する
             retBookInfo = await this.bookSearchService.callGoogleBookApi(keyword);
 
-            // Google Books Apiの書籍キャッシュ情報にデータを追加/更新する
+            // Google Books Apiの書籍情報リスト
+            const bookItems: GoogleBooksAPIsModelItemsType[] = retBookInfo.items;
+
+            // Google Books Apiの書籍キャッシュ情報の追加/更新データを作成する
+            googleBooksApiInfoCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiInfoCache(googleBooksApiInfoCacheList, bookItems);
+
+            // Google Books Api書籍情報ファイルにデータを書き込む
+            this.bookSearchService.overWriteGoogleBooksApiInfoCache(googleBooksApiInfoCacheList);
 
             // Google Books Apiの著者キャッシュ情報にデータを追加/更新する
 
@@ -118,8 +125,11 @@ export class BookSearchController extends RouteController {
 
             // Google Books Apiのサムネイル(小)キャッシュ情報にデータを追加/更新する
 
-            // Google Books Apiのアクセス履歴にデータを追加する
-            this.bookSearchService.overWriteGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList, keywordModel, accessDateModel);
+            // Google Books Apiのアクセス履歴の登録用データを作成する
+            googleBooksApiAccessHistoryList = this.bookSearchService.createGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList, keywordModel, accessDateModel);
+
+            // Google Books Apiアクセス情報ファイルにデータを書き込む
+            this.bookSearchService.overWriteGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList);
         }
 
         // 書籍マスタ情報を取得する
