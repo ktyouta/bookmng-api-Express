@@ -15,9 +15,15 @@ import { GoogleBooksApiInfoCacheUpdateModel } from "../../googlebooksapiinfocach
 import { GoogleBooksApiPublishedDateModel } from "../../googlebooksapiinfocache/model/GoogleBooksApiPublishedDateModel";
 import { GoogleBooksApiTitleModel } from "../../googlebooksapiinfocache/model/GoogleBooksApiTitleModel";
 import { GoogleBooksApiInfoCacheService } from "../../googlebooksapiinfocache/service/GoogleBooksApiInfoCacheService";
+import { GoogleBooksApiSmallThumbnailCacheCreateModel } from "../../googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheCreateModel";
 import { GoogleBooksApiSmallThumbnailCacheModelType } from "../../googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheModelType";
+import { GoogleBooksApiSmallThumbnailCacheUpdateModel } from "../../googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheUpdateModel";
+import { SmallThumbnailModel } from "../../googlebooksapismallthumbnailcache/model/SmallThumbnailModel";
 import { GoogleBooksApiSmallThumbnailCacheService } from "../../googlebooksapismallthumbnailcache/service/GoogleBooksApiSmallThumbnailCacheService";
+import { GoogleBooksApiThumbnailCacheCreateModel } from "../../googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheCreateModel";
 import { GoogleBooksApiThumbnailCacheModelType } from "../../googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheModelType";
+import { GoogleBooksApiThumbnailCacheUpdateModel } from "../../googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheUpdateModel";
+import { ThumbnailModel } from "../../googlebooksapithumbnail/model/ThumbnailModel";
 import { GoogleBooksApiThumbnailCacheService } from "../../googlebooksapithumbnail/service/GoogleBooksApiThumbnailCacheService";
 import { GoogleBooksApiCacheMergedModelType } from "../model/GoogleBooksApiCacheMergedModelType";
 
@@ -249,6 +255,62 @@ export class GoogleBooksApiCacheOperationService {
         });
 
         return createAuthorsList;
+    }
+
+
+    /**
+     * Google Books Apiの型(GoogleBooksAPIsModelItemsType)からサムネイル(小)キャッシュの型(GoogleBooksApiSmallThumbnailCacheCreateModel)に変換する
+     * @param googleBooksAPIsModelItems 
+     * @returns 
+     */
+    public parseGoogleBooksApiSmallThumbnailCacheCreate(googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType): GoogleBooksApiSmallThumbnailCacheCreateModel {
+
+        const bookIdModel = new GoogleBooksApiIdModel(googleBooksAPIsModelItems.id);
+        const smallThumbnail = new SmallThumbnailModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.imageLinks?.smallThumbnail ?? ``);
+
+        return this.googleBooksApiSmallThumbnailCacheService.GoogleBooksApiSmallThumbnailCacheCreateModel(bookIdModel, smallThumbnail);
+    }
+
+
+    /**
+     * Google Books Apiの型(GoogleBooksAPIsModelItemsType)からサムネイル(小)キャッシュの型(GoogleBooksApiSmallThumbnailCacheUpdateModel)に変換する
+     * @param googleBooksAPIsModelItems 
+     * @returns 
+     */
+    public parseGoogleBooksApiSmallThumbnailCacheUpdate(googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType): GoogleBooksApiSmallThumbnailCacheUpdateModel {
+
+        const bookIdModel = new GoogleBooksApiIdModel(googleBooksAPIsModelItems.id);
+        const smallThumbnail = new SmallThumbnailModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.imageLinks?.smallThumbnail ?? ``);
+
+        return this.googleBooksApiSmallThumbnailCacheService.GoogleBooksApiSmallThumbnailCacheUpdateModel(bookIdModel, smallThumbnail);
+    }
+
+
+    /**
+     * Google Books Apiの型(GoogleBooksAPIsModelItemsType)からサムネイルキャッシュの型(GoogleBooksApiSmallThumbnailCacheCreateModel)に変換する
+     * @param googleBooksAPIsModelItems 
+     * @returns 
+     */
+    public parseGoogleBooksApiThumbnailCacheCreate(googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType): GoogleBooksApiThumbnailCacheCreateModel {
+
+        const bookIdModel = new GoogleBooksApiIdModel(googleBooksAPIsModelItems.id);
+        const thumbnail = new ThumbnailModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.imageLinks?.thumbnail ?? ``);
+
+        return this.googleBooksApiThumbnailCacheService.GoogleBooksApiThumbnailCacheCreateModel(bookIdModel, thumbnail);
+    }
+
+
+    /**
+     * Google Books Apiの型(GoogleBooksAPIsModelItemsType)からサムネイルキャッシュの型(GoogleBooksApiThumbnailCacheUpdateModel)に変換する
+     * @param googleBooksAPIsModelItems 
+     * @returns 
+     */
+    public parseGoogleBooksApiThumbnailCacheUpdate(googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType): GoogleBooksApiThumbnailCacheUpdateModel {
+
+        const bookIdModel = new GoogleBooksApiIdModel(googleBooksAPIsModelItems.id);
+        const thumbnail = new ThumbnailModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.imageLinks?.thumbnail ?? ``);
+
+        return this.googleBooksApiThumbnailCacheService.GoogleBooksApiThumbnailCacheUpdateModel(bookIdModel, thumbnail);
     }
 
 }

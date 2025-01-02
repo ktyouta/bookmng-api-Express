@@ -26,6 +26,12 @@ import { GoogleBooksApiDescriptionModel } from "../../internaldata/googlebooksap
 import { GoogleBooksApiInfoCacheCreateModel } from "../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheCreateModel";
 import { GoogleBooksApiInfoAuthorUpdateModel } from "../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiInfoAuthorUpdateModel";
 import { GoogleBooksApiInfoAuthorCreateModel } from "../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiInfoAuthorCreateModel";
+import { GoogleBooksApiSmallThumbnailCacheUpdateModel } from "../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheUpdateModel";
+import { GoogleBooksApiSmallThumbnailCacheCreateModel } from "../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheCreateModel";
+import { GoogleBooksApiThumbnailCacheUpdateModel } from "../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheUpdateModel";
+import { GoogleBooksApiThumbnailCacheCreateModel } from "../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheCreateModel";
+import { BookInfoModelType } from "../../internaldata/bookinfomaster/model/BookInfoMasterModelType";
+import { BookInfoMasterService } from "../../internaldata/bookinfomaster/service/BookInfoMasterService";
 
 
 export class BookSearchService {
@@ -44,6 +50,8 @@ export class BookSearchService {
     private googleBooksApiThumbnailCacheService = new GoogleBooksApiThumbnailCacheService();
     // Google Books Apiとキャッシュ情報操作
     private googleBooksApiCacheOperationService = new GoogleBooksApiCacheOperationService();
+    // 書籍情報マスタ
+    private bookInfoMasterService = new BookInfoMasterService();
 
 
     /**
@@ -398,6 +406,159 @@ export class BookSearchService {
         } catch (err) {
             throw Error(`${err} endpoint:${ENV.BOOK_SEARCH}`);
         }
+    }
+
+
+    /**
+     * Google Books Apiのサムネイル(小)キャッシュ情報の追加/更新データを作成する
+     * @param googleBooksApiSmallThumbnailCacheList 
+     * @param bookItems 
+     */
+    public createOrUpdateGoogleBooksApiSmallThumbnailCache(googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[],
+        bookItems: GoogleBooksAPIsModelItemsType[]): GoogleBooksApiSmallThumbnailCacheModelType[] {
+
+        // 登録用キャッシュデータリスト
+        let createGoogleBooksApiSmallThumbnailCacheList: GoogleBooksAPIsModelItemsType[] = [];
+
+        // Google Books Apiから取得したサムネイル(小)情報をキャッシュに登録/更新する
+        bookItems.forEach((e: GoogleBooksAPIsModelItemsType) => {
+
+            let googleBooksApiSmallThumbnailCache = googleBooksApiSmallThumbnailCacheList.find((e1: GoogleBooksApiInfoCacheModelType) => {
+                return e1.bookId === e.id;
+            });
+
+            // サムネイル(小)IDの一致するデータが存在する場合は更新する
+            if (googleBooksApiSmallThumbnailCache) {
+
+                // Google Books Apiの型をサムネイル(小)キャッシュ更新用の型に変換する
+                const googleBooksApiSmallThumbnailCacheUpdateModel: GoogleBooksApiSmallThumbnailCacheUpdateModel =
+                    this.googleBooksApiCacheOperationService.parseGoogleBooksApiSmallThumbnailCacheUpdate(e);
+
+                // サムネイル(小)キャッシュ情報を更新する
+                googleBooksApiSmallThumbnailCache = this.googleBooksApiSmallThumbnailCacheService.createGoogleBooksApiSmallThumbnailCacheUpdateWriteData(
+                    googleBooksApiSmallThumbnailCache, googleBooksApiSmallThumbnailCacheUpdateModel);
+            }
+            // キャッシュ登録用のリストに追加する
+            else {
+                createGoogleBooksApiSmallThumbnailCacheList = [...createGoogleBooksApiSmallThumbnailCacheList, e];
+            }
+
+        });
+
+        // 登録用のリストをサムネイル(小)キャッシュ情報の型に変換する
+        const parsedGoogleBooksApiSmallThumbnailCacheCreateList: GoogleBooksApiSmallThumbnailCacheCreateModel[] =
+            createGoogleBooksApiSmallThumbnailCacheList.map((e: GoogleBooksAPIsModelItemsType) => {
+
+                // Google Books Apiの型をサムネイル(小)キャッシュ登録用の型に変換する
+                return this.googleBooksApiCacheOperationService.parseGoogleBooksApiSmallThumbnailCacheCreate(e);
+            });
+
+        // サムネイル(小)キャッシュ情報登録用データを作成する
+        parsedGoogleBooksApiSmallThumbnailCacheCreateList.forEach((e: GoogleBooksApiSmallThumbnailCacheCreateModel) => {
+
+            googleBooksApiSmallThumbnailCacheList = this.googleBooksApiSmallThumbnailCacheService.createGoogleBooksApiSmallThumbnailCacheCreateWriteData(
+                googleBooksApiSmallThumbnailCacheList, e);
+        });
+
+        return googleBooksApiSmallThumbnailCacheList;
+    }
+
+
+    /**
+     * Google Books Apiサムネイル(小)キャッシュ情報ファイルにデータを書き込む
+     * @param googleBooksApiInfoCacheList 
+     */
+    public overWriteGoogleBooksApiSmallThumbnailCache(googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[]) {
+
+        try {
+
+            // Google Books Apiサムネイル(小)キャッシュ情報ファイルにデータを書き込む
+            this.googleBooksApiSmallThumbnailCacheService.overWriteGoogleBooksApiSmallThumbnailCache(googleBooksApiSmallThumbnailCacheList);
+        } catch (err) {
+            throw Error(`${err} endpoint:${ENV.BOOK_SEARCH}`);
+        }
+    }
+
+
+    /**
+     * Google Books Apiのサムネイルキャッシュ情報の追加/更新データを作成する
+     * @param googleBooksApiThumbnailCacheList 
+     * @param bookItems 
+     */
+    public createOrUpdateGoogleBooksApiThumbnailCache(googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheModelType[],
+        bookItems: GoogleBooksAPIsModelItemsType[]): GoogleBooksApiThumbnailCacheModelType[] {
+
+        // 登録用キャッシュデータリスト
+        let createGoogleBooksApiThumbnailCacheList: GoogleBooksAPIsModelItemsType[] = [];
+
+        // Google Books Apiから取得したサムネイル情報をキャッシュに登録/更新する
+        bookItems.forEach((e: GoogleBooksAPIsModelItemsType) => {
+
+            let googleBooksApiThumbnailCache = googleBooksApiThumbnailCacheList.find((e1: GoogleBooksApiInfoCacheModelType) => {
+                return e1.bookId === e.id;
+            });
+
+            // サムネイルIDの一致するデータが存在する場合は更新する
+            if (googleBooksApiThumbnailCache) {
+
+                // Google Books Apiの型をサムネイルキャッシュ更新用の型に変換する
+                const googleBooksApiThumbnailCacheUpdateModel: GoogleBooksApiThumbnailCacheUpdateModel =
+                    this.googleBooksApiCacheOperationService.parseGoogleBooksApiThumbnailCacheUpdate(e);
+
+                // サムネイルキャッシュ情報を更新する
+                googleBooksApiThumbnailCache = this.googleBooksApiThumbnailCacheService.createGoogleBooksApiThumbnailCacheUpdateWriteData(
+                    googleBooksApiThumbnailCache, googleBooksApiThumbnailCacheUpdateModel);
+            }
+            // キャッシュ登録用のリストに追加する
+            else {
+                createGoogleBooksApiThumbnailCacheList = [...createGoogleBooksApiThumbnailCacheList, e];
+            }
+
+        });
+
+        // 登録用のリストをサムネイルキャッシュ情報の型に変換する
+        const parsedGoogleBooksApiThumbnailCacheCreateList: GoogleBooksApiThumbnailCacheCreateModel[] =
+            createGoogleBooksApiThumbnailCacheList.map((e: GoogleBooksAPIsModelItemsType) => {
+
+                // Google Books Apiの型をサムネイルキャッシュ登録用の型に変換する
+                return this.googleBooksApiCacheOperationService.parseGoogleBooksApiThumbnailCacheCreate(e);
+            });
+
+        // サムネイルキャッシュ情報登録用データを作成する
+        parsedGoogleBooksApiThumbnailCacheCreateList.forEach((e: GoogleBooksApiThumbnailCacheCreateModel) => {
+
+            googleBooksApiThumbnailCacheList = this.googleBooksApiThumbnailCacheService.createGoogleBooksApiThumbnailCacheWriteData(
+                googleBooksApiThumbnailCacheList, e);
+        });
+
+        return googleBooksApiThumbnailCacheList;
+    }
+
+
+    /**
+     * Google Books Apiサムネイルキャッシュ情報ファイルにデータを書き込む
+     * @param googleBooksApiInfoCacheList 
+     */
+    public overWriteGoogleBooksApiThumbnailCache(googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheModelType[]) {
+
+        try {
+
+            // Google Books Apiサムネイルキャッシュ情報ファイルにデータを書き込む
+            this.googleBooksApiThumbnailCacheService.overWriteGoogleBooksApiThumbnailCache(googleBooksApiThumbnailCacheList);
+        } catch (err) {
+            throw Error(`${err} endpoint:${ENV.BOOK_SEARCH}`);
+        }
+    }
+
+    /**
+     * マスタから書籍情報を取得する
+     * @returns 
+     */
+    public getBookMasterInfo(): BookInfoModelType[] {
+
+        const bookInfoMasterList: BookInfoModelType[] = this.bookInfoMasterService.getBookInfoMaster();
+
+        return bookInfoMasterList;
     }
 
 }

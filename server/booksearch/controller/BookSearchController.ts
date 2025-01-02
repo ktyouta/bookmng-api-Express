@@ -18,6 +18,7 @@ import { GoogleBooksApiThumbnailCacheModelType } from '../../internaldata/google
 import { GoogleBooksApiCacheMergedModelType } from '../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheMergedModelType';
 import { GoogleBooksAPIsModelItemsType } from '../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType';
 import { GOOGLE_BOOKS_API_KIND } from '../const/BookSearchConst';
+import { BookInfoModelType } from '../../internaldata/bookinfomaster/model/BookInfoMasterModelType';
 
 
 export class BookSearchController extends RouteController {
@@ -73,10 +74,10 @@ export class BookSearchController extends RouteController {
         // Google Books Apiの著者キャッシュ情報を取得する
         let googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[] = this.bookSearchService.getGoogleBooksApiAuthorsCache();
 
-        // Google Books Apiのサムネイルキャッシュ情報を取得する
+        // Google Books Apiのサムネイル(小)キャッシュ情報を取得する
         let googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[] = this.bookSearchService.getGoogleBooksApiSmallThumbnailCache();
 
-        // Google Books Apiのサムネイル(小)キャッシュ情報を取得する
+        // Google Books Apiのサムネイルキャッシュ情報を取得する
         let googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheModelType[] = this.bookSearchService.getGoogleBooksApiThumbnailCache();
 
         // 現在日付を取得する
@@ -114,24 +115,32 @@ export class BookSearchController extends RouteController {
             const bookItems: GoogleBooksAPIsModelItemsType[] = retBookInfo.items;
 
             // Google Books Apiの書籍キャッシュ情報の追加/更新データを作成する
-            googleBooksApiInfoCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiInfoCache(googleBooksApiInfoCacheList, bookItems);
+            googleBooksApiInfoCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiInfoCache(
+                googleBooksApiInfoCacheList, bookItems);
 
             // Google Books Api書籍キャッシュ情報ファイルにデータを書き込む
             this.bookSearchService.overWriteGoogleBooksApiInfoCache(googleBooksApiInfoCacheList);
 
-            // Google Books Apiの著者キャッシュ情報にデータを追加/更新する
-            googleBooksApiAuthorsCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiAuthorsCache(googleBooksApiAuthorsCacheList, bookItems);
+            // Google Books Apiの著者キャッシュ情報の追加/更新データを作成する
+            googleBooksApiAuthorsCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiAuthorsCache(
+                googleBooksApiAuthorsCacheList, bookItems);
 
             // Google Books Api著者キャッシュにデータを書き込む
             this.bookSearchService.overWriteGoogleBooksApiAuthorsCache(googleBooksApiAuthorsCacheList);
 
-            // Google Books Apiのサムネイルキャッシュ情報にデータを追加/更新する
-
-            // Google Books Apiサムネイルキャッシュにデータを書き込む
-
-            // Google Books Apiのサムネイル(小)キャッシュ情報にデータを追加/更新する
+            // Google Books Apiのサムネイル(小)キャッシュ情報の追加/更新データを作成する
+            googleBooksApiSmallThumbnailCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiSmallThumbnailCache(
+                googleBooksApiSmallThumbnailCacheList, bookItems);
 
             // Google Books Apiのサムネイル(小)キャッシュにデータを書き込む
+            this.bookSearchService.overWriteGoogleBooksApiSmallThumbnailCache(googleBooksApiSmallThumbnailCacheList);
+
+            // Google Books Apiのサムネイルキャッシュ情報の追加/更新データを作成する
+            googleBooksApiThumbnailCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiThumbnailCache(
+                googleBooksApiThumbnailCacheList, bookItems);
+
+            // Google Books Apiサムネイルキャッシュにデータを書き込む
+            this.bookSearchService.overWriteGoogleBooksApiThumbnailCache(googleBooksApiThumbnailCacheList);
 
             // Google Books Apiのアクセス履歴の登録用データを作成する
             googleBooksApiAccessHistoryList = this.bookSearchService.createGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList, keywordModel, accessDateModel);
@@ -140,7 +149,8 @@ export class BookSearchController extends RouteController {
             this.bookSearchService.overWriteGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList);
         }
 
-        // 書籍マスタ情報を取得する
+        // 書籍情報マスタからデータを取得
+        const bookInfoMasterList: BookInfoModelType[] = this.bookSearchService.getBookMasterInfo();
 
         // 書籍情報マスタとマージする
 

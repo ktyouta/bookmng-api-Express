@@ -98,20 +98,12 @@ export class GoogleBooksApiThumbnailCacheService {
      * @returns 
      */
     public createGoogleBooksApiThumbnailCacheUpdateWriteData(
-        googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheModelType[],
-        googleBooksApiThumbnailCacheUpdateModel: GoogleBooksApiThumbnailCacheUpdateModel): GoogleBooksApiThumbnailCacheModelType[] {
+        googleBooksApiThumbnailCache: GoogleBooksApiThumbnailCacheModelType,
+        googleBooksApiThumbnailCacheUpdateModel: GoogleBooksApiThumbnailCacheUpdateModel): GoogleBooksApiThumbnailCacheModelType {
 
-        // 書籍IDに一致するデータを更新する
-        const googleBooksApiThumbnailCache = googleBooksApiThumbnailCacheList.find((e: GoogleBooksApiThumbnailCacheModelType) => {
+        googleBooksApiThumbnailCache.thumbnail = googleBooksApiThumbnailCacheUpdateModel.thumbnail.thumbnail;
+        googleBooksApiThumbnailCache.updateDate = googleBooksApiThumbnailCacheUpdateModel.updateDate.updateDate;
 
-            return e.bookId === googleBooksApiThumbnailCacheUpdateModel.bookId.bookId;
-        });
-
-        if (googleBooksApiThumbnailCache) {
-            googleBooksApiThumbnailCache.thumbnail = googleBooksApiThumbnailCacheUpdateModel.thumbnail.thumbnail;
-            googleBooksApiThumbnailCache.updateDate = googleBooksApiThumbnailCacheUpdateModel.updateDate.updateDate;
-        }
-
-        return googleBooksApiThumbnailCacheList;
+        return googleBooksApiThumbnailCache;
     }
 }
