@@ -4,13 +4,15 @@ import { RouteController } from '../../router/controller/RouteController';
 import { CreateUserInfoService } from '../service/CreateUserInfoService';
 import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
 import { HTTP_STATUS_CREATED, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
-import { UserInfoCreateRequestModelType } from '../model/UserInfoCreateRequestModelType';
 import { UserInfoCreateRequestModelSchema } from '../model/UserInfoCreateRequestModelSchema';
 import { ZodIssue } from 'zod';
 import { UserInfoMasterJsonModelType } from '../../internaldata/userinfomaster/model/UserInfoMasterJsonModelType';
 import { UserNameModel } from '../../internaldata/userinfomaster/model/UserNameModel';
 import { UserIdModel } from '../../internaldata/userinfomaster/model/UserIdModel';
 import { UserInfoMasterCreateModel } from '../../internaldata/userinfomaster/model/UserInfoMasterCreateModel';
+import { UserInfoMasterModel } from '../../internaldata/userinfomaster/model/UserInfoMasterModel';
+import { UserInfoCreateRequestModel } from '../model/UserInfoCreateRequestModel';
+import { UserInfoCreateRequestType } from '../model/UserInfoCreateRequestType';
 
 
 export class CreateUserInfoController extends RouteController {
@@ -30,7 +32,7 @@ export class CreateUserInfoController extends RouteController {
     public doExecute(req: Request, res: Response) {
 
         // リクエストボディ
-        const requestBody: UserInfoCreateRequestModelType = req.body;
+        const requestBody: UserInfoCreateRequestType = req.body;
 
         // リクエストのバリデーションチェック
         const validateResult = UserInfoCreateRequestModelSchema.safeParse(requestBody);
@@ -50,17 +52,20 @@ export class CreateUserInfoController extends RouteController {
         }
 
         // ユーザー情報リスト
-        let userMasterList: UserInfoMasterJsonModelType[] = this.createUserInfoService.getUserMasterInfo();
+        const userMasterList: UserInfoMasterModel[] = this.createUserInfoService.getUserMasterInfo();
 
         // 未削除のユーザー情報リスト
-        const activeUserMasterList: UserInfoMasterJsonModelType[] = this.createUserInfoService.getActiveUserMasterInfo(userMasterList);
+        const activeUserMasterList: UserInfoMasterModel[] = this.createUserInfoService.getActiveUserMasterInfo(userMasterList);
+
+        // リクエストボディの型変換する
+        const parsedRequestBody: UserInfoCreateRequestModel = this.createUserInfoService.parseRequestBody(requestBody);
 
         // ユーザー重複チェック
-        if (this.createUserInfoService.checkUserNameExists(activeUserMasterList, requestBody)) {
+        if (this.createUserInfoService.checkUserNameExists(activeUserMasterList, parsedRequestBody)) {
 
             return res.status(HTTP_STATUS_UNPROCESSABLE_ENTITY).json({
                 status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
-                message: "既にユーザーが存在します。",
+                message: "既にユーザーが存在しています。",
             });
         }
 
@@ -69,10 +74,13 @@ export class CreateUserInfoController extends RouteController {
 
         // ユーザーマスタ登録用データの作成
         const userInfoMasterCreateModel: UserInfoMasterCreateModel =
-            this.createUserInfoService.createUserInfoMasterCreateBody(userIdModel, requestBody);
+            this.createUserInfoService.createUserInfoMasterCreateBody(userIdModel, parsedRequestBody);
 
         // ユーザーマスタに対する書き込み用データの作成
-        userMasterList = this.createUserInfoService.createUserInfoMasterWriteData(userMasterList, userInfoMasterCreateModel);
+        const writeUserMasterList = this.createUserInfoService.createUserInfoMasterWriteData(userMasterList, userInfoMasterCreateModel);
+
+        // ユーザーマスタにデータを書き込む
+        this.createUserInfoService.overWriteUserInfoMaster(writeUserMasterList);
 
         return res.status(HTTP_STATUS_CREATED).json({
             status: HTTP_STATUS_CREATED,
