@@ -118,7 +118,7 @@ export class CreateBookInfoService {
             this.bookInfoMasterService.overWriteBookInfoMaster(bookInfoMasterList);
         } catch (err) {
 
-            throw Error(`${err} endpoint:${ENV.ADD_BOOK_INFO}`);
+            throw Error(`${err} endpoint:${ENV.CREATE_BOOK_INFO}`);
         }
     }
 
@@ -192,7 +192,7 @@ export class CreateBookInfoService {
             this.bookAuthorsMasterService.overWriteBookAuthorsMaster(bookAuthorsMasterList);
         } catch (err) {
 
-            throw Error(`${err} endpoint:${ENV.ADD_BOOK_INFO}`);
+            throw Error(`${err} endpoint:${ENV.CREATE_BOOK_INFO}`);
         }
     }
 
