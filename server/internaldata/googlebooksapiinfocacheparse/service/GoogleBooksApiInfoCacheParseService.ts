@@ -42,9 +42,9 @@ export class GoogleBooksApiCacheInfoParseService {
     public parseGoogleBooksApiInfoCacheCreate(googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType): GoogleBooksApiInfoCacheCreateModel {
 
         const bookIdModel = new GoogleBooksApiIdModel(googleBooksAPIsModelItems.id);
-        const titleModel = new GoogleBooksApiTitleModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.title ?? ``);
-        const publishedDateModel = new GoogleBooksApiPublishedDateModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.publishedDate ?? ``);
-        const descriptionModel = new GoogleBooksApiDescriptionModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.description ?? ``);
+        const titleModel = new GoogleBooksApiTitleModel(googleBooksAPIsModelItems.volumeInfo.title ?? ``);
+        const publishedDateModel = new GoogleBooksApiPublishedDateModel(googleBooksAPIsModelItems.volumeInfo.publishedDate ?? ``);
+        const descriptionModel = new GoogleBooksApiDescriptionModel(googleBooksAPIsModelItems.volumeInfo.description ?? ``);
 
         return this.googleBooksApiInfoCacheService.createGoogleBooksApiInfoCacheCreateModel(bookIdModel,
             titleModel, publishedDateModel, descriptionModel
@@ -60,9 +60,9 @@ export class GoogleBooksApiCacheInfoParseService {
     public parseGoogleBooksApiInfoCacheUpdate(googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType): GoogleBooksApiInfoCacheUpdateModel {
 
         const bookIdModel = new GoogleBooksApiIdModel(googleBooksAPIsModelItems.id);
-        const titleModel = new GoogleBooksApiTitleModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.title ?? ``);
-        const publishedDateModel = new GoogleBooksApiPublishedDateModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.publishedDate ?? ``);
-        const descriptionModel = new GoogleBooksApiDescriptionModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.description ?? ``);
+        const titleModel = new GoogleBooksApiTitleModel(googleBooksAPIsModelItems.volumeInfo.title ?? ``);
+        const publishedDateModel = new GoogleBooksApiPublishedDateModel(googleBooksAPIsModelItems.volumeInfo.publishedDate ?? ``);
+        const descriptionModel = new GoogleBooksApiDescriptionModel(googleBooksAPIsModelItems.volumeInfo.description ?? ``);
 
         return this.googleBooksApiInfoCacheService.createGoogleBooksApiInfoCacheUpdateModel(bookIdModel,
             titleModel, publishedDateModel, descriptionModel

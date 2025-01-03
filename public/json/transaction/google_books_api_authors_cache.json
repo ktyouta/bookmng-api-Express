@@ -1,3 +1,72 @@
 [
-    
+	{
+		"bookId": "H0qpBAAAQBAJ",
+		"authorNo": 0,
+		"authorName": "夏目漱石",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "QRcnAAAAMAAJ",
+		"authorNo": 0,
+		"authorName": "夏目漱石",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "4OafDwAAQBAJ",
+		"authorNo": 0,
+		"authorName": "飯田蛇笏",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "4OafDwAAQBAJ",
+		"authorNo": 1,
+		"authorName": "富安風生",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "4OafDwAAQBAJ",
+		"authorNo": 2,
+		"authorName": "水原秋桜子",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "4OafDwAAQBAJ",
+		"authorNo": 3,
+		"authorName": "山口青邨",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "4OafDwAAQBAJ",
+		"authorNo": 4,
+		"authorName": "大野林火",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "4OafDwAAQBAJ",
+		"authorNo": 5,
+		"authorName": "井本農一",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "4OafDwAAQBAJ",
+		"authorNo": 6,
+		"authorName": "山本健吉",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "YkxNAAAAMAAJ",
+		"authorNo": 0,
+		"authorName": "和田利男",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	}
 ]

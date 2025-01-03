@@ -95,17 +95,18 @@ export class BookSearchController extends RouteController {
         if (this.bookSearchService.checkAccessHistoryByKeywordAndDate(googleBooksApiAccessHistoryList, keywordModel, accessDateModel)) {
 
             // キャッシュ情報をマージする
-            let GoogleBooksApiCacheMergedList: GoogleBooksApiCacheMergedModelType[] = this.bookSearchService.mergeGoogleBooksApiCacheInfo(googleBooksApiInfoCacheList,
+            const GoogleBooksApiCacheMergedList: GoogleBooksApiCacheMergedModelType[] = this.bookSearchService.mergeGoogleBooksApiCacheInfo(googleBooksApiInfoCacheList,
                 googleBooksApiAuthorsCacheList,
                 googleBooksApiSmallThumbnailCacheList,
                 googleBooksApiThumbnailCacheList
             );
 
             // アクセス履歴が存在する場合は書籍キャッシュ情報をキーワードでフィルターする
-            GoogleBooksApiCacheMergedList = this.bookSearchService.getGoogleBooksApiAuthorsCacheByKeyword(googleBooksApiInfoCacheList, keywordModel);
+            const filterdGoogleBooksApiCacheMergedList = this.bookSearchService.getGoogleBooksApiAuthorsCacheByKeyword(
+                GoogleBooksApiCacheMergedList, keywordModel);
 
             // フィルターしたキャッシュ情報をGoogle Books Apiの型に変換する
-            googleBooksApiItems = this.bookSearchService.parseGoogleBooksAPIsModelItems(GoogleBooksApiCacheMergedList);
+            googleBooksApiItems = this.bookSearchService.parseGoogleBooksAPIsModelItems(filterdGoogleBooksApiCacheMergedList);
         }
         else {
 

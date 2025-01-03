@@ -27,7 +27,7 @@ export class GoogleBooksApiBookInfoMasterParseService {
 
                 return {
                     id: e.bookId,
-                    googleBooksAPIsVolumeInfoModel: googleBooksAPIsVolumeInfo
+                    volumeInfo: googleBooksAPIsVolumeInfo
                 }
             });
 

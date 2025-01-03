@@ -18,8 +18,13 @@ export class BookInfoOperationService {
         // タイトル、説明、著者に対してキーワードでフィルターする
         const filterdMergedBookInfoMasterList = mergedBookInfoList.filter((e: BookInfoMergedModelType) => {
 
-            return e.title.includes(keyword) || e.description.includes(keyword) || e.authors.some((e1: string) => {
-                return e1.includes(keyword);
+            const titleRegex = new RegExp(e.title ?? ``, "i");
+            const descriptionRegex = new RegExp(e.description ?? ``, "i");
+
+            return titleRegex.test(keyword) || descriptionRegex.test(keyword) || e.authors.some((e1: string) => {
+
+                const authorNameRegex = new RegExp(e1, "i");
+                return authorNameRegex.test(keyword);
             });
         });
 

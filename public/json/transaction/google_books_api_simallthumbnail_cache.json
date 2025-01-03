@@ -1,3 +1,62 @@
 [
-    
+	{
+		"bookId": "f18LyPhvNpsC",
+		"smallThumbnail": "http://books.google.com/books/content?id=f18LyPhvNpsC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "H0qpBAAAQBAJ",
+		"smallThumbnail": "http://books.google.com/books/content?id=H0qpBAAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "RWULxp2PhPIC",
+		"smallThumbnail": "http://books.google.com/books/content?id=RWULxp2PhPIC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "QRcnAAAAMAAJ",
+		"smallThumbnail": "http://books.google.com/books/content?id=QRcnAAAAMAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "XsNaDwAAQBAJ",
+		"smallThumbnail": "http://books.google.com/books/content?id=XsNaDwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "1lz8USHf-PUC",
+		"smallThumbnail": "http://books.google.com/books/content?id=1lz8USHf-PUC&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "4OafDwAAQBAJ",
+		"smallThumbnail": "http://books.google.com/books/content?id=4OafDwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "a8pCJ3vsctwC",
+		"smallThumbnail": "http://books.google.com/books/content?id=a8pCJ3vsctwC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "HW_6CQAAQBAJ",
+		"smallThumbnail": "http://books.google.com/books/content?id=HW_6CQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	},
+	{
+		"bookId": "YkxNAAAAMAAJ",
+		"smallThumbnail": "http://books.google.com/books/content?id=YkxNAAAAMAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+		"createDate": "20250103",
+		"updateDate": "20250103"
+	}
 ]

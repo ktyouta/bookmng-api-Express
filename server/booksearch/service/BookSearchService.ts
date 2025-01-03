@@ -669,29 +669,30 @@ export class BookSearchService {
         parsedBookInfoMasterList: GoogleBooksAPIsModelItemsType[]
     ): GoogleBooksAPIsModelItemsType[] {
 
-        // 書籍情報マスタとGoogle Books Apiで同一の書籍が存在する場合は書籍情報マスタを優先する
+        // 書籍情報マスタとGoogle Books Apiで同一の書籍が存在する場合は書籍情報マスタを優先する(Google Books Apiを情報を削除する)
         const mergedBookInfoList: GoogleBooksAPIsModelItemsType[] =
-            parsedBookInfoMasterList.filter((e: GoogleBooksAPIsModelItemsType) => {
+            googleBooksApiItems.filter((e: GoogleBooksAPIsModelItemsType) => {
 
                 // タイトルと著者が一致する場合は同一の書籍とする
-                const googleBooksAPIsVolume = e.googleBooksAPIsVolumeInfoModel;
+                const googleBooksAPIsVolume = e.volumeInfo;
                 const googleBooksAPIsTitle = googleBooksAPIsVolume.title;
                 const googleBooksAPIsAuthorsList = googleBooksAPIsVolume.authors ?? [];
 
-                const googleBooksApiItem = googleBooksApiItems.find((e1: GoogleBooksAPIsModelItemsType) => {
+                // 書籍マスタに対して書籍情報一致検索を実行する
+                const googleBooksApiItem = parsedBookInfoMasterList.find((e1: GoogleBooksAPIsModelItemsType) => {
 
-                    const bookInfoMasterVolume = e1.googleBooksAPIsVolumeInfoModel;
+                    const bookInfoMasterVolume = e1.volumeInfo;
                     const bookInfoMasterTitle = bookInfoMasterVolume.title;
                     const bookInfoMasterAuthorsList = bookInfoMasterVolume.authors ?? [];
 
-                    return !(bookInfoMasterTitle === googleBooksAPIsTitle &&
-                        ArrayUtil.checkArrayEqual(bookInfoMasterAuthorsList, googleBooksAPIsAuthorsList));
+                    return bookInfoMasterTitle === googleBooksAPIsTitle &&
+                        ArrayUtil.checkArrayEqual(bookInfoMasterAuthorsList, googleBooksAPIsAuthorsList);
                 });
 
                 return !googleBooksApiItem;
             });
 
-        return [...googleBooksApiItems, ...mergedBookInfoList];
+        return [...parsedBookInfoMasterList, ...mergedBookInfoList];
     }
 
 }

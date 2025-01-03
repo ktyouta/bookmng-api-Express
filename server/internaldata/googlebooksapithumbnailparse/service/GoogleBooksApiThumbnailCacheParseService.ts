@@ -42,7 +42,7 @@ export class GoogleBooksApiThumbnailCacheParseService {
     public parseGoogleBooksApiThumbnailCacheCreate(googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType): GoogleBooksApiThumbnailCacheCreateModel {
 
         const bookIdModel = new GoogleBooksApiIdModel(googleBooksAPIsModelItems.id);
-        const thumbnail = new ThumbnailModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.imageLinks?.thumbnail ?? ``);
+        const thumbnail = new ThumbnailModel(googleBooksAPIsModelItems.volumeInfo.imageLinks?.thumbnail ?? ``);
 
         return this.googleBooksApiThumbnailCacheService.GoogleBooksApiThumbnailCacheCreateModel(bookIdModel, thumbnail);
     }
@@ -56,7 +56,7 @@ export class GoogleBooksApiThumbnailCacheParseService {
     public parseGoogleBooksApiThumbnailCacheUpdate(googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType): GoogleBooksApiThumbnailCacheUpdateModel {
 
         const bookIdModel = new GoogleBooksApiIdModel(googleBooksAPIsModelItems.id);
-        const thumbnail = new ThumbnailModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.imageLinks?.thumbnail ?? ``);
+        const thumbnail = new ThumbnailModel(googleBooksAPIsModelItems.volumeInfo.imageLinks?.thumbnail ?? ``);
 
         return this.googleBooksApiThumbnailCacheService.GoogleBooksApiThumbnailCacheUpdateModel(bookIdModel, thumbnail);
     }

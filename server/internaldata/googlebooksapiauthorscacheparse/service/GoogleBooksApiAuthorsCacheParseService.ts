@@ -42,7 +42,7 @@ export class GoogleBooksApiAuthorsCacheParseService {
     public parseGoogleBooksApiAuthorsCacheCreate(googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType): GoogleBooksApiInfoAuthorCreateModel[] {
 
         // Google Books Apiの著者リスト
-        const authrosList = googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.authors;
+        const authrosList = googleBooksAPIsModelItems.volumeInfo.authors;
         const bookIdModel = new GoogleBooksApiIdModel(googleBooksAPIsModelItems.id);
 
         if (!authrosList) {
@@ -72,7 +72,7 @@ export class GoogleBooksApiAuthorsCacheParseService {
     public parseGoogleBooksApiAuthorsCacheUpdate(googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType): GoogleBooksApiInfoAuthorUpdateModel[] {
 
         // Google Books Apiの著者リスト
-        const authrosList = googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.authors;
+        const authrosList = googleBooksAPIsModelItems.volumeInfo.authors;
         const bookIdModel = new GoogleBooksApiIdModel(googleBooksAPIsModelItems.id);
 
         if (!authrosList) {

@@ -42,7 +42,7 @@ export class GoogleBooksApiSmallThumbnailCacheParseService {
     public parseGoogleBooksApiSmallThumbnailCacheCreate(googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType): GoogleBooksApiSmallThumbnailCacheCreateModel {
 
         const bookIdModel = new GoogleBooksApiIdModel(googleBooksAPIsModelItems.id);
-        const smallThumbnail = new SmallThumbnailModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.imageLinks?.smallThumbnail ?? ``);
+        const smallThumbnail = new SmallThumbnailModel(googleBooksAPIsModelItems.volumeInfo.imageLinks?.smallThumbnail ?? ``);
 
         return this.googleBooksApiSmallThumbnailCacheService.GoogleBooksApiSmallThumbnailCacheCreateModel(bookIdModel, smallThumbnail);
     }
@@ -56,7 +56,7 @@ export class GoogleBooksApiSmallThumbnailCacheParseService {
     public parseGoogleBooksApiSmallThumbnailCacheUpdate(googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType): GoogleBooksApiSmallThumbnailCacheUpdateModel {
 
         const bookIdModel = new GoogleBooksApiIdModel(googleBooksAPIsModelItems.id);
-        const smallThumbnail = new SmallThumbnailModel(googleBooksAPIsModelItems.googleBooksAPIsVolumeInfoModel.imageLinks?.smallThumbnail ?? ``);
+        const smallThumbnail = new SmallThumbnailModel(googleBooksAPIsModelItems.volumeInfo.imageLinks?.smallThumbnail ?? ``);
 
         return this.googleBooksApiSmallThumbnailCacheService.GoogleBooksApiSmallThumbnailCacheUpdateModel(bookIdModel, smallThumbnail);
     }

@@ -53,7 +53,7 @@ export class GoogleBooksApiMergedCacheService {
 
             return {
                 id: e.bookId,
-                googleBooksAPIsVolumeInfoModel: googleBooksAPIsVolumeInfoModelType
+                volumeInfo: googleBooksAPIsVolumeInfoModelType
             }
         });
 
