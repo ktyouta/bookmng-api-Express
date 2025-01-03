@@ -1,6 +1,12 @@
-import { UserInfoModelType } from "../../internaldata/userinfomaster/model/UserInfoModelType";
+import { UserBirthdayModel } from "../../internaldata/userinfomaster/model/UserBirthDayModel";
+import { UserIdModel } from "../../internaldata/userinfomaster/model/UserIdModel";
+import { UserInfoMasterCreateModel } from "../../internaldata/userinfomaster/model/UserInfoMasterCreateModel";
+import { UserInfoMasterJsonModelType } from "../../internaldata/userinfomaster/model/UserInfoMasterJsonModelType";
 import { UserNameModel } from "../../internaldata/userinfomaster/model/UserNameModel";
 import { UserInfoMasterSerivce } from "../../internaldata/userinfomaster/service/UserInfoMasterSerivce";
+import { UserInfoCreateRequestModelType } from "../model/UserInfoCreateRequestModelType";
+import ENV from '../../env.json';
+
 
 export class CreateUserInfoService {
 
@@ -13,9 +19,9 @@ export class CreateUserInfoService {
      * マスタからユーザー情報を取得する
      * @returns 
      */
-    public getUserMasterInfo(): UserInfoModelType[] {
+    public getUserMasterInfo(): UserInfoMasterJsonModelType[] {
 
-        const userInfoMasterList: UserInfoModelType[] = this.userInfoMasterSerivce.getUserInfoMaster();
+        const userInfoMasterList: UserInfoMasterJsonModelType[] = this.userInfoMasterSerivce.getUserInfoMaster();
 
         return userInfoMasterList;
     }
@@ -25,9 +31,9 @@ export class CreateUserInfoService {
      * 未削除のユーザー情報データを取得
      * @returns 
      */
-    public getActiveUserMasterInfo(userInfoMasterList: UserInfoModelType[]): UserInfoModelType[] {
+    public getActiveUserMasterInfo(userInfoMasterList: UserInfoMasterJsonModelType[]): UserInfoMasterJsonModelType[] {
 
-        const activeUserInfoMasterList: UserInfoModelType[] = this.userInfoMasterSerivce.getActiveUserInfoMaster(userInfoMasterList);
+        const activeUserInfoMasterList: UserInfoMasterJsonModelType[] = this.userInfoMasterSerivce.getActiveUserInfoMaster(userInfoMasterList);
 
         return activeUserInfoMasterList;
     }
@@ -37,14 +43,64 @@ export class CreateUserInfoService {
      * ユーザー重複チェック
      * @param userNameModel 
      */
-    public checkUserNameExists(activeUserMasterList: UserInfoModelType[], userNameModel: UserNameModel): boolean {
+    public checkUserNameExists(activeUserMasterList: UserInfoMasterJsonModelType[], requestBody: UserInfoCreateRequestModelType): boolean {
 
-        const activeUserMaster = activeUserMasterList.find((e: UserInfoModelType) => {
+        const userNameModel = new UserNameModel(requestBody.userName);
+
+        const activeUserMaster = activeUserMasterList.find((e: UserInfoMasterJsonModelType) => {
             return e.userName === userNameModel.userName;
         });
 
         return !!activeUserMaster
 
+    }
+
+
+    /**
+     * ユーザー登録用データの作成
+     * @param title 
+     * @param publishedDate 
+     * @param description 
+     * @returns 
+     */
+    public createUserInfoMasterCreateBody(userId: UserIdModel, requestBody: UserInfoCreateRequestModelType): UserInfoMasterCreateModel {
+
+        const userNameModel = new UserNameModel(requestBody.userName);
+        const userBirthday = new UserBirthdayModel(requestBody.userBirthday);
+
+        return this.userInfoMasterSerivce.createUserInfoMasterCreateBody(
+            userId, userNameModel, userBirthday);
+    }
+
+
+    /**
+     * ユーザーマスタに対する書き込み用データの作成
+     * @param bookInfoMasterCreateModel 
+     */
+    public createUserInfoMasterWriteData(
+        bookInfoMasterList: UserInfoMasterJsonModelType[],
+        bookInfoMasterCreateModel: UserInfoMasterCreateModel): UserInfoMasterJsonModelType[] {
+
+        // ユーザーを追加する
+        bookInfoMasterList = this.userInfoMasterSerivce.createUserInfoMasterWriteData(bookInfoMasterList, bookInfoMasterCreateModel);
+
+        return bookInfoMasterList;
+    }
+
+
+    /**
+     * ユーザーマスタファイルにデータを書き込む
+     * @param bookInfoMasterList 
+     */
+    public overWriteUserInfoMaster(bookInfoMasterList: UserInfoMasterJsonModelType[]) {
+
+        try {
+
+            this.userInfoMasterSerivce.overWriteUserInfoMaster(bookInfoMasterList);
+        } catch (err) {
+
+            throw Error(`${err} endpoint:${ENV.CREATE_USER_INFO}`);
+        }
     }
 
 }

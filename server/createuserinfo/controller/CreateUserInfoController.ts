@@ -7,8 +7,10 @@ import { HTTP_STATUS_CREATED, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../uti
 import { UserInfoCreateRequestModelType } from '../model/UserInfoCreateRequestModelType';
 import { UserInfoCreateRequestModelSchema } from '../model/UserInfoCreateRequestModelSchema';
 import { ZodIssue } from 'zod';
-import { UserInfoModelType } from '../../internaldata/userinfomaster/model/UserInfoModelType';
+import { UserInfoMasterJsonModelType } from '../../internaldata/userinfomaster/model/UserInfoMasterJsonModelType';
 import { UserNameModel } from '../../internaldata/userinfomaster/model/UserNameModel';
+import { UserIdModel } from '../../internaldata/userinfomaster/model/UserIdModel';
+import { UserInfoMasterCreateModel } from '../../internaldata/userinfomaster/model/UserInfoMasterCreateModel';
 
 
 export class CreateUserInfoController extends RouteController {
@@ -47,16 +49,14 @@ export class CreateUserInfoController extends RouteController {
             });
         }
 
-        const userNameModel = new UserNameModel(requestBody.userName);
-
         // ユーザー情報リスト
-        let userMasterList: UserInfoModelType[] = this.createUserInfoService.getUserMasterInfo();
+        let userMasterList: UserInfoMasterJsonModelType[] = this.createUserInfoService.getUserMasterInfo();
 
         // 未削除のユーザー情報リスト
-        const activeUserMasterList: UserInfoModelType[] = this.createUserInfoService.getActiveUserMasterInfo(userMasterList);
+        const activeUserMasterList: UserInfoMasterJsonModelType[] = this.createUserInfoService.getActiveUserMasterInfo(userMasterList);
 
         // ユーザー重複チェック
-        if (this.createUserInfoService.checkUserNameExists(activeUserMasterList, userNameModel)) {
+        if (this.createUserInfoService.checkUserNameExists(activeUserMasterList, requestBody)) {
 
             return res.status(HTTP_STATUS_UNPROCESSABLE_ENTITY).json({
                 status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
@@ -64,6 +64,15 @@ export class CreateUserInfoController extends RouteController {
             });
         }
 
+        // ユーザーIDを採番する
+        const userIdModel = UserIdModel.createNewUserId();
+
+        // ユーザーマスタ登録用データの作成
+        const userInfoMasterCreateModel: UserInfoMasterCreateModel =
+            this.createUserInfoService.createUserInfoMasterCreateBody(userIdModel, requestBody);
+
+        // ユーザーマスタに対する書き込み用データの作成
+        userMasterList = this.createUserInfoService.createUserInfoMasterWriteData(userMasterList, userInfoMasterCreateModel);
 
         return res.status(HTTP_STATUS_CREATED).json({
             status: HTTP_STATUS_CREATED,

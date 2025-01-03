@@ -8,9 +8,9 @@ import { UserNameModel } from "./UserNameModel";
 
 
 /**
- * ユーザーマスタデータ登録用
+ * ユーザーマスタデータ
  */
-export class UserInfoMasterCreateModel {
+export class UserInfoMasterModel {
 
     // ユーザーID
     private readonly _userId: UserIdModel;

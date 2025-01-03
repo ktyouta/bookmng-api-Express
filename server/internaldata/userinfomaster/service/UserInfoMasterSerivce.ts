@@ -1,10 +1,10 @@
 import { FLG } from "../../../util/const/CommonConst";
 import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
 import { USER_INFO_MASTER_FILE_PATH } from "../const/UserInfoMasterConst";
-import { UserBirthDayModel } from "../model/UserBirthDayModel";
+import { UserBirthdayModel } from "../model/UserBirthDayModel";
 import { UserIdModel } from "../model/UserIdModel";
 import { UserInfoMasterCreateModel } from "../model/UserInfoMasterCreateModel";
-import { UserInfoModelType } from "../model/UserInfoModelType";
+import { UserInfoMasterJsonModelType } from "../model/UserInfoMasterJsonModelType";
 import { UserNameModel } from "../model/UserNameModel";
 
 
@@ -17,7 +17,7 @@ export class UserInfoMasterSerivce {
     public getUserInfoMaster() {
 
         // ユーザーマスタファイルからデータを取得
-        const bookInfoMasterList: UserInfoModelType[] = JsonFileOperation.getFileObj(USER_INFO_MASTER_FILE_PATH);
+        const bookInfoMasterList: UserInfoMasterJsonModelType[] = JsonFileOperation.getFileObj(USER_INFO_MASTER_FILE_PATH);
 
         return bookInfoMasterList;
     }
@@ -27,10 +27,10 @@ export class UserInfoMasterSerivce {
      * 未削除のユーザーデータを取得
      * @returns 
      */
-    public getActiveUserInfoMaster(bookInfoMasterList: UserInfoModelType[]) {
+    public getActiveUserInfoMaster(bookInfoMasterList: UserInfoMasterJsonModelType[]) {
 
         // 未削除のユーザーを取得
-        const activeUserInfoMasterList = bookInfoMasterList.filter((e: UserInfoModelType) => {
+        const activeUserInfoMasterList = bookInfoMasterList.filter((e: UserInfoMasterJsonModelType) => {
 
             return e.deleteFlg !== FLG.ON;
         });
@@ -46,7 +46,7 @@ export class UserInfoMasterSerivce {
      * @param description 
      * @returns 
      */
-    public createUserInfoMasterCreateBody(userId: UserIdModel, userName: UserNameModel, userBirthDay: UserBirthDayModel) {
+    public createUserInfoMasterCreateBody(userId: UserIdModel, userName: UserNameModel, userBirthDay: UserBirthdayModel) {
 
         return new UserInfoMasterCreateModel(userId, userName, userBirthDay);
     }
@@ -57,11 +57,11 @@ export class UserInfoMasterSerivce {
      * @param bookInfoMasterCreateModel 
      */
     public createUserInfoMasterWriteData(
-        bookInfoMasterList: UserInfoModelType[],
-        bookInfoMasterCreateModel: UserInfoMasterCreateModel): UserInfoModelType[] {
+        bookInfoMasterList: UserInfoMasterJsonModelType[],
+        bookInfoMasterCreateModel: UserInfoMasterCreateModel): UserInfoMasterJsonModelType[] {
 
         // jsonファイル登録用の型に変換する
-        const createUserInfoMasterBody: UserInfoModelType = {
+        const createUserInfoMasterBody: UserInfoMasterJsonModelType = {
             userId: bookInfoMasterCreateModel.userId.userId,
             userName: bookInfoMasterCreateModel.userName.userName,
             userBirthDay: bookInfoMasterCreateModel.userBirthDay.userBirthDay,
@@ -81,7 +81,7 @@ export class UserInfoMasterSerivce {
      * ユーザーマスタファイルにデータを書き込む
      * @param bookInfoMasterList 
      */
-    public overWriteUserInfoMaster(bookInfoMasterList: UserInfoModelType[]) {
+    public overWriteUserInfoMaster(bookInfoMasterList: UserInfoMasterJsonModelType[]) {
 
         try {
 
