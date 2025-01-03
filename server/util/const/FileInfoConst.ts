@@ -43,3 +43,6 @@ export const GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE = "google_books_api_authors_cac
 export const GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE = "google_books_api_simallthumbnail_cache.json";
 // Google Books Apiサムネイルキャッシュファイル名
 export const GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE = "google_books_api_thumbnail_cache.json";
+
+// ユーザーマスタファイル名
+export const USER_INFO_MASTER_FILE = "user_info_master.json";
