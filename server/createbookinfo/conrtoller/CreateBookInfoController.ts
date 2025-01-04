@@ -14,6 +14,7 @@ import { BookInfoMasterModel } from '../../internaldata/bookinfomaster/model/Boo
 import { BookInfoCreateRequestModel } from '../model/BookInfoCreateRequestModel';
 import { BookAuthorsMasterModel } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModel';
 import { AuthorsMasterModel } from '../../internaldata/authorsinfomaster/model/AuthorsMasterModel';
+import { BookInfoMasterCreateModel } from '../../internaldata/bookinfomaster/model/BookInfoMasterCreateModel';
 
 
 export class CreateBookInfoController extends RouteController {
@@ -96,13 +97,15 @@ export class CreateBookInfoController extends RouteController {
         const bookId: BookIdModel = BookIdModel.createNewBookId();
 
         // 書籍情報マスタの登録用データを作成
-        const bookInfoMasterCareteBody = this.addBookInfoService.createBookInfoMasterCreateBody(bookId, parsedRequestBody);
+        const bookInfoMasterCareteBody: BookInfoMasterCreateModel =
+            this.addBookInfoService.createBookInfoMasterCreateBody(bookId, parsedRequestBody);
 
         // 書籍情報マスタ書き込み用データを作成
         bookInfoMasterList = this.addBookInfoService.createBookInfoMasterWriteData(bookInfoMasterList, bookInfoMasterCareteBody);
 
         // 書籍著者マスタの登録用データを作成
-        const bookAuthorsMasterCreateBody: BookAuthorsMasterCreateModel[] = this.addBookInfoService.createBookAuthorsMasterCreateBodyList(bookId, parsedRequestBody);
+        const bookAuthorsMasterCreateBody: BookAuthorsMasterCreateModel[] =
+            this.addBookInfoService.createBookAuthorsMasterCreateBodyList(bookId, parsedRequestBody);
 
         // 書籍著者マスタ書き込み用データを作成
         bookAuthorsMasterList = this.addBookInfoService.createBookAuthorsMasterWriteData(bookAuthorsMasterList, bookAuthorsMasterCreateBody);

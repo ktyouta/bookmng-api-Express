@@ -22,7 +22,7 @@ export class BookInfoCreateRequestModel {
         });
 
         this._authorIdListModel = authorIdModelList;
-        this._descriptionModel = new DescriptionModel(bookInfoCreateBody.title);
+        this._descriptionModel = new DescriptionModel(bookInfoCreateBody.description);
         this._publishedDateModel = new PublishedDateModel(bookInfoCreateBody.publishedDate);
     }
 

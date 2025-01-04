@@ -3,7 +3,7 @@
 		"bookId": "bookId-1",
 		"title": "Test Book Title",
 		"publishedDate": "20241227",
-		"description": "Test Book Title",
+		"description": "description of test book.",
 		"createDate": "20250104",
 		"updateDate": "20250104",
 		"deleteFlg": "0"
