@@ -1,8 +1,3 @@
-import { AuthorsMasterService } from "../service/AuthorsMasterService";
-import { AuthorsMasterModeType } from "./AuthorsMasterModeType";
-import { PRE_AUTHOR_ID } from "../const/AuthorsMasterConst";
-
-
 export class AuthorBirthDayModel {
 
     private readonly _authorBirthDay: string;

@@ -55,4 +55,15 @@ export class PublishedDateModel {
 
         return year === date.getFullYear() && month === date.getMonth() && day === date.getDate();
     }
+
+
+    /**
+     * 発売日タイトルの同一チェック
+     * @param bookTitleModel 
+     * @returns 
+     */
+    public checkPublishedDateDuplicate(publishedDateModel: PublishedDateModel) {
+
+        return this._publishedDate === publishedDateModel.publishedDate;
+    }
 }

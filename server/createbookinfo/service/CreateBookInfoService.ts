@@ -1,20 +1,25 @@
 import { GoogleBookInfoApis } from "../../externalapi/googlebookinfo/service/GoogleBookInfoApis";
-import { AuthorsMasterModeType } from "../../internaldata/authorsinfomaster/model/AuthorsMasterModeType";
 import { AuthorsMasterService } from "../../internaldata/authorsinfomaster/service/AuthorsMasterService";
 import { BOOK_AUTHROS_MASTER_FILE_PATH } from "../../internaldata/bookauthorsmaster/const/BookAuthrosMasterConst";
 import { BookAuthorsMasterCreateModel } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterCreateModel";
-import { BookAuthorsModelType } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModelType";
 import { BookAuthorsMasterService } from "../../internaldata/bookauthorsmaster/service/BookAuthorsMasterService";
 import { BOOK_INFO_MASTER_FILE_PATH } from "../../internaldata/bookinfomaster/const/BookInfoMasterConst";
 import { BookIdModel } from "../../internaldata/bookinfomaster/model/BookIdModel";
 import { BookInfoMasterCreateModel } from "../../internaldata/bookinfomaster/model/BookInfoMasterCreateModel";
-import { BookInfoModelType } from "../../internaldata/bookinfomaster/model/BookInfoMasterModelType";
+import { BookInfoJsonModelType } from "../../internaldata/bookinfomaster/model/BookInfoMasterJsonModelType";
 import { BookInfoMasterService } from "../../internaldata/bookinfomaster/service/BookInfoMasterService";
 import { ArrayUtil } from "../../util/service/ArrayUtil";
 import { FileOperation } from "../../util/service/FileOperation";
 import { JsonFileOperation } from "../../util/service/JsonFileOperation";
-import { BookInfoCreateRequestModelType } from "../model/BookInfoCreateRequestModelType";
 import ENV from '../../env.json';
+import { BookInfoMasterModel } from "../../internaldata/bookinfomaster/model/BookInfoMasterModel";
+import { BookInfoCreateRequestType } from "../model/BookInfoCreateRequestType";
+import { BookInfoCreateRequestModel } from "../model/BookInfoCreateRequestModel";
+import { TitleModel } from "../../internaldata/bookinfomaster/model/TitleModel";
+import { PublishedDateModel } from "../../internaldata/bookinfomaster/model/PublishedDateModel";
+import { AuthorIdModel } from "../../internaldata/authorsinfomaster/model/AuthorIdMode";
+import { BookAuthorsMasterModel } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModel";
+import { AuthorsMasterModel } from "../../internaldata/authorsinfomaster/model/AuthorsMasterModel";
 
 
 export class CreateBookInfoService {
@@ -28,9 +33,9 @@ export class CreateBookInfoService {
      * マスタから書籍情報を取得する
      * @returns 
      */
-    public getBookMasterInfo(): BookInfoModelType[] {
+    public getBookMasterInfo(): BookInfoMasterModel[] {
 
-        const bookInfoMasterList: BookInfoModelType[] = this.bookInfoMasterService.getBookInfoMaster();
+        const bookInfoMasterList: BookInfoMasterModel[] = this.bookInfoMasterService.getBookInfoMaster();
 
         return bookInfoMasterList;
     }
@@ -40,11 +45,21 @@ export class CreateBookInfoService {
      * 未削除の書籍情報データを取得
      * @returns 
      */
-    public getActiveBookMasterInfo(bookInfoMasterList: BookInfoModelType[]): BookInfoModelType[] {
+    public getActiveBookMasterInfo(bookInfoMasterList: BookInfoMasterModel[]): BookInfoMasterModel[] {
 
-        const activeBookInfoMasterList: BookInfoModelType[] = this.bookInfoMasterService.getActiveBookInfoMaster(bookInfoMasterList);
+        const activeBookInfoMasterList: BookInfoMasterModel[] = this.bookInfoMasterService.getActiveBookInfoMaster(bookInfoMasterList);
 
         return activeBookInfoMasterList;
+    }
+
+
+    /**
+     * BookInfoCreateRequestTypeからBookInfoCreateRequestModelに変換する
+     * @param requestBody 
+     */
+    public parseRequestBody(requestBody: BookInfoCreateRequestType): BookInfoCreateRequestModel {
+
+        return new BookInfoCreateRequestModel(requestBody);
     }
 
 
@@ -54,13 +69,13 @@ export class CreateBookInfoService {
      * @param publishedDate 
      * @param description 
      */
-    public createBookInfoMasterCreateBody(bookId: BookIdModel, requestBody: BookInfoCreateRequestModelType): BookInfoMasterCreateModel {
+    public createBookInfoMasterCreateBody(bookId: BookIdModel, requestBody: BookInfoCreateRequestModel): BookInfoMasterCreateModel {
 
         const bookInfoMasterCareteBody: BookInfoMasterCreateModel = this.bookInfoMasterService.createBookInfoMasterCreateBody(
             bookId,
-            requestBody.title,
-            requestBody.publishedDate,
-            requestBody.description);
+            requestBody.titleModel,
+            requestBody.publishedDateModel,
+            requestBody.descriptionModel);
 
         return bookInfoMasterCareteBody;
     }
@@ -72,7 +87,7 @@ export class CreateBookInfoService {
      */
     public getBookAuthorsMasterInfo() {
 
-        let bookAuthrosMasterList: BookAuthorsModelType[] = this.bookAuthorsMasterService.getBookAuthorsMaster();
+        const bookAuthrosMasterList: BookAuthorsMasterModel[] = this.bookAuthorsMasterService.getBookAuthorsMaster();
 
         return bookAuthrosMasterList;
     }
@@ -83,9 +98,9 @@ export class CreateBookInfoService {
      * @param bookAuthrosMasterList 
      * @returns 
      */
-    public getActiveBookAuthorsMasterInfo(bookAuthrosMasterList: BookAuthorsModelType[]): BookAuthorsModelType[] {
+    public getActiveBookAuthorsMasterInfo(bookAuthrosMasterList: BookAuthorsMasterModel[]): BookAuthorsMasterModel[] {
 
-        const activeBookInfoMasterList: BookAuthorsModelType[] = this.bookAuthorsMasterService.getActiveBookAuthorsMaster(bookAuthrosMasterList);
+        const activeBookInfoMasterList: BookAuthorsMasterModel[] = this.bookAuthorsMasterService.getActiveBookAuthorsMaster(bookAuthrosMasterList);
 
         return activeBookInfoMasterList;
     }
@@ -98,8 +113,8 @@ export class CreateBookInfoService {
      * @returns 
      */
     public createBookInfoMasterWriteData(
-        bookInfoMasterList: BookInfoModelType[],
-        bookInfoMasterCreateModel: BookInfoMasterCreateModel): BookInfoModelType[] {
+        bookInfoMasterList: BookInfoMasterModel[],
+        bookInfoMasterCreateModel: BookInfoMasterCreateModel): BookInfoMasterModel[] {
 
         bookInfoMasterList = this.bookInfoMasterService.createBookInfoMasterWriteData(bookInfoMasterList, bookInfoMasterCreateModel);
 
@@ -111,7 +126,7 @@ export class CreateBookInfoService {
      * 書籍情報マスタファイルにデータを書き込む
      * @param bookInfoMasterList 
      */
-    public overWriteBookInfoMaster(bookInfoMasterList: BookInfoModelType[]) {
+    public overWriteBookInfoMaster(bookInfoMasterList: BookInfoMasterModel[]) {
 
         try {
 
@@ -129,11 +144,11 @@ export class CreateBookInfoService {
      * @param requestBody 
      * @returns 
      */
-    public createBookAuthorsMasterCreateBodyList(bookId: BookIdModel, requestBody: BookInfoCreateRequestModelType)
+    public createBookAuthorsMasterCreateBodyList(bookId: BookIdModel, requestBody: BookInfoCreateRequestModel)
         : BookAuthorsMasterCreateModel[] {
 
         // 著者IDリスト
-        const authorIdList: string[] = requestBody.authorIdList;
+        const authorIdList: AuthorIdModel[] = requestBody.authorIdListModel;
 
         // 書籍著者マスタ登録用データを作成する
         const bookAuthorsMasterCreateModelList: BookAuthorsMasterCreateModel[] = authorIdList.map((e) => {
@@ -154,11 +169,12 @@ export class CreateBookInfoService {
      * @param authorId 
      * @returns 
      */
-    private createBookAuthorsMasterCreateBody(bookId: BookIdModel, authorId: string): BookAuthorsMasterCreateModel {
+    private createBookAuthorsMasterCreateBody(bookIdModel: BookIdModel, authorIdModel: AuthorIdModel): BookAuthorsMasterCreateModel {
 
         const bookAuthorsMasterCreateModel: BookAuthorsMasterCreateModel = this.bookAuthorsMasterService.createBookAuthorsMasterCreateBody(
-            bookId,
-            authorId);
+            bookIdModel,
+            authorIdModel
+        );
 
         return bookAuthorsMasterCreateModel;
     }
@@ -171,8 +187,8 @@ export class CreateBookInfoService {
      * @returns 
      */
     public createBookAuthorsMasterWriteData(
-        bookAuthorsMasterList: BookAuthorsModelType[],
-        bookAuthorsMasterCreateBody: BookAuthorsMasterCreateModel[]): BookAuthorsModelType[] {
+        bookAuthorsMasterList: BookAuthorsMasterModel[],
+        bookAuthorsMasterCreateBody: BookAuthorsMasterCreateModel[]): BookAuthorsMasterModel[] {
 
         bookAuthorsMasterList = this.bookAuthorsMasterService.createBookInfoMasterWriteData(bookAuthorsMasterList, bookAuthorsMasterCreateBody);
 
@@ -185,7 +201,7 @@ export class CreateBookInfoService {
      * @param bookInfoMasterList 
      * @returns 
      */
-    public overWriteBookAuthorsMaster(bookAuthorsMasterList: BookAuthorsModelType[]) {
+    public overWriteBookAuthorsMaster(bookAuthorsMasterList: BookAuthorsMasterModel[]) {
 
         try {
 
@@ -198,22 +214,12 @@ export class CreateBookInfoService {
 
 
     /**
-     * マスタから著者情報を取得する
-     * @returns 
-     */
-    public getAuthorsMasterInfo(): AuthorsMasterModeType[] {
-
-        const authorsMasterList: AuthorsMasterModeType[] = this.authorsMasterService.getAuthorsMaster();
-
-        return authorsMasterList;
-    }
-
-    /**
      * 未削除の著者マスタを取得する
-     * @param authorsMasterList 
      * @returns 
      */
-    public getActiveAuthorsMaster(authorsMasterList: AuthorsMasterModeType[]): AuthorsMasterModeType[] {
+    public getActiveAuthorsMaster(): AuthorsMasterModel[] {
+
+        const authorsMasterList: AuthorsMasterModel[] = this.authorsMasterService.getAuthorsMaster();
 
         const activeAuthorsMasterList = this.authorsMasterService.getActiveAuthorsMaster(authorsMasterList);
 
@@ -224,23 +230,9 @@ export class CreateBookInfoService {
     /**
      * 著者IDのマスタ存在チェック
      */
-    public checkAuthorIdExists(authorsMasterList: AuthorsMasterModeType[], authorIdList: string[]): string {
+    public checkAuthorIdExists(authorsMasterList: AuthorsMasterModel[], parsedRequestBody: BookInfoCreateRequestModel): string {
 
-        let errMessge = "";
-
-        authorIdList.some((e: string) => {
-
-            // 著者マスタにIDが存在するか確認する
-            const authorMaster = authorsMasterList.find((e1: AuthorsMasterModeType) => {
-
-                return e1.authorId === e;
-            });
-
-            if (!authorMaster) {
-                errMessge = "著者マスタに存在しない著者が選択されています。";
-                return true;
-            }
-        });
+        const errMessge = this.authorsMasterService.checkAuthorIdExists(authorsMasterList, parsedRequestBody.authorIdListModel);
 
         return errMessge;
     }
@@ -252,26 +244,25 @@ export class CreateBookInfoService {
      * @param activeBookAuthorsMasterList 
      * @param requestBody 
      */
-    public checkBookInfoExists(activeBookInfoMasterList: BookInfoModelType[],
-        activeBookAuthorsMasterList: BookAuthorsModelType[], requestBody: BookInfoCreateRequestModelType): string {
+    public checkBookInfoExists(activeBookInfoMasterList: BookInfoMasterModel[],
+        activeBookAuthorsMasterList: BookAuthorsMasterModel[], requestBody: BookInfoCreateRequestModel): string {
 
         let errMessage = "";
         // リクエストボディから値を取得
-        const title = requestBody.title;
-        const publishedDate = requestBody.publishedDate;
-        const authorIdList = requestBody.authorIdList;
+        const titleModel: TitleModel = requestBody.titleModel;
+        const publishedDateModel: PublishedDateModel = requestBody.publishedDateModel;
 
         // リクエストのタイトルと発売日に一致する書籍情報を取得する
-        const possibleDuplicateBooksInfoList = activeBookInfoMasterList.filter((e: BookInfoModelType) => {
+        const possibleDuplicateBooksInfoList: BookInfoMasterModel[] = activeBookInfoMasterList.filter((e: BookInfoMasterModel) => {
 
-            return e.title === title && e.publishedDate === publishedDate;
+            return e.titleModel.checkTitleDuplicate(titleModel) && e.publishedDateModel.checkPublishedDateDuplicate(publishedDateModel);
         });
 
         // 著者IDがすべて一致する書籍情報を取得する
-        possibleDuplicateBooksInfoList.some((e: BookInfoModelType) => {
+        possibleDuplicateBooksInfoList.some((e: BookInfoMasterModel) => {
 
             // 書籍IDの一致する書籍著者リストを取得する
-            const activeBookAuthorsMaster: BookAuthorsModelType[] = activeBookAuthorsMasterList.filter((e1: BookAuthorsModelType) => {
+            const activeBookAuthorsMaster: BookAuthorsMasterModel[] = activeBookAuthorsMasterList.filter((e1: BookAuthorsMasterModel) => {
 
                 return e1.bookId === e.bookId;
             });
@@ -281,13 +272,13 @@ export class CreateBookInfoService {
             }
 
             // 書籍著者情報マスタの著者IDリスト
-            const masterAuthorIdList = activeBookAuthorsMaster.map((e1: BookAuthorsModelType) => {
+            const masterAuthorIdList = activeBookAuthorsMaster.map((e1: BookAuthorsMasterModel) => {
 
-                return e1.authorId;
+                return e1.authorIdModel;
             });
 
             // リクエストの著者IDリストと書籍著者マスタの著者IDリストが完全に一致している場合はエラーとする
-            if (ArrayUtil.checkArrayEqual(authorIdList, masterAuthorIdList)) {
+            if (requestBody.checkAuthorIdListDuplicate(masterAuthorIdList)) {
 
                 errMessage = "登録しようとしている書籍情報が既に存在しています。"
                 return true;

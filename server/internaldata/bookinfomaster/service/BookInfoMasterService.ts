@@ -3,7 +3,14 @@ import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
 import { BOOK_INFO_MASTER_FILE_PATH } from "../const/BookInfoMasterConst";
 import { BookIdModel } from "../model/BookIdModel";
 import { BookInfoMasterCreateModel } from "../model/BookInfoMasterCreateModel";
-import { BookInfoModelType } from "../model/BookInfoMasterModelType";
+import { BookInfoJsonModelType } from "../model/BookInfoMasterJsonModelType";
+import { BookInfoMasterModel } from "../model/BookInfoMasterModel";
+import { CreateDateModel } from "../model/CreateDateModel";
+import { DeleteFlgModel } from "../model/DeleteFlgModel";
+import { DescriptionModel } from "../model/DescriptionModel";
+import { PublishedDateModel } from "../model/PublishedDateModel";
+import { TitleModel } from "../model/TitleModel";
+import { UpdateDateModel } from "../model/UpdateDateModel";
 
 export class BookInfoMasterService {
 
@@ -11,12 +18,84 @@ export class BookInfoMasterService {
     /**
      * 書籍情報マスタファイルのデータを取得
      */
-    public getBookInfoMaster() {
+    public getBookInfoMaster(): BookInfoMasterModel[] {
 
         // 書籍情報マスタファイルからデータを取得
-        const bookInfoMasterList: BookInfoModelType[] = JsonFileOperation.getFileObj(BOOK_INFO_MASTER_FILE_PATH);
+        const jsonBookInfoMasterList: BookInfoJsonModelType[] = JsonFileOperation.getFileObj(BOOK_INFO_MASTER_FILE_PATH);
 
-        return bookInfoMasterList;
+        // json形式からBookInfoMasterModelに変換する
+        const parsedBookInfoMasterList: BookInfoMasterModel[] = jsonBookInfoMasterList.map((e: BookInfoJsonModelType) => {
+            return this.parseBookInfoMaster(e);
+        });
+
+        return parsedBookInfoMasterList;
+    }
+
+
+    /**
+     * json形式からBookInfoMasterModelに変換する
+     * @param BookInfoJsonModelType 
+     */
+    private parseBookInfoMaster(jsonBookInfoMaster: BookInfoJsonModelType): BookInfoMasterModel {
+
+        const bookIdModel = BookIdModel.reConstruct(jsonBookInfoMaster.bookId);
+        const titleModel = new TitleModel(jsonBookInfoMaster.title);
+        const publishedDateModel = new PublishedDateModel(jsonBookInfoMaster.publishedDate);
+        const descriptionModel = new DescriptionModel(jsonBookInfoMaster.description);
+        const createDateModel = CreateDateModel.reConstruct(jsonBookInfoMaster.createDate, `書籍情報マスタ`);
+        const updateDateModel = UpdateDateModel.reConstruct(jsonBookInfoMaster.updateDate, `書籍情報マスタ`);
+        const deleteFlgModel = new DeleteFlgModel(jsonBookInfoMaster.deleteFlg);
+
+        return new BookInfoMasterModel(
+            bookIdModel,
+            titleModel,
+            publishedDateModel,
+            descriptionModel,
+            createDateModel,
+            updateDateModel,
+            deleteFlgModel
+        );
+    }
+
+
+    /**
+     * BookInfoMasterModelからjson形式に変換する
+     * @param bookInfoMaster 
+     * @returns 
+     */
+    private parseJsonBookInfoMaster(bookInfoMaster: BookInfoMasterModel): BookInfoJsonModelType {
+
+        // jsonファイル登録用の型に変換する
+        const jsonBookInfoMaster: BookInfoJsonModelType = {
+            bookId: bookInfoMaster.bookId,
+            title: bookInfoMaster.title,
+            publishedDate: bookInfoMaster.publishedDate,
+            description: bookInfoMaster.description,
+            createDate: bookInfoMaster.createDate,
+            updateDate: bookInfoMaster.updateDate,
+            deleteFlg: bookInfoMaster.deleteFlg,
+        };
+
+        return jsonBookInfoMaster;
+    }
+
+
+    /**
+     * BookInfoMasterModelからBookInfoMasterModelに変換する
+     * @param bookInfoMaster 
+     * @returns 
+     */
+    private parseCreateBookInfoMaster(bookInfoMasterCreateModel: BookInfoMasterCreateModel): BookInfoMasterModel {
+
+        return new BookInfoMasterModel(
+            bookInfoMasterCreateModel.bookIdModel,
+            bookInfoMasterCreateModel.titleModel,
+            bookInfoMasterCreateModel.publishedDateModel,
+            bookInfoMasterCreateModel.descriptionModel,
+            bookInfoMasterCreateModel.createDateModel,
+            bookInfoMasterCreateModel.updateDateModel,
+            bookInfoMasterCreateModel.deleteFlgModel,
+        );
     }
 
 
@@ -24,10 +103,10 @@ export class BookInfoMasterService {
      * 未削除の書籍情報データを取得
      * @returns 
      */
-    public getActiveBookInfoMaster(bookInfoMasterList: BookInfoModelType[]) {
+    public getActiveBookInfoMaster(bookInfoMasterList: BookInfoMasterModel[]) {
 
         // 未削除の書籍情報を取得
-        const activeBookInfoMasterList = bookInfoMasterList.filter((e: BookInfoModelType) => {
+        const activeBookInfoMasterList = bookInfoMasterList.filter((e: BookInfoMasterModel) => {
 
             return e.deleteFlg !== FLG.ON;
         });
@@ -43,7 +122,8 @@ export class BookInfoMasterService {
      * @param description 
      * @returns 
      */
-    public createBookInfoMasterCreateBody(bookId: BookIdModel, title: string, publishedDate: string, description: string) {
+    public createBookInfoMasterCreateBody(bookId: BookIdModel, title: TitleModel,
+        publishedDate: PublishedDateModel, description: DescriptionModel) {
 
         return new BookInfoMasterCreateModel(bookId, title, publishedDate, description);
     }
@@ -54,19 +134,19 @@ export class BookInfoMasterService {
      * @param bookInfoMasterCreateModel 
      */
     public createBookInfoMasterWriteData(
-        bookInfoMasterList: BookInfoModelType[],
-        bookInfoMasterCreateModel: BookInfoMasterCreateModel): BookInfoModelType[] {
+        bookInfoMasterList: BookInfoMasterModel[],
+        bookInfoMasterCreateModel: BookInfoMasterCreateModel): BookInfoMasterModel[] {
 
         // jsonファイル登録用の型に変換する
-        const createBookInfoMasterBody: BookInfoModelType = {
-            bookId: bookInfoMasterCreateModel.bookId.bookId,
-            title: bookInfoMasterCreateModel.title.title,
-            publishedDate: bookInfoMasterCreateModel.publishedDate.publishedDate,
-            description: bookInfoMasterCreateModel.description.description,
-            createDate: bookInfoMasterCreateModel.createDate.createDate,
-            updateDate: bookInfoMasterCreateModel.updateDate.updateDate,
-            deleteFlg: bookInfoMasterCreateModel.deleteFlg.deleteFlg,
-        };
+        const createBookInfoMasterBody = new BookInfoMasterModel(
+            bookInfoMasterCreateModel.bookIdModel,
+            bookInfoMasterCreateModel.titleModel,
+            bookInfoMasterCreateModel.publishedDateModel,
+            bookInfoMasterCreateModel.descriptionModel,
+            bookInfoMasterCreateModel.createDateModel,
+            bookInfoMasterCreateModel.updateDateModel,
+            bookInfoMasterCreateModel.deleteFlgModel
+        );
 
         // 書籍情報を追加する
         bookInfoMasterList = [...bookInfoMasterList, createBookInfoMasterBody];
@@ -75,16 +155,20 @@ export class BookInfoMasterService {
     }
 
 
-
     /**
      * 書籍情報マスタファイルにデータを書き込む
      * @param bookInfoMasterList 
      */
-    public overWriteBookInfoMaster(bookInfoMasterList: BookInfoModelType[]) {
+    public overWriteBookInfoMaster(bookInfoMasterList: BookInfoMasterModel[]) {
+
+        // json形式に変換する
+        const jsonBookInfoMasterList = bookInfoMasterList.map((e: BookInfoMasterModel) => {
+            return this.parseJsonBookInfoMaster(e);
+        });
 
         try {
 
-            JsonFileOperation.overWriteJsonFileData(BOOK_INFO_MASTER_FILE_PATH, bookInfoMasterList);
+            JsonFileOperation.overWriteJsonFileData(BOOK_INFO_MASTER_FILE_PATH, jsonBookInfoMasterList);
         } catch (err) {
 
             throw Error(`書籍情報マスタファイルのデータ書き込み処理中にエラーが発生しました。ERROR:${err}`);

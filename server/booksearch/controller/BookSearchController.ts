@@ -18,9 +18,6 @@ import { GoogleBooksApiThumbnailCacheModelType } from '../../internaldata/google
 import { GoogleBooksApiCacheMergedModelType } from '../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheMergedModelType';
 import { GoogleBooksAPIsModelItemsType } from '../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType';
 import { GOOGLE_BOOKS_API_KIND } from '../const/BookSearchConst';
-import { BookInfoModelType } from '../../internaldata/bookinfomaster/model/BookInfoMasterModelType';
-import { BookAuthorsModelType } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModelType';
-import { AuthorsMasterModeType } from '../../internaldata/authorsinfomaster/model/AuthorsMasterModeType';
 import { BookInfoMergedModelType } from '../../internaldata/bookinfomerge/model/BookInfoMergedModelType';
 
 

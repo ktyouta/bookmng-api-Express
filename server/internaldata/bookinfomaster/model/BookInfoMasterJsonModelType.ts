@@ -1,5 +1,5 @@
 // jsonファイルの書籍マスタ情報
-export type BookInfoModelType = {
+export type BookInfoJsonModelType = {
     bookId: string,
     title: string,
     publishedDate: string,

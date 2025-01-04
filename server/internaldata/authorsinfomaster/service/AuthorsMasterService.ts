@@ -5,7 +5,11 @@ import { AuthorBirthDayModel } from "../model/AuthorBirthDayModel";
 import { AuthorIdModel } from "../model/AuthorIdMode";
 import { AuthorNameModel } from "../model/AuthorNameModel";
 import { AuthorsMasterCreateModel } from "../model/AuthorsMasterCreateModel";
-import { AuthorsMasterModeType } from "../model/AuthorsMasterModeType";
+import { AuthorsMasterJsonType } from "../model/AuthorsMasterJsonType";
+import { AuthorsMasterModel } from "../model/AuthorsMasterModel";
+import { CreateDateModel } from "../model/CreateDateModel";
+import { DeleteFlgModel } from "../model/DeleteFlgModel";
+import { UpdateDateModel } from "../model/UpdateDateModel";
 
 export class AuthorsMasterService {
 
@@ -14,28 +18,116 @@ export class AuthorsMasterService {
      * 著者マスタファイルのデータを取得
      * @returns 
      */
-    public getAuthorsMaster(): AuthorsMasterModeType[] {
+    public getAuthorsMaster(): AuthorsMasterModel[] {
 
         // 著者マスタファイルからデータを取得
-        const authorsMasterList: AuthorsMasterModeType[] = JsonFileOperation.getFileObj(AUTHROS_MASTER_FILE_PATH);
+        const authorsMasterList: AuthorsMasterJsonType[] = JsonFileOperation.getFileObj(AUTHROS_MASTER_FILE_PATH);
 
-        return authorsMasterList;
+        // json形式からAuthorsMasterModelに変換する
+        const parsedAuthorsMasterList: AuthorsMasterModel[] = authorsMasterList.map((e: AuthorsMasterJsonType) => {
+            return this.parseAuthorsMaster(e);
+        });
+
+        return parsedAuthorsMasterList;
     }
 
+
+    /**
+     * json形式からAuthorsMasterModelに変換する
+     * @param jsonBookAuthorsMaster 
+     * @returns 
+     */
+    private parseAuthorsMaster(jsonBookAuthorsMaster: AuthorsMasterJsonType): AuthorsMasterModel {
+
+        const authorIdModel = AuthorIdModel.reConstruct(jsonBookAuthorsMaster.authorId);
+        const authorNameModel = new AuthorNameModel(jsonBookAuthorsMaster.authorName);
+        const createDate = CreateDateModel.reConstruct(jsonBookAuthorsMaster.createDate, `著者マスタ`);
+        const updateDate = UpdateDateModel.reConstruct(jsonBookAuthorsMaster.updateDate, `著者マスタ`);
+        const deleteFlgModel = new DeleteFlgModel(jsonBookAuthorsMaster.deleteFlg);
+
+        return new AuthorsMasterModel(
+            authorIdModel,
+            authorNameModel,
+            createDate,
+            updateDate,
+            deleteFlgModel
+        );
+    }
+
+
+    /**
+     * AuthorsMasterModelからjson形式に変換する
+     * @param bookAuthorsMaster 
+     * @returns 
+     */
+    private parseJsonAuthorsMaster(bookAuthorsMaster: AuthorsMasterModel): AuthorsMasterJsonType {
+
+        // jsonファイル登録用の型に変換する
+        const jsonAuthorsMaster: AuthorsMasterJsonType = {
+            authorId: bookAuthorsMaster.authorId,
+            authorName: bookAuthorsMaster.authorName,
+            createDate: bookAuthorsMaster.createDate,
+            updateDate: bookAuthorsMaster.updateDate,
+            deleteFlg: bookAuthorsMaster.deleteFlg,
+        };
+
+        return jsonAuthorsMaster;
+    }
+
+
+    /**
+     * BookAuthorsMasterCreateModelからAuthorsMasterModel形式に変換する
+     * @param bookAuthorsMaster 
+     * @returns 
+     */
+    private parseCreateAuthorsMaster(authorsMasterCreateModel: AuthorsMasterCreateModel): AuthorsMasterModel {
+
+        return new AuthorsMasterModel(
+            authorsMasterCreateModel.authorIdModel,
+            authorsMasterCreateModel.authorNameModel,
+            authorsMasterCreateModel.createDateModel,
+            authorsMasterCreateModel.updateDateModel,
+            authorsMasterCreateModel.deleteFlgModel,
+        );
+    }
 
     /**
      * 未削除の著者マスタを取得する
      * @param authorsMasterList 
      * @returns 
      */
-    public getActiveAuthorsMaster(authorsMasterList: AuthorsMasterModeType[]): AuthorsMasterModeType[] {
+    public getActiveAuthorsMaster(authorsMasterList: AuthorsMasterModel[]): AuthorsMasterModel[] {
 
         const activeAuthorsMasterList = authorsMasterList.filter((e) => {
-
             return e.deleteFlg !== FLG.ON;
         });
 
         return activeAuthorsMasterList;
+    }
+
+
+    /**
+     * 著者IDのマスタ存在チェック
+     */
+    public checkAuthorIdExists(authorsMasterList: AuthorsMasterModel[], authorIdModelList: AuthorIdModel[]): string {
+
+        let errMessge = "";
+
+        authorIdModelList.some((e: AuthorIdModel) => {
+
+            // 著者マスタにIDが存在するか確認する
+            const authorMaster = authorsMasterList.find((e1: AuthorsMasterModel) => {
+
+                return e1.authorIdModel.checkAuthorIdDuplicate(e);
+            });
+
+            if (!authorMaster) {
+                errMessge = "著者マスタに存在しない著者が選択されています。";
+                return true;
+            }
+        });
+
+        return errMessge;
     }
 
 
@@ -58,18 +150,11 @@ export class AuthorsMasterService {
      * @returns 
      */
     public createAuthorsMasterWriteData(
-        authorsMasterList: AuthorsMasterModeType[],
-        authorsMasterCreateModel: AuthorsMasterCreateModel): AuthorsMasterModeType[] {
+        authorsMasterList: AuthorsMasterModel[],
+        authorsMasterCreateModel: AuthorsMasterCreateModel): AuthorsMasterModel[] {
 
-        // jsonファイル登録用の型に変換する
-        const createAuthorsMasterBodyList: AuthorsMasterModeType = {
-            authorId: authorsMasterCreateModel.authorId.authorId,
-            authorName: authorsMasterCreateModel.authorName.authorName,
-            authorBirthDay: authorsMasterCreateModel.authorBirthDay.authorBirthDay,
-            createDate: authorsMasterCreateModel.createDate.createDate,
-            updateDate: authorsMasterCreateModel.updateDate.updateDate,
-            deleteFlg: authorsMasterCreateModel.deleteFlg.deleteFlg,
-        };
+        // AuthorsMasterModelに変換する
+        const createAuthorsMasterBodyList: AuthorsMasterModel = this.parseCreateAuthorsMaster(authorsMasterCreateModel);
 
         // 著者情報を追加する
         authorsMasterList = [...authorsMasterList, createAuthorsMasterBodyList];
@@ -82,11 +167,16 @@ export class AuthorsMasterService {
      * 著者情報マスタファイルにデータを書き込む
      * @param authorsMasterList 
      */
-    public overWriteAuthorsMaster(authorsMasterList: AuthorsMasterModeType[]) {
+    public overWriteAuthorsMaster(authorsMasterList: AuthorsMasterModel[]) {
+
+        // json形式に変換する
+        const jsonAuthorsMasterList = authorsMasterList.map((e: AuthorsMasterModel) => {
+            return this.parseJsonAuthorsMaster(e);
+        });
 
         try {
 
-            JsonFileOperation.overWriteJsonFileData(AUTHROS_MASTER_FILE_PATH, authorsMasterList);
+            JsonFileOperation.overWriteJsonFileData(AUTHROS_MASTER_FILE_PATH, jsonAuthorsMasterList);
         } catch (err) {
 
             throw Error(`著者情報マスタファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);

@@ -1,56 +1,49 @@
 import { FLG } from "../../../util/const/CommonConst";
-import { CreateDateModel } from "../../common/model/CreateDateModel";
-import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
-import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { AuthorBirthDayModel } from "./AuthorBirthDayModel";
 import { AuthorIdModel } from "./AuthorIdMode";
 import { AuthorNameModel } from "./AuthorNameModel";
+import { CreateDateModel } from "./CreateDateModel";
+import { DeleteFlgModel } from "./DeleteFlgModel";
+import { UpdateDateModel } from "./UpdateDateModel";
 
 export class AuthorsMasterCreateModel {
 
     // 著者ID
-    private readonly _authorId: AuthorIdModel;
+    private readonly _authorIdModel: AuthorIdModel;
     // 著者名
-    private readonly _authorName: AuthorNameModel;
-    // 生年月日
-    private readonly _authorBirthDay: AuthorBirthDayModel;
+    private readonly _authorNameModel: AuthorNameModel;
     // データ作成日
-    private readonly _createDate: CreateDateModel = new CreateDateModel(`著者情報マスタ`);
+    private readonly _createDateModel: CreateDateModel = CreateDateModel.createNewCreateDate(`著者情報マスタ`);
     // データ更新日
-    private readonly _updateDate: UpdateDateModel = new UpdateDateModel(`著者情報マスタ`);
+    private readonly _updateDateModel: UpdateDateModel = UpdateDateModel.createNewUpdateDate(`著者情報マスタ`);
     // 削除フラグ
-    private readonly _deleteFlg: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
+    private readonly _deleteFlgModel: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
 
 
     constructor(authorId: AuthorIdModel, authorName: AuthorNameModel, authorBirthDay: AuthorBirthDayModel) {
 
-        this._authorId = authorId;
-        this._authorName = authorName;
-        this._authorBirthDay = authorBirthDay;
+        this._authorIdModel = authorId;
+        this._authorNameModel = authorName;
     }
 
 
-    public get authorId() {
-        return this._authorId;
+    public get authorIdModel() {
+        return this._authorIdModel;
     }
 
-    public get authorName() {
-        return this._authorName;
+    public get authorNameModel() {
+        return this._authorNameModel;
     }
 
-    public get authorBirthDay() {
-        return this._authorBirthDay;
+    public get createDateModel() {
+        return this._createDateModel;
     }
 
-    public get createDate() {
-        return this._createDate;
+    public get updateDateModel() {
+        return this._updateDateModel;
     }
 
-    public get updateDate() {
-        return this._updateDate;
-    }
-
-    public get deleteFlg() {
-        return this._deleteFlg;
+    public get deleteFlgModel() {
+        return this._deleteFlgModel;
     }
 }

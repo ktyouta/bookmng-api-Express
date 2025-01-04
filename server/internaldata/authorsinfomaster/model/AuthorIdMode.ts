@@ -1,31 +1,60 @@
 import { AuthorsMasterService } from "../service/AuthorsMasterService";
-import { AuthorsMasterModeType } from "./AuthorsMasterModeType";
-import { PRE_AUTHOR_ID } from "../const/AuthorsMasterConst";
+import { AuthorsMasterModel } from "./AuthorsMasterModel";
 
+
+// 著者IDの接頭辞
+const PRE_AUTHOR_ID = `authorId-`;
 
 export class AuthorIdModel {
 
     private readonly _authorId: string;
-    private authorsMasterService = new AuthorsMasterService();
 
 
-    constructor() {
+    private constructor(authorId: string) {
+
+        if (!authorId) {
+            throw Error(`著者IDが空です。`);
+        }
+
+        // 著者IDのバリデーションチェック
+        if (!AuthorIdModel.checkAuthorIdValidate(authorId)) {
+            throw Error(`著者IDのフォーマットが不正です。authorId:${authorId}`);
+        }
+
+        this._authorId = authorId;
+    }
+
+
+    public static createNewAuthorId() {
+
+        const authorMasterService = new AuthorsMasterService();
 
         // 著者ID採番用に著者情報マスタからデータを取得する
-        const authorsMasterModel: AuthorsMasterModeType[] = this.authorsMasterService.getAuthorsMaster();
+        const authorMasterModel: AuthorsMasterModel[] = authorMasterService.getAuthorsMaster();
 
-        if (!authorsMasterModel) {
+        if (!authorMasterModel) {
             throw Error("著者IDの採番に必要な著者情報マスタが取得できませんでした。");
         }
 
         // 著者IDを採番する
-        const latestAuthorsId = this.createLatestAuthorsId(authorsMasterModel);
+        const latestAuthorId = this.createLatestAuthorId(authorMasterModel);
 
-        if (!latestAuthorsId) {
+        if (!latestAuthorId) {
             throw Error("著者IDの採番に失敗しました。");
         }
 
-        this._authorId = latestAuthorsId;
+        return new AuthorIdModel(latestAuthorId);
+    }
+
+
+    /**
+     * authorIdをセット
+     * @param bookId 
+     * @returns 
+     */
+    public static reConstruct(authorId: string) {
+
+        return new AuthorIdModel(authorId);
     }
 
 
@@ -41,10 +70,10 @@ export class AuthorIdModel {
     /**
      * 著者IDを採番する
      */
-    private createLatestAuthorsId(authorsMasterModel: AuthorsMasterModeType[]): string {
+    private static createLatestAuthorId(authorMasterModel: AuthorsMasterModel[]): string {
 
         //IDが最大のNOを取得
-        let maxNo = authorsMasterModel.reduce<number>((prev: number, current: AuthorsMasterModeType) => {
+        let maxNo = authorMasterModel.reduce<number>((prev: number, current: AuthorsMasterModel) => {
 
             let currentNm = parseInt(current.authorId.replace(`${PRE_AUTHOR_ID}`, ""));
             return Math.max(prev, currentNm);
@@ -52,4 +81,27 @@ export class AuthorIdModel {
 
         return `${PRE_AUTHOR_ID}${maxNo + 1}`;
     }
+
+
+    /**
+     * 著者IDのバリデーションチェック
+     * @param authorId 
+     * @returns 
+     */
+    private static checkAuthorIdValidate(authorId: string) {
+
+        return authorId.includes(PRE_AUTHOR_ID);
+    }
+
+
+    /**
+     * 著者IDの同一チェック
+     * @param userNameModel 
+     * @returns 
+     */
+    public checkAuthorIdDuplicate(authorIdModel: AuthorIdModel) {
+
+        return this._authorId === authorIdModel.authorId;
+    }
+
 }

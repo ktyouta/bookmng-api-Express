@@ -1,8 +1,7 @@
 // jsonファイルの著者マスタ情報
-export type AuthorsMasterModeType = {
+export type AuthorsMasterJsonType = {
     authorId: string,
     authorName: string,
-    authorBirthDay: string,
     createDate: string,
     updateDate: string,
     deleteFlg: string,

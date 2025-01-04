@@ -57,7 +57,7 @@ export class CreateUserInfoController extends RouteController {
         // 未削除のユーザー情報リスト
         const activeUserMasterList: UserInfoMasterModel[] = this.createUserInfoService.getActiveUserMasterInfo(userMasterList);
 
-        // リクエストボディの型変換する
+        // リクエストボディの型を変換する
         const parsedRequestBody: UserInfoCreateRequestModel = this.createUserInfoService.parseRequestBody(requestBody);
 
         // ユーザー重複チェック

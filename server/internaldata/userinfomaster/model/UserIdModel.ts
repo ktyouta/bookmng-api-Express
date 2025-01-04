@@ -12,7 +12,7 @@ export class UserIdModel {
     private constructor(userId: string) {
 
         if (!UserIdModel.checkUserIdValidate(userId)) {
-            throw Error(`userIdのフォーマットが不正です。userId:${userId}`);
+            throw Error(`ユーザーIDのフォーマットが不正です。userId:${userId}`);
         }
 
         this._userId = userId;
@@ -71,9 +71,7 @@ export class UserIdModel {
         //IDが最大のNOを取得
         const maxNo = userInfoList.reduce<number>((prev: number, current: UserInfoMasterModel) => {
 
-            const userId = current.userId;
-
-            const currentNm = parseInt(userId.replace(`${PRE_USER_ID}`, ""));
+            const currentNm = parseInt(current.userId.replace(`${PRE_USER_ID}`, ""));
             return Math.max(prev, currentNm);
         }, 0);
 

@@ -1,6 +1,4 @@
 import { AuthorsMasterService } from "../service/AuthorsMasterService";
-import { AuthorsMasterModeType } from "./AuthorsMasterModeType";
-import { PRE_AUTHOR_ID } from "../const/AuthorsMasterConst";
 
 
 export class AuthorNameModel {
@@ -9,6 +7,10 @@ export class AuthorNameModel {
 
 
     constructor(authorName: string) {
+
+        if (!authorName) {
+            throw Error(`著者名が空です。`);
+        }
 
         this._authorName = authorName;
     }

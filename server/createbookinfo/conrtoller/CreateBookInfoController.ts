@@ -3,15 +3,17 @@ import ENV from '../../env.json';
 import { HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_CREATED, HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_OK, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
 import { RouteController } from '../../router/controller/RouteController';
 import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
-import { BookInfoModelType } from '../../internaldata/bookinfomaster/model/BookInfoMasterModelType';
-import { BookAuthorsModelType } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModelType';
+import { BookInfoJsonModelType } from '../../internaldata/bookinfomaster/model/BookInfoMasterJsonModelType';
 import { BookIdModel } from '../../internaldata/bookinfomaster/model/BookIdModel';
 import { BookAuthorsMasterCreateModel } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterCreateModel';
-import { AuthorsMasterModeType } from '../../internaldata/authorsinfomaster/model/AuthorsMasterModeType';
 import { BookInfoCreateRequestModelSchema } from '../model/BookInfoCreateRequestModelSchema';
 import { ZodIssue } from 'zod';
 import { CreateBookInfoService } from '../service/CreateBookInfoService';
-import { BookInfoCreateRequestModelType } from '../model/BookInfoCreateRequestModelType';
+import { BookInfoCreateRequestType } from '../model/BookInfoCreateRequestType';
+import { BookInfoMasterModel } from '../../internaldata/bookinfomaster/model/BookInfoMasterModel';
+import { BookInfoCreateRequestModel } from '../model/BookInfoCreateRequestModel';
+import { BookAuthorsMasterModel } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModel';
+import { AuthorsMasterModel } from '../../internaldata/authorsinfomaster/model/AuthorsMasterModel';
 
 
 export class CreateBookInfoController extends RouteController {
@@ -31,9 +33,7 @@ export class CreateBookInfoController extends RouteController {
     public doExecute(req: Request, res: Response) {
 
         // リクエストボディ
-        const requestBody: BookInfoCreateRequestModelType = req.body;
-        // 著者IDリスト
-        const authorIdList: string[] = requestBody.authorIdList;
+        const requestBody: BookInfoCreateRequestType = req.body;
 
         // リクエストのバリデーションチェック
         const validateResult = BookInfoCreateRequestModelSchema.safeParse(requestBody);
@@ -52,14 +52,14 @@ export class CreateBookInfoController extends RouteController {
             });
         }
 
-        // 著者情報マスタからデータを取得
-        const authorsMasterList: AuthorsMasterModeType[] = this.addBookInfoService.getAuthorsMasterInfo();
+        // リクエストボディの型を変換する
+        const parsedRequestBody: BookInfoCreateRequestModel = this.addBookInfoService.parseRequestBody(requestBody);
 
         // 未削除の著者情報マスタを取得
-        const activeAuthorsMasterList: AuthorsMasterModeType[] = this.addBookInfoService.getActiveAuthorsMaster(authorsMasterList);
+        const activeAuthorsMasterList: AuthorsMasterModel[] = this.addBookInfoService.getActiveAuthorsMaster();
 
         // 著者IDのマスタ存在チェック
-        let errMessge = this.addBookInfoService.checkAuthorIdExists(activeAuthorsMasterList, authorIdList);
+        let errMessge = this.addBookInfoService.checkAuthorIdExists(activeAuthorsMasterList, parsedRequestBody);
 
         // 著者マスタにIDが存在しない
         if (errMessge) {
@@ -70,19 +70,19 @@ export class CreateBookInfoController extends RouteController {
         }
 
         // 書籍情報マスタからデータを取得
-        let bookInfoMasterList: BookInfoModelType[] = this.addBookInfoService.getBookMasterInfo();
+        let bookInfoMasterList: BookInfoMasterModel[] = this.addBookInfoService.getBookMasterInfo();
 
         // 未削除の書籍情報データを取得
-        const activeBookInfoMasterList: BookInfoModelType[] = this.addBookInfoService.getActiveBookMasterInfo(bookInfoMasterList);
+        const activeBookInfoMasterList: BookInfoMasterModel[] = this.addBookInfoService.getActiveBookMasterInfo(bookInfoMasterList);
 
         // 書籍著者マスタからデータを取得
-        let bookAuthorsMasterList: BookAuthorsModelType[] = this.addBookInfoService.getBookAuthorsMasterInfo();
+        let bookAuthorsMasterList: BookAuthorsMasterModel[] = this.addBookInfoService.getBookAuthorsMasterInfo();
 
         // 未削除の書籍著者情報データを取得
         const acticeBookAuthorsMasterList = this.addBookInfoService.getActiveBookAuthorsMasterInfo(bookAuthorsMasterList);
 
         // 書籍情報の重複チェック
-        errMessge = this.addBookInfoService.checkBookInfoExists(activeBookInfoMasterList, acticeBookAuthorsMasterList, requestBody);
+        errMessge = this.addBookInfoService.checkBookInfoExists(activeBookInfoMasterList, acticeBookAuthorsMasterList, parsedRequestBody);
 
         // 登録しようとしている書籍情報が既に存在する
         if (errMessge) {
@@ -93,16 +93,16 @@ export class CreateBookInfoController extends RouteController {
         }
 
         // 書籍IDを採番する
-        const bookId: BookIdModel = new BookIdModel();
+        const bookId: BookIdModel = BookIdModel.createNewBookId();
 
         // 書籍情報マスタの登録用データを作成
-        const bookInfoMasterCareteBody = this.addBookInfoService.createBookInfoMasterCreateBody(bookId, requestBody);
+        const bookInfoMasterCareteBody = this.addBookInfoService.createBookInfoMasterCreateBody(bookId, parsedRequestBody);
 
         // 書籍情報マスタ書き込み用データを作成
         bookInfoMasterList = this.addBookInfoService.createBookInfoMasterWriteData(bookInfoMasterList, bookInfoMasterCareteBody);
 
         // 書籍著者マスタの登録用データを作成
-        const bookAuthorsMasterCreateBody: BookAuthorsMasterCreateModel[] = this.addBookInfoService.createBookAuthorsMasterCreateBodyList(bookId, requestBody);
+        const bookAuthorsMasterCreateBody: BookAuthorsMasterCreateModel[] = this.addBookInfoService.createBookAuthorsMasterCreateBodyList(bookId, parsedRequestBody);
 
         // 書籍著者マスタ書き込み用データを作成
         bookAuthorsMasterList = this.addBookInfoService.createBookAuthorsMasterWriteData(bookAuthorsMasterList, bookAuthorsMasterCreateBody);
