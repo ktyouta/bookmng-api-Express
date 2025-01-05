@@ -79,10 +79,10 @@ export class UserInfoMasterListModel {
      * @param userInfoMasterList 
      * @returns 
      */
-    public getActiveUserInfoMaster(userInfoMasterListModel: UserInfoMasterListModel) {
+    public getActiveUserInfoMaster() {
 
         // 未削除のユーザーを取得
-        const activeUserInfoMasterList = userInfoMasterListModel._userInfoMasterModelList.filter((e: UserInfoMasterModel) => {
+        const activeUserInfoMasterList = this._userInfoMasterModelList.filter((e: UserInfoMasterModel) => {
 
             return e.deleteFlg !== FLG.ON;
         });
@@ -98,14 +98,13 @@ export class UserInfoMasterListModel {
      * @returns 
      */
     public createUserInfoMasterWriteData(
-        userInfoMasterListModel: UserInfoMasterListModel,
         userInfoMasterCreateModel: UserInfoMasterCreateModel): UserInfoMasterListModel {
 
         // UserInfoMasterCreateModel→UserInfoMasterModelに変換する
         const createUserInfoMaster: UserInfoMasterModel = this.parseCreateUserInfoMaster(userInfoMasterCreateModel);
 
         // ユーザーを追加する
-        const createUserInfoMasterList = [...userInfoMasterListModel._userInfoMasterModelList, createUserInfoMaster];
+        const createUserInfoMasterList = [...this._userInfoMasterModelList, createUserInfoMaster];
 
         return new UserInfoMasterListModel(createUserInfoMasterList);
     }

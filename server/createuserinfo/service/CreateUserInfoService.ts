@@ -8,6 +8,8 @@ import ENV from '../../env.json';
 import { UserInfoMasterModel } from "../../internaldata/userinfomaster/model/UserInfoMasterModel";
 import { UserInfoCreateRequestModel } from "../model/UserInfoCreateRequestModel";
 import { UserInfoCreateRequestType } from "../model/UserInfoCreateRequestType";
+import { UserInfoMasterListModel } from "../../internaldata/userinfomaster/model/UserInfoMasterListModel";
+import { UserInfoMasterJsonListModel } from "../../internaldata/userinfomaster/model/UserInfoMasterJsonListModel";
 
 
 export class CreateUserInfoService {
@@ -21,11 +23,11 @@ export class CreateUserInfoService {
      * マスタからユーザー情報を取得する
      * @returns 
      */
-    public getUserMasterInfo(): UserInfoMasterModel[] {
+    public getUserMasterInfo(): UserInfoMasterListModel {
 
-        const userInfoMasterList: UserInfoMasterModel[] = this.userInfoMasterSerivce.getUserInfoMaster();
+        const userInfoMasterListModel: UserInfoMasterListModel = UserInfoMasterListModel.getUserInfoMasterList();
 
-        return userInfoMasterList;
+        return userInfoMasterListModel;
     }
 
 
@@ -33,11 +35,11 @@ export class CreateUserInfoService {
      * 未削除のユーザー情報データを取得
      * @returns 
      */
-    public getActiveUserMasterInfo(userInfoMasterList: UserInfoMasterModel[]): UserInfoMasterModel[] {
+    public getActiveUserMasterInfo(userInfoMasterListModel: UserInfoMasterListModel): UserInfoMasterListModel {
 
-        const activeUserInfoMasterList: UserInfoMasterModel[] = this.userInfoMasterSerivce.getActiveUserInfoMaster(userInfoMasterList);
+        const activeUserInfoMasterListModel: UserInfoMasterListModel = userInfoMasterListModel.getActiveUserInfoMaster();
 
-        return activeUserInfoMasterList;
+        return activeUserInfoMasterListModel;
     }
 
 
@@ -54,15 +56,11 @@ export class CreateUserInfoService {
      * ユーザー重複チェック
      * @param userNameModel 
      */
-    public checkUserNameExists(activeUserMasterList: UserInfoMasterModel[], parsedRequestBody: UserInfoCreateRequestModel): boolean {
+    public checkUserNameExists(activeUserInfoMasterListModel: UserInfoMasterListModel, parsedRequestBody: UserInfoCreateRequestModel): boolean {
 
         const userNameModel: UserNameModel = parsedRequestBody.userNameModel;
 
-        const activeUserMaster = activeUserMasterList.find((e: UserInfoMasterModel) => {
-            return e.userNameModel.checkUsernameDuplicate(userNameModel);
-        });
-
-        return !!activeUserMaster;
+        return activeUserInfoMasterListModel.checkUserNameExists(userNameModel);
     }
 
 
@@ -85,13 +83,14 @@ export class CreateUserInfoService {
      * @param userInfoMasterCreateModel 
      */
     public createUserInfoMasterWriteData(
-        userInfoMasterList: UserInfoMasterModel[],
-        userInfoMasterCreateModel: UserInfoMasterCreateModel): UserInfoMasterModel[] {
+        userInfoMasterListModel: UserInfoMasterListModel,
+        userInfoMasterCreateModel: UserInfoMasterCreateModel): UserInfoMasterListModel {
 
         // ユーザーを追加する
-        userInfoMasterList = this.userInfoMasterSerivce.createUserInfoMasterWriteData(userInfoMasterList, userInfoMasterCreateModel);
+        const userInfoMasterListWriteModel: UserInfoMasterListModel =
+            userInfoMasterListModel.createUserInfoMasterWriteData(userInfoMasterCreateModel);
 
-        return userInfoMasterList;
+        return userInfoMasterListWriteModel;
     }
 
 
@@ -99,11 +98,15 @@ export class CreateUserInfoService {
      * ユーザーマスタファイルにデータを書き込む
      * @param userInfoMasterList 
      */
-    public overWriteUserInfoMaster(userInfoMasterList: UserInfoMasterModel[]) {
+    public overWriteUserInfoMaster(userInfoMasterListWriteModel: UserInfoMasterListModel) {
+
+        // json用のモデルに変換する
+        const userInfoMasterJsonListModel: UserInfoMasterJsonListModel = new UserInfoMasterJsonListModel(userInfoMasterListWriteModel);
 
         try {
 
-            this.userInfoMasterSerivce.overWriteUserInfoMaster(userInfoMasterList);
+            // ユーザーマスタファイルにデータを書き込む
+            userInfoMasterJsonListModel.overWriteUserInfoMaster();
         } catch (err) {
 
             throw Error(`${err} endpoint:${ENV.CREATE_USER_INFO}`);

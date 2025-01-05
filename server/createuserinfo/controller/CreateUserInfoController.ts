@@ -13,6 +13,7 @@ import { UserInfoMasterCreateModel } from '../../internaldata/userinfomaster/mod
 import { UserInfoMasterModel } from '../../internaldata/userinfomaster/model/UserInfoMasterModel';
 import { UserInfoCreateRequestModel } from '../model/UserInfoCreateRequestModel';
 import { UserInfoCreateRequestType } from '../model/UserInfoCreateRequestType';
+import { UserInfoMasterListModel } from '../../internaldata/userinfomaster/model/UserInfoMasterListModel';
 
 
 export class CreateUserInfoController extends RouteController {
@@ -52,16 +53,17 @@ export class CreateUserInfoController extends RouteController {
         }
 
         // ユーザー情報リスト
-        const userMasterList: UserInfoMasterModel[] = this.createUserInfoService.getUserMasterInfo();
+        const userMasterListModel: UserInfoMasterListModel = this.createUserInfoService.getUserMasterInfo();
 
         // 未削除のユーザー情報リスト
-        const activeUserMasterList: UserInfoMasterModel[] = this.createUserInfoService.getActiveUserMasterInfo(userMasterList);
+        const activeUserInfoMasterListModel: UserInfoMasterListModel =
+            this.createUserInfoService.getActiveUserMasterInfo(userMasterListModel);
 
         // リクエストボディの型を変換する
         const parsedRequestBody: UserInfoCreateRequestModel = this.createUserInfoService.parseRequestBody(requestBody);
 
         // ユーザー重複チェック
-        if (this.createUserInfoService.checkUserNameExists(activeUserMasterList, parsedRequestBody)) {
+        if (this.createUserInfoService.checkUserNameExists(activeUserInfoMasterListModel, parsedRequestBody)) {
 
             return res.status(HTTP_STATUS_UNPROCESSABLE_ENTITY).json({
                 status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
@@ -77,10 +79,11 @@ export class CreateUserInfoController extends RouteController {
             this.createUserInfoService.createUserInfoMasterCreateBody(userIdModel, parsedRequestBody);
 
         // ユーザーマスタに対する書き込み用データの作成
-        const writeUserMasterList = this.createUserInfoService.createUserInfoMasterWriteData(userMasterList, userInfoMasterCreateModel);
+        const userInfoMasterListWriteModel: UserInfoMasterListModel = this.createUserInfoService.createUserInfoMasterWriteData(
+            userMasterListModel, userInfoMasterCreateModel);
 
         // ユーザーマスタにデータを書き込む
-        this.createUserInfoService.overWriteUserInfoMaster(writeUserMasterList);
+        this.createUserInfoService.overWriteUserInfoMaster(userInfoMasterListWriteModel);
 
         return res.status(HTTP_STATUS_CREATED).json({
             status: HTTP_STATUS_CREATED,

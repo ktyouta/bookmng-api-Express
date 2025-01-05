@@ -21,14 +21,6 @@ export class UserInfoMasterJsonListModel {
 
 
     /**
-     * getter
-     */
-    public get userInfoMasterJsonList() {
-        return this._userInfoMasterJsonList
-    }
-
-
-    /**
      * UserInfoMasterModelからjson形式に変換する
      * @param userInfoMaster 
      * @returns 
