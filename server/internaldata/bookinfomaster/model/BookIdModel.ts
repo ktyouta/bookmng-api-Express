@@ -1,4 +1,4 @@
-import { BookInfoMasterService } from "../service/BookInfoMasterService";
+import { BookInfoMasterListModel } from "./BookInfoMasterListModel";
 import { BookInfoMasterModel } from "./BookInfoMasterModel";
 
 // 書籍IDの接頭辞
@@ -26,17 +26,15 @@ export class BookIdModel {
 
     public static createNewBookId() {
 
-        const bookInfoMasterService: BookInfoMasterService = new BookInfoMasterService();
-
         // 書籍ID採番用に書籍情報マスタからデータを取得する
-        const bookInfoMasterList: BookInfoMasterModel[] = bookInfoMasterService.getBookInfoMaster();
+        const bookInfoMasterListModel: BookInfoMasterListModel = BookInfoMasterListModel.getBookInfoMasterList();
 
-        if (!bookInfoMasterList) {
+        if (!bookInfoMasterListModel) {
             throw Error("書籍IDの採番に必要な書籍情報マスタが取得できませんでした。");
         }
 
         // 書籍IDを採番する
-        const latestBookId = BookIdModel.createLatestBookId(bookInfoMasterList);
+        const latestBookId = BookIdModel.createLatestBookId(bookInfoMasterListModel);
 
         if (!latestBookId) {
             throw Error("書籍IDの採番に失敗しました。");
@@ -68,10 +66,12 @@ export class BookIdModel {
     /**
      * 書籍IDを採番する
      */
-    private static createLatestBookId(bookInfoList: BookInfoMasterModel[]): string {
+    private static createLatestBookId(bookInfoMasterListModel: BookInfoMasterListModel): string {
+
+        const bookInfoMasterModelList = bookInfoMasterListModel.bookInfoMasterModelList
 
         //IDが最大のNOを取得
-        let maxNo = bookInfoList.reduce<number>((prev: number, current: BookInfoMasterModel) => {
+        let maxNo = bookInfoMasterModelList.reduce<number>((prev: number, current: BookInfoMasterModel) => {
 
             let currentNm = parseInt(current.bookId.replace(`${PRE_BOOK_ID}`, ""));
             return Math.max(prev, currentNm);
@@ -91,4 +91,14 @@ export class BookIdModel {
         return bookId.includes(PRE_BOOK_ID);
     }
 
+
+    /**
+     * 書籍IDの同一チェック
+     * @param userNameModel 
+     * @returns 
+     */
+    public checkBookIdDuplicate(bookIdModel: BookIdModel) {
+
+        return this._bookId === bookIdModel.bookId;
+    }
 }

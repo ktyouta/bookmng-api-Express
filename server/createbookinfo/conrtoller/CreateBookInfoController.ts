@@ -16,6 +16,7 @@ import { BookAuthorsMasterModel } from '../../internaldata/bookauthorsmaster/mod
 import { AuthorsMasterModel } from '../../internaldata/authorsinfomaster/model/AuthorsMasterModel';
 import { BookInfoMasterCreateModel } from '../../internaldata/bookinfomaster/model/BookInfoMasterCreateModel';
 import { BookInfoMasterListModel } from '../../internaldata/bookinfomaster/model/BookInfoMasterListModel';
+import { AuthorsMasterListModel } from '../../internaldata/authorsinfomaster/model/AuthorsMasterListModel';
 
 
 export class CreateBookInfoController extends RouteController {
@@ -58,10 +59,10 @@ export class CreateBookInfoController extends RouteController {
         const parsedRequestBody: BookInfoCreateRequestModel = this.addBookInfoService.parseRequestBody(requestBody);
 
         // 未削除の著者情報マスタを取得
-        const activeAuthorsMasterList: AuthorsMasterModel[] = this.addBookInfoService.getActiveAuthorsMaster();
+        const activeAuthorsMasterListModel: AuthorsMasterListModel = this.addBookInfoService.getActiveAuthorsMaster();
 
         // 著者IDのマスタ存在チェック
-        let errMessge = this.addBookInfoService.checkAuthorIdExists(activeAuthorsMasterList, parsedRequestBody);
+        let errMessge = this.addBookInfoService.checkAuthorIdExists(activeAuthorsMasterListModel, parsedRequestBody);
 
         // 著者マスタにIDが存在しない
         if (errMessge) {

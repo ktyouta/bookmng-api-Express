@@ -1,5 +1,4 @@
 import { GoogleBookInfoApis } from "../../externalapi/googlebookinfo/service/GoogleBookInfoApis";
-import { AuthorsMasterService } from "../../internaldata/authorsinfomaster/service/AuthorsMasterService";
 import { BOOK_AUTHROS_MASTER_FILE_PATH } from "../../internaldata/bookauthorsmaster/const/BookAuthrosMasterConst";
 import { BookAuthorsMasterCreateModel } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterCreateModel";
 import { BookAuthorsMasterService } from "../../internaldata/bookauthorsmaster/service/BookAuthorsMasterService";
@@ -22,12 +21,12 @@ import { BookAuthorsMasterModel } from "../../internaldata/bookauthorsmaster/mod
 import { AuthorsMasterModel } from "../../internaldata/authorsinfomaster/model/AuthorsMasterModel";
 import { BookInfoMasterListModel } from "../../internaldata/bookinfomaster/model/BookInfoMasterListModel";
 import { BookInfoMasterJsonListModel } from "../../internaldata/bookinfomaster/model/BookInfoMasterJsonListModel";
+import { AuthorsMasterListModel } from "../../internaldata/authorsinfomaster/model/AuthorsMasterListModel";
 
 
 export class CreateBookInfoService {
 
     private bookAuthorsMasterService = new BookAuthorsMasterService();
-    private authorsMasterService = new AuthorsMasterService();
 
 
     /**
@@ -222,22 +221,24 @@ export class CreateBookInfoService {
      * 未削除の著者マスタを取得する
      * @returns 
      */
-    public getActiveAuthorsMaster(): AuthorsMasterModel[] {
+    public getActiveAuthorsMaster(): AuthorsMasterListModel {
 
-        const authorsMasterList: AuthorsMasterModel[] = this.authorsMasterService.getAuthorsMaster();
+        const authorsMasterListModel: AuthorsMasterListModel = AuthorsMasterListModel.getAuthorsMasterList();
 
-        const activeAuthorsMasterList = this.authorsMasterService.getActiveAuthorsMaster(authorsMasterList);
-
-        return activeAuthorsMasterList;
+        return authorsMasterListModel.getActiveAuthorsMaster();
     }
 
 
     /**
      * 著者IDのマスタ存在チェック
      */
-    public checkAuthorIdExists(authorsMasterList: AuthorsMasterModel[], parsedRequestBody: BookInfoCreateRequestModel): string {
+    public checkAuthorIdExists(authorsMasterListModel: AuthorsMasterListModel, parsedRequestBody: BookInfoCreateRequestModel): string {
 
-        const errMessge = this.authorsMasterService.checkAuthorIdExists(authorsMasterList, parsedRequestBody.authorIdListModel);
+        let errMessge = ``;
+
+        if (authorsMasterListModel.checkAuthorIdExists(parsedRequestBody.authorIdListModel)) {
+            errMessge = `著者マスタに存在しない著者が選択されています。`
+        }
 
         return errMessge;
     }

@@ -100,6 +100,16 @@ export class BookInfoMasterListModel {
      */
     public createBookInfoMasterWriteData(bookInfoMasterCreateModel: BookInfoMasterCreateModel): BookInfoMasterListModel {
 
+        // 書籍IDの重複チェック
+        const filterdBookInfoById = this._bookInfoMasterModelList.find((e: BookInfoMasterModel) => {
+            return e.bookIdModel.checkBookIdDuplicate(bookInfoMasterCreateModel.bookIdModel);
+        });
+
+        // 書籍IDが重複している場合
+        if (filterdBookInfoById) {
+            throw Error(`書籍情報が重複しています。${JSON.stringify(filterdBookInfoById)}`);
+        }
+
         // BookInfoMasterModelに変換する
         const createBookInfoMasterBody = new BookInfoMasterModel(
             bookInfoMasterCreateModel.bookIdModel,
