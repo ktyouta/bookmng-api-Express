@@ -1,19 +1,5 @@
 [
 	{
-		"bookId": "H0qpBAAAQBAJ",
-		"authorNo": 0,
-		"authorName": "夏目漱石",
-		"createDate": "20250103",
-		"updateDate": "20250103"
-	},
-	{
-		"bookId": "QRcnAAAAMAAJ",
-		"authorNo": 0,
-		"authorName": "夏目漱石",
-		"createDate": "20250103",
-		"updateDate": "20250103"
-	},
-	{
 		"bookId": "4OafDwAAQBAJ",
 		"authorNo": 0,
 		"authorName": "飯田蛇笏",
@@ -68,5 +54,61 @@
 		"authorName": "和田利男",
 		"createDate": "20250103",
 		"updateDate": "20250103"
+	},
+	{
+		"bookId": "H0qpBAAAQBAJ",
+		"authorNo": 0,
+		"authorName": "夏目漱石",
+		"createDate": "20250106",
+		"updateDate": "20250106"
+	},
+	{
+		"bookId": "QRcnAAAAMAAJ",
+		"authorNo": 0,
+		"authorName": "夏目漱石",
+		"createDate": "20250106",
+		"updateDate": "20250106"
+	},
+	{
+		"bookId": "pumlAQAACAAJ",
+		"authorNo": 0,
+		"authorName": "松本侑子",
+		"createDate": "20250106",
+		"updateDate": "20250106"
+	},
+	{
+		"bookId": "ETr_DAAAQBAJ",
+		"authorNo": 0,
+		"authorName": "千船翔子",
+		"createDate": "20250106",
+		"updateDate": "20250106"
+	},
+	{
+		"bookId": "ETr_DAAAQBAJ",
+		"authorNo": 1,
+		"authorName": "ＡＩＲ　ＡＧＥＮＣＹ・フロンティアワークス",
+		"createDate": "20250106",
+		"updateDate": "20250106"
+	},
+	{
+		"bookId": "ETr_DAAAQBAJ",
+		"authorNo": 2,
+		"authorName": "一柳廣孝",
+		"createDate": "20250106",
+		"updateDate": "20250106"
+	},
+	{
+		"bookId": "o5MkDwAAQBAJ",
+		"authorNo": 0,
+		"authorName": "石原千秋",
+		"createDate": "20250106",
+		"updateDate": "20250106"
+	},
+	{
+		"bookId": "W4LtjwEACAAJ",
+		"authorNo": 0,
+		"authorName": "夏目漱石",
+		"createDate": "20250106",
+		"updateDate": "20250106"
 	}
 ]

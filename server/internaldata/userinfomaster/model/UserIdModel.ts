@@ -1,5 +1,5 @@
-import { UserInfoMasterSerivce } from "../service/UserInfoMasterSerivce";
 import { UserInfoMasterJsonModelType } from "./UserInfoMasterJsonModelType";
+import { UserInfoMasterListModel } from "./UserInfoMasterListModel";
 import { UserInfoMasterModel } from "./UserInfoMasterModel";
 
 // ユーザーIDの接頭辞
@@ -25,17 +25,15 @@ export class UserIdModel {
      */
     public static createNewUserId() {
 
-        const userInfoMasterSerivce = new UserInfoMasterSerivce();
-
         // ユーザーID採番用にユーザー情報マスタからデータを取得する
-        const userInfoMasterList: UserInfoMasterModel[] = userInfoMasterSerivce.getUserInfoMaster();
+        const userInfoMasterListModel = UserInfoMasterListModel.getUserInfoMasterList();
 
-        if (!userInfoMasterList) {
+        if (!userInfoMasterListModel) {
             throw Error("ユーザーIDの採番に必要なユーザー情報マスタが取得できませんでした。");
         }
 
         // ユーザーIDを採番する
-        const latestUserId: string = UserIdModel.createLatestUserId(userInfoMasterList);
+        const latestUserId: string = UserIdModel.createLatestUserId(userInfoMasterListModel);
 
         if (!latestUserId) {
             throw Error("ユーザーIDの採番に失敗しました。");
@@ -66,10 +64,12 @@ export class UserIdModel {
      * @param userInfoList 
      * @returns 
      */
-    private static createLatestUserId(userInfoList: UserInfoMasterModel[]): string {
+    private static createLatestUserId(userInfoMasterListModel: UserInfoMasterListModel): string {
+
+        const userInfoMasterList = userInfoMasterListModel.userInfoMasterModelList;
 
         //IDが最大のNOを取得
-        const maxNo = userInfoList.reduce<number>((prev: number, current: UserInfoMasterModel) => {
+        const maxNo = userInfoMasterList.reduce<number>((prev: number, current: UserInfoMasterModel) => {
 
             const currentNm = parseInt(current.userId.replace(`${PRE_USER_ID}`, ""));
             return Math.max(prev, currentNm);

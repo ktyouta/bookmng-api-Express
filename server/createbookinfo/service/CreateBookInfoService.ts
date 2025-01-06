@@ -20,11 +20,12 @@ import { PublishedDateModel } from "../../internaldata/bookinfomaster/model/Publ
 import { AuthorIdModel } from "../../internaldata/authorsinfomaster/model/AuthorIdMode";
 import { BookAuthorsMasterModel } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModel";
 import { AuthorsMasterModel } from "../../internaldata/authorsinfomaster/model/AuthorsMasterModel";
+import { BookInfoMasterListModel } from "../../internaldata/bookinfomaster/model/BookInfoMasterListModel";
+import { BookInfoMasterJsonListModel } from "../../internaldata/bookinfomaster/model/BookInfoMasterJsonListModel";
 
 
 export class CreateBookInfoService {
 
-    private bookInfoMasterService = new BookInfoMasterService();
     private bookAuthorsMasterService = new BookAuthorsMasterService();
     private authorsMasterService = new AuthorsMasterService();
 
@@ -33,11 +34,11 @@ export class CreateBookInfoService {
      * マスタから書籍情報を取得する
      * @returns 
      */
-    public getBookMasterInfo(): BookInfoMasterModel[] {
+    public getBookMasterInfo(): BookInfoMasterListModel {
 
-        const bookInfoMasterList: BookInfoMasterModel[] = this.bookInfoMasterService.getBookInfoMaster();
+        const bookInfoMasterListModel: BookInfoMasterListModel = BookInfoMasterListModel.getBookInfoMasterList();
 
-        return bookInfoMasterList;
+        return bookInfoMasterListModel;
     }
 
 
@@ -45,11 +46,12 @@ export class CreateBookInfoService {
      * 未削除の書籍情報データを取得
      * @returns 
      */
-    public getActiveBookMasterInfo(bookInfoMasterList: BookInfoMasterModel[]): BookInfoMasterModel[] {
+    public getActiveBookMasterInfo(bookInfoMasterListModel: BookInfoMasterListModel): BookInfoMasterListModel {
 
-        const activeBookInfoMasterList: BookInfoMasterModel[] = this.bookInfoMasterService.getActiveBookInfoMaster(bookInfoMasterList);
+        const activeBookInfoMasterListModel: BookInfoMasterListModel =
+            bookInfoMasterListModel.getActiveBookInfoMaster();
 
-        return activeBookInfoMasterList;
+        return activeBookInfoMasterListModel;
     }
 
 
@@ -71,13 +73,12 @@ export class CreateBookInfoService {
      */
     public createBookInfoMasterCreateBody(bookId: BookIdModel, requestBody: BookInfoCreateRequestModel): BookInfoMasterCreateModel {
 
-        const bookInfoMasterCareteBody: BookInfoMasterCreateModel = this.bookInfoMasterService.createBookInfoMasterCreateBody(
+        return new BookInfoMasterCreateModel(
             bookId,
             requestBody.titleModel,
             requestBody.publishedDateModel,
-            requestBody.descriptionModel);
-
-        return bookInfoMasterCareteBody;
+            requestBody.descriptionModel
+        );
     }
 
 
@@ -113,12 +114,12 @@ export class CreateBookInfoService {
      * @returns 
      */
     public createBookInfoMasterWriteData(
-        bookInfoMasterList: BookInfoMasterModel[],
-        bookInfoMasterCreateModel: BookInfoMasterCreateModel): BookInfoMasterModel[] {
+        bookInfoMasterListModel: BookInfoMasterListModel,
+        bookInfoMasterCreateModel: BookInfoMasterCreateModel): BookInfoMasterListModel {
 
-        bookInfoMasterList = this.bookInfoMasterService.createBookInfoMasterWriteData(bookInfoMasterList, bookInfoMasterCreateModel);
+        const writeBookInfoMasterListModel = bookInfoMasterListModel.createBookInfoMasterWriteData(bookInfoMasterCreateModel);
 
-        return bookInfoMasterList;
+        return writeBookInfoMasterListModel;
     }
 
 
@@ -126,11 +127,15 @@ export class CreateBookInfoService {
      * 書籍情報マスタファイルにデータを書き込む
      * @param bookInfoMasterList 
      */
-    public overWriteBookInfoMaster(bookInfoMasterList: BookInfoMasterModel[]) {
+    public overWriteBookInfoMaster(writeBookInfoMasterListModel: BookInfoMasterListModel) {
+
+        // jsonモデルに変換する
+        const bookInfoMasterJsonListModel = new BookInfoMasterJsonListModel(writeBookInfoMasterListModel);
 
         try {
 
-            this.bookInfoMasterService.overWriteBookInfoMaster(bookInfoMasterList);
+            // 書籍情報マスタファイルに書き込む
+            bookInfoMasterJsonListModel.overWriteBookInfoMaster();
         } catch (err) {
 
             throw Error(`${err} endpoint:${ENV.CREATE_BOOK_INFO}`);
@@ -244,7 +249,7 @@ export class CreateBookInfoService {
      * @param activeBookAuthorsMasterList 
      * @param requestBody 
      */
-    public checkBookInfoExists(activeBookInfoMasterList: BookInfoMasterModel[],
+    public checkBookInfoExists(activeBookInfoMasterListModel: BookInfoMasterListModel,
         activeBookAuthorsMasterList: BookAuthorsMasterModel[], requestBody: BookInfoCreateRequestModel): string {
 
         let errMessage = "";
@@ -253,13 +258,11 @@ export class CreateBookInfoService {
         const publishedDateModel: PublishedDateModel = requestBody.publishedDateModel;
 
         // リクエストのタイトルと発売日に一致する書籍情報を取得する
-        const possibleDuplicateBooksInfoList: BookInfoMasterModel[] = activeBookInfoMasterList.filter((e: BookInfoMasterModel) => {
-
-            return e.titleModel.checkTitleDuplicate(titleModel) && e.publishedDateModel.checkPublishedDateDuplicate(publishedDateModel);
-        });
+        const booksFilteredByTitleAndDateModel: BookInfoMasterListModel =
+            activeBookInfoMasterListModel.getBookInfoFiltereByTitleAndDate(titleModel, publishedDateModel);
 
         // 著者IDがすべて一致する書籍情報を取得する
-        possibleDuplicateBooksInfoList.some((e: BookInfoMasterModel) => {
+        booksFilteredByTitleAndDateModel.bookInfoMasterModelList.some((e: BookInfoMasterModel) => {
 
             // 書籍IDの一致する書籍著者リストを取得する
             const activeBookAuthorsMaster: BookAuthorsMasterModel[] = activeBookAuthorsMasterList.filter((e1: BookAuthorsMasterModel) => {

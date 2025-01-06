@@ -3,7 +3,6 @@ import { UserIdModel } from "../../internaldata/userinfomaster/model/UserIdModel
 import { UserInfoMasterCreateModel } from "../../internaldata/userinfomaster/model/UserInfoMasterCreateModel";
 import { UserInfoMasterJsonModelType } from "../../internaldata/userinfomaster/model/UserInfoMasterJsonModelType";
 import { UserNameModel } from "../../internaldata/userinfomaster/model/UserNameModel";
-import { UserInfoMasterSerivce } from "../../internaldata/userinfomaster/service/UserInfoMasterSerivce";
 import ENV from '../../env.json';
 import { UserInfoMasterModel } from "../../internaldata/userinfomaster/model/UserInfoMasterModel";
 import { UserInfoCreateRequestModel } from "../model/UserInfoCreateRequestModel";
@@ -14,9 +13,6 @@ import { UserInfoMasterJsonListModel } from "../../internaldata/userinfomaster/m
 
 export class CreateUserInfoService {
 
-
-    // ユーザー情報マスタ
-    private userInfoMasterSerivce = new UserInfoMasterSerivce();
 
 
     /**
@@ -73,7 +69,7 @@ export class CreateUserInfoService {
      */
     public createUserInfoMasterCreateBody(userId: UserIdModel, parsedRequestBody: UserInfoCreateRequestModel): UserInfoMasterCreateModel {
 
-        return this.userInfoMasterSerivce.createUserInfoMasterCreateBody(
+        return new UserInfoMasterCreateModel(
             userId, parsedRequestBody.userNameModel, parsedRequestBody.userBirthdayModel);
     }
 

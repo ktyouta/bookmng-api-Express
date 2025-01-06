@@ -6,7 +6,7 @@ import { UserInfoMasterModel } from "./UserInfoMasterModel";
 
 export class UserInfoMasterJsonListModel {
 
-    private readonly _userInfoMasterJsonList: UserInfoMasterJsonModelType[];
+    private readonly _userInfoMasterJsonList: ReadonlyArray<UserInfoMasterJsonModelType>;
 
 
     constructor(userInfoMasterListModel: UserInfoMasterListModel) {

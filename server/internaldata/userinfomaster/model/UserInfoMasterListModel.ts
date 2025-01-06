@@ -15,7 +15,7 @@ import { UserNameModel } from "./UserNameModel";
 
 export class UserInfoMasterListModel {
 
-    private readonly _userInfoMasterModelList: UserInfoMasterModel[];
+    private readonly _userInfoMasterModelList: ReadonlyArray<UserInfoMasterModel>;
 
     private constructor(UserInfoMasterModelList: UserInfoMasterModel[]) {
 
