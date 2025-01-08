@@ -71,21 +71,6 @@ export class AuthorsMasterListModel {
 
 
     /**
-     * 未削除の著者マスタを取得する
-     * @param authorsMasterList 
-     * @returns 
-     */
-    public getActiveAuthorsMaster(): AuthorsMasterListModel {
-
-        const activeAuthorsMasterList = this._authorsMasterList.filter((e) => {
-            return e.deleteFlg !== FLG.ON;
-        });
-
-        return new AuthorsMasterListModel(activeAuthorsMasterList);
-    }
-
-
-    /**
      * BookAuthorsMasterCreateModelからAuthorsMasterModel形式に変換する
      * @param authorsMasterCreateModel 
      * @returns 
@@ -99,31 +84,6 @@ export class AuthorsMasterListModel {
             authorsMasterCreateModel.updateDateModel,
             authorsMasterCreateModel.deleteFlgModel,
         );
-    }
-
-
-    /**
-     * 著者IDのマスタ存在チェック
-     */
-    public checkAuthorIdExists(authorIdModelList: AuthorIdModel[]): boolean {
-
-        let isExistAuthor = true;
-
-        authorIdModelList.some((e: AuthorIdModel) => {
-
-            // 著者マスタにIDが存在するか確認する
-            const authorMaster = this._authorsMasterList.find((e1: AuthorsMasterModel) => {
-
-                return e1.authorIdModel.checkAuthorIdDuplicate(e);
-            });
-
-            if (!authorMaster) {
-                isExistAuthor = false;
-                return true;
-            }
-        });
-
-        return isExistAuthor;
     }
 
 

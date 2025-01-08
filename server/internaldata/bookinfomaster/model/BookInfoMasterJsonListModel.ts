@@ -6,7 +6,7 @@ import { BookInfoMasterModel } from "./BookInfoMasterModel";
 
 export class BookInfoMasterJsonListModel {
 
-    private readonly bookInfoJsonListModel: ReadonlyArray<BookInfoJsonModelType>;
+    private readonly _bookInfoJsonListModel: ReadonlyArray<BookInfoJsonModelType>;
 
 
     constructor(bookInfoMasterListModel: BookInfoMasterListModel) {
@@ -16,7 +16,7 @@ export class BookInfoMasterJsonListModel {
             return this.parseJsonBookInfoMaster(e);
         });
 
-        this.bookInfoJsonListModel = jsonBookInfoMasterListModel;
+        this._bookInfoJsonListModel = jsonBookInfoMasterListModel;
     }
 
 
@@ -50,7 +50,7 @@ export class BookInfoMasterJsonListModel {
 
         try {
 
-            JsonFileOperation.overWriteJsonFileData(BOOK_INFO_MASTER_FILE_PATH, this.bookInfoJsonListModel);
+            JsonFileOperation.overWriteJsonFileData(BOOK_INFO_MASTER_FILE_PATH, this._bookInfoJsonListModel);
         } catch (err) {
 
             throw Error(`書籍情報マスタファイルのデータ書き込み処理中にエラーが発生しました。ERROR:${err}`);

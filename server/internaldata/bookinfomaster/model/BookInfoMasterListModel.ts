@@ -76,23 +76,6 @@ export class BookInfoMasterListModel {
 
 
     /**
-     * 未削除の書籍情報データを取得
-     * @param bookInfoMasterList 
-     * @returns 
-     */
-    public getActiveBookInfoMaster() {
-
-        // 未削除の書籍情報を取得
-        const activeBookInfoMasterList = this._bookInfoMasterModelList.filter((e: BookInfoMasterModel) => {
-
-            return e.deleteFlg !== FLG.ON;
-        });
-
-        return new BookInfoMasterListModel(activeBookInfoMasterList);
-    }
-
-
-    /**
      * 書籍情報マスタに対する書き込み用データの作成
      * @param bookInfoMasterList 
      * @param bookInfoMasterCreateModel 

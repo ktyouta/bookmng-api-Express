@@ -17,6 +17,7 @@ import { AuthorsMasterModel } from '../../internaldata/authorsinfomaster/model/A
 import { BookInfoMasterCreateModel } from '../../internaldata/bookinfomaster/model/BookInfoMasterCreateModel';
 import { BookInfoMasterListModel } from '../../internaldata/bookinfomaster/model/BookInfoMasterListModel';
 import { AuthorsMasterListModel } from '../../internaldata/authorsinfomaster/model/AuthorsMasterListModel';
+import { BookAuthorsMasterListModel } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterListModel';
 
 
 export class CreateBookInfoController extends RouteController {
@@ -59,10 +60,10 @@ export class CreateBookInfoController extends RouteController {
         const parsedRequestBody: BookInfoCreateRequestModel = this.addBookInfoService.parseRequestBody(requestBody);
 
         // 未削除の著者情報マスタを取得
-        const activeAuthorsMasterListModel: AuthorsMasterListModel = this.addBookInfoService.getActiveAuthorsMaster();
+        const activeAuthorsMasterList: ReadonlyArray<AuthorsMasterModel> = this.addBookInfoService.getActiveAuthorsMaster();
 
         // 著者IDのマスタ存在チェック
-        let errMessge = this.addBookInfoService.checkAuthorIdExists(activeAuthorsMasterListModel, parsedRequestBody);
+        let errMessge = this.addBookInfoService.checkAuthorIdExists(activeAuthorsMasterList, parsedRequestBody);
 
         // 著者マスタにIDが存在しない
         if (errMessge) {
@@ -76,17 +77,19 @@ export class CreateBookInfoController extends RouteController {
         const bookInfoMasterListModel: BookInfoMasterListModel = this.addBookInfoService.getBookMasterInfo();
 
         // 未削除の書籍情報データを取得
-        const activeBookInfoMasterListModel: BookInfoMasterListModel =
+        const activeBookInfoMasterListModel: ReadonlyArray<BookInfoMasterModel> =
             this.addBookInfoService.getActiveBookMasterInfo(bookInfoMasterListModel);
 
         // 書籍著者マスタからデータを取得
-        let bookAuthorsMasterList: BookAuthorsMasterModel[] = this.addBookInfoService.getBookAuthorsMasterInfo();
+        const bookAuthorsMasterListModel: BookAuthorsMasterListModel = this.addBookInfoService.getBookAuthorsMasterInfo();
 
         // 未削除の書籍著者情報データを取得
-        const acticeBookAuthorsMasterList = this.addBookInfoService.getActiveBookAuthorsMasterInfo(bookAuthorsMasterList);
+        const acticeBookAuthorsMasterList: ReadonlyArray<BookAuthorsMasterModel> =
+            this.addBookInfoService.getActiveBookAuthorsMasterInfo(bookAuthorsMasterListModel);
 
         // 書籍情報の重複チェック
-        errMessge = this.addBookInfoService.checkBookInfoExists(activeBookInfoMasterListModel, acticeBookAuthorsMasterList, parsedRequestBody);
+        errMessge = this.addBookInfoService.checkBookInfoExists(activeBookInfoMasterListModel,
+            acticeBookAuthorsMasterList, parsedRequestBody);
 
         // 登録しようとしている書籍情報が既に存在する
         if (errMessge) {
@@ -112,13 +115,14 @@ export class CreateBookInfoController extends RouteController {
             this.addBookInfoService.createBookAuthorsMasterCreateBodyList(bookId, parsedRequestBody);
 
         // 書籍著者マスタ書き込み用データを作成
-        bookAuthorsMasterList = this.addBookInfoService.createBookAuthorsMasterWriteData(bookAuthorsMasterList, bookAuthorsMasterCreateBody);
+        const addBookAuthorsMasterListModel: BookAuthorsMasterListModel =
+            this.addBookInfoService.createBookAuthorsMasterWriteData(bookAuthorsMasterListModel, bookAuthorsMasterCreateBody);
 
         // 書籍情報マスタファイルに登録用データを書き込む
         this.addBookInfoService.overWriteBookInfoMaster(writeBookInfoMasterListModel);
 
         // 書籍著者情報マスタファイルに登録用データを書き込む
-        this.addBookInfoService.overWriteBookAuthorsMaster(bookAuthorsMasterList);
+        this.addBookInfoService.overWriteBookAuthorsMaster(addBookAuthorsMasterListModel);
 
         return res.status(HTTP_STATUS_CREATED).json({
             status: HTTP_STATUS_CREATED,
