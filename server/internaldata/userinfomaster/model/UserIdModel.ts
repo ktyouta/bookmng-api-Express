@@ -1,6 +1,6 @@
 import { UserInfoMasterJsonModelType } from "./UserInfoMasterJsonModelType";
-import { UserInfoMasterListModel } from "./UserInfoMasterListModel";
 import { UserInfoMasterModel } from "./UserInfoMasterModel";
+import { WritableUserInfoMasterListModel } from "./WritableUserInfoMasterListModel";
 
 // ユーザーIDの接頭辞
 const PRE_USER_ID = `userId-`;
@@ -26,7 +26,7 @@ export class UserIdModel {
     public static createNewUserId() {
 
         // ユーザーID採番用にユーザー情報マスタからデータを取得する
-        const userInfoMasterListModel = UserInfoMasterListModel.getUserInfoMasterList();
+        const userInfoMasterListModel = WritableUserInfoMasterListModel.getUserInfoMasterList();
 
         if (!userInfoMasterListModel) {
             throw Error("ユーザーIDの採番に必要なユーザー情報マスタが取得できませんでした。");
@@ -64,7 +64,7 @@ export class UserIdModel {
      * @param userInfoList 
      * @returns 
      */
-    private static createLatestUserId(userInfoMasterListModel: UserInfoMasterListModel): string {
+    private static createLatestUserId(userInfoMasterListModel: WritableUserInfoMasterListModel): string {
 
         const userInfoMasterList = userInfoMasterListModel.userInfoMasterModelList;
 

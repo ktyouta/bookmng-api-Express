@@ -1,15 +1,15 @@
 import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
 import { USER_INFO_MASTER_FILE_PATH } from "../const/UserInfoMasterConst";
 import { UserInfoMasterJsonModelType } from "./UserInfoMasterJsonModelType";
-import { UserInfoMasterListModel } from "./UserInfoMasterListModel";
 import { UserInfoMasterModel } from "./UserInfoMasterModel";
+import { WritableUserInfoMasterListModel } from "./WritableUserInfoMasterListModel";
 
 export class UserInfoMasterJsonListModel {
 
     private readonly _userInfoMasterJsonList: ReadonlyArray<UserInfoMasterJsonModelType>;
 
 
-    constructor(userInfoMasterListModel: UserInfoMasterListModel) {
+    constructor(userInfoMasterListModel: WritableUserInfoMasterListModel) {
 
         // jsonファイル登録用の型に変換する
         const jsonUserInfoMasterListModel = userInfoMasterListModel.userInfoMasterModelList.map((e: UserInfoMasterModel) => {

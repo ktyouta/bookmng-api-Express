@@ -7,7 +7,7 @@ import ENV from '../../env.json';
 import { UserInfoMasterModel } from "../../internaldata/userinfomaster/model/UserInfoMasterModel";
 import { UserInfoCreateRequestModel } from "../model/UserInfoCreateRequestModel";
 import { UserInfoCreateRequestType } from "../model/UserInfoCreateRequestType";
-import { UserInfoMasterListModel } from "../../internaldata/userinfomaster/model/UserInfoMasterListModel";
+import { WritableUserInfoMasterListModel } from "../../internaldata/userinfomaster/model/WritableUserInfoMasterListModel";
 import { UserInfoMasterJsonListModel } from "../../internaldata/userinfomaster/model/UserInfoMasterJsonListModel";
 
 
@@ -19,9 +19,9 @@ export class CreateUserInfoService {
      * マスタからユーザー情報を取得する
      * @returns 
      */
-    public getUserMasterInfo(): UserInfoMasterListModel {
+    public getUserMasterInfo(): WritableUserInfoMasterListModel {
 
-        const userInfoMasterListModel: UserInfoMasterListModel = UserInfoMasterListModel.getUserInfoMasterList();
+        const userInfoMasterListModel: WritableUserInfoMasterListModel = WritableUserInfoMasterListModel.getUserInfoMasterList();
 
         return userInfoMasterListModel;
     }
@@ -31,11 +31,11 @@ export class CreateUserInfoService {
      * 未削除のユーザー情報データを取得
      * @returns 
      */
-    public getActiveUserMasterInfo(userInfoMasterListModel: UserInfoMasterListModel): UserInfoMasterListModel {
+    public getActiveUserMasterInfo(userInfoMasterListModel: WritableUserInfoMasterListModel): UserInfoMasterModel[] {
 
-        const activeUserInfoMasterListModel: UserInfoMasterListModel = userInfoMasterListModel.getActiveUserInfoMaster();
+        const activeUserInfoMasterList: UserInfoMasterModel[] = userInfoMasterListModel.getActiveUserInfoMaster();
 
-        return activeUserInfoMasterListModel;
+        return activeUserInfoMasterList;
     }
 
 
@@ -48,15 +48,21 @@ export class CreateUserInfoService {
         return new UserInfoCreateRequestModel(requestBody);
     }
 
+
     /**
      * ユーザー重複チェック
      * @param userNameModel 
      */
-    public checkUserNameExists(activeUserInfoMasterListModel: UserInfoMasterListModel, parsedRequestBody: UserInfoCreateRequestModel): boolean {
+    public checkUserNameExists(activeUserInfoMasterList: UserInfoMasterModel[],
+        parsedRequestBody: UserInfoCreateRequestModel): boolean {
 
         const userNameModel: UserNameModel = parsedRequestBody.userNameModel;
 
-        return activeUserInfoMasterListModel.checkUserNameExists(userNameModel);
+        const isExistDuplicateUser = activeUserInfoMasterList.some((e: UserInfoMasterModel) => {
+            return e.userNameModel.checkUsernameDuplicate(userNameModel);
+        });
+
+        return isExistDuplicateUser;
     }
 
 
@@ -79,11 +85,11 @@ export class CreateUserInfoService {
      * @param userInfoMasterCreateModel 
      */
     public createUserInfoMasterWriteData(
-        userInfoMasterListModel: UserInfoMasterListModel,
-        userInfoMasterCreateModel: UserInfoMasterCreateModel): UserInfoMasterListModel {
+        userInfoMasterListModel: WritableUserInfoMasterListModel,
+        userInfoMasterCreateModel: UserInfoMasterCreateModel): WritableUserInfoMasterListModel {
 
         // ユーザーを追加する
-        const userInfoMasterListWriteModel: UserInfoMasterListModel =
+        const userInfoMasterListWriteModel: WritableUserInfoMasterListModel =
             userInfoMasterListModel.createUserInfoMasterWriteData(userInfoMasterCreateModel);
 
         return userInfoMasterListWriteModel;
@@ -94,7 +100,7 @@ export class CreateUserInfoService {
      * ユーザーマスタファイルにデータを書き込む
      * @param userInfoMasterList 
      */
-    public overWriteUserInfoMaster(userInfoMasterListWriteModel: UserInfoMasterListModel) {
+    public overWriteUserInfoMaster(userInfoMasterListWriteModel: WritableUserInfoMasterListModel) {
 
         // json用のモデルに変換する
         const userInfoMasterJsonListModel: UserInfoMasterJsonListModel = new UserInfoMasterJsonListModel(userInfoMasterListWriteModel);

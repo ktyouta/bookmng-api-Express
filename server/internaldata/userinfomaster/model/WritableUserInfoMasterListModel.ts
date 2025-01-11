@@ -13,7 +13,7 @@ import { UserInfoMasterModel } from "./UserInfoMasterModel";
 import { UserNameModel } from "./UserNameModel";
 
 
-export class UserInfoMasterListModel {
+export class WritableUserInfoMasterListModel {
 
     private readonly _userInfoMasterModelList: ReadonlyArray<UserInfoMasterModel>;
 
@@ -45,7 +45,7 @@ export class UserInfoMasterListModel {
             return this.parseUserInfoMaster(e);
         });
 
-        return new UserInfoMasterListModel(parsedUserInfoMasterList);
+        return new WritableUserInfoMasterListModel(parsedUserInfoMasterList);
     }
 
 
@@ -79,7 +79,7 @@ export class UserInfoMasterListModel {
      * @param userInfoMasterList 
      * @returns 
      */
-    public getActiveUserInfoMaster() {
+    public getActiveUserInfoMaster(): UserInfoMasterModel[] {
 
         // 未削除のユーザーを取得
         const activeUserInfoMasterList = this._userInfoMasterModelList.filter((e: UserInfoMasterModel) => {
@@ -87,18 +87,18 @@ export class UserInfoMasterListModel {
             return e.deleteFlg !== FLG.ON;
         });
 
-        return new UserInfoMasterListModel(activeUserInfoMasterList);
+        return activeUserInfoMasterList;
     }
 
 
     /**
-     * ユーザーマスタに対する書き込み用データの作成
+     * ユーザーマスタに登録用の書籍情報を追加する
      * @param userInfoMasterList 
      * @param userInfoMasterCreateModel 
      * @returns 
      */
     public createUserInfoMasterWriteData(
-        userInfoMasterCreateModel: UserInfoMasterCreateModel): UserInfoMasterListModel {
+        userInfoMasterCreateModel: UserInfoMasterCreateModel): WritableUserInfoMasterListModel {
 
         // UserInfoMasterCreateModel→UserInfoMasterModelに変換する
         const createUserInfoMaster: UserInfoMasterModel = this.parseCreateUserInfoMaster(userInfoMasterCreateModel);
@@ -106,7 +106,7 @@ export class UserInfoMasterListModel {
         // ユーザーを追加する
         const createUserInfoMasterList = [...this._userInfoMasterModelList, createUserInfoMaster];
 
-        return new UserInfoMasterListModel(createUserInfoMasterList);
+        return new WritableUserInfoMasterListModel(createUserInfoMasterList);
     }
 
 
@@ -132,20 +132,6 @@ export class UserInfoMasterListModel {
             updateDate,
             deleteFlgModel
         );
-    }
-
-
-    /**
-     * ユーザー名の重複チェック
-     * @param userNameModel 
-     */
-    public checkUserNameExists(userNameModel: UserNameModel): boolean {
-
-        const activeUserMaster = this._userInfoMasterModelList.find((e: UserInfoMasterModel) => {
-            return e.userNameModel.checkUsernameDuplicate(userNameModel);
-        });
-
-        return !!activeUserMaster;
     }
 
 }
