@@ -1,5 +1,5 @@
 // jsonファイルのユーザーマスタ情報
-export type UserInfoMasterJsonModelType = {
+export type FrontUserInfoMasterJsonModelType = {
     readonly userId: string,
     readonly userName: string,
     readonly userBirthDay: string,

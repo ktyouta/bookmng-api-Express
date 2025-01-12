@@ -1,4 +1,4 @@
-export class UserNameModel {
+export class FrontUserNameModel {
 
     private _userName: string;
 
@@ -16,7 +16,7 @@ export class UserNameModel {
      * @param userNameModel 
      * @returns 
      */
-    public checkUsernameDuplicate(userNameModel: UserNameModel) {
+    public checkUsernameDuplicate(userNameModel: FrontUserNameModel) {
 
         return this._userName === userNameModel._userName;
     }

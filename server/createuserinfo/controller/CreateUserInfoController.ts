@@ -6,14 +6,12 @@ import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
 import { HTTP_STATUS_CREATED, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
 import { UserInfoCreateRequestModelSchema } from '../model/UserInfoCreateRequestModelSchema';
 import { ZodIssue } from 'zod';
-import { UserInfoMasterJsonModelType } from '../../internaldata/userinfomaster/model/UserInfoMasterJsonModelType';
-import { UserNameModel } from '../../internaldata/userinfomaster/model/UserNameModel';
-import { UserIdModel } from '../../internaldata/userinfomaster/model/UserIdModel';
-import { UserInfoMasterCreateModel } from '../../internaldata/userinfomaster/model/UserInfoMasterCreateModel';
-import { UserInfoMasterModel } from '../../internaldata/userinfomaster/model/UserInfoMasterModel';
+import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/model/FrontUserIdModel';
+import { FrontUserInfoMasterCreateModel } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterCreateModel';
+import { FrontUserInfoMasterModel } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterModel';
 import { UserInfoCreateRequestModel } from '../model/UserInfoCreateRequestModel';
 import { UserInfoCreateRequestType } from '../model/UserInfoCreateRequestType';
-import { WritableUserInfoMasterListModel } from '../../internaldata/userinfomaster/model/WritableUserInfoMasterListModel';
+import { WritableFrontUserInfoMasterListModel } from '../../internaldata/frontuserinfomaster/model/WritableFrontUserInfoMasterListModel';
 
 
 export class CreateUserInfoController extends RouteController {
@@ -53,10 +51,10 @@ export class CreateUserInfoController extends RouteController {
         }
 
         // 書き込み用ユーザー情報リスト
-        const writableUserMasterListModel: WritableUserInfoMasterListModel = this.createUserInfoService.getUserMasterInfo();
+        const writableUserMasterListModel: WritableFrontUserInfoMasterListModel = this.createUserInfoService.getUserMasterInfo();
 
         // 未削除のユーザー情報リスト
-        const activeUserInfoMasterList: UserInfoMasterModel[] =
+        const activeUserInfoMasterList: FrontUserInfoMasterModel[] =
             this.createUserInfoService.getActiveUserMasterInfo(writableUserMasterListModel);
 
         // リクエストボディの型を変換する
@@ -72,14 +70,14 @@ export class CreateUserInfoController extends RouteController {
         }
 
         // ユーザーIDを採番する
-        const userIdModel = UserIdModel.createNewUserId();
+        const userIdModel = FrontUserIdModel.createNewUserId();
 
         // ユーザーマスタ登録用データの作成
-        const userInfoMasterCreateModel: UserInfoMasterCreateModel =
+        const userInfoMasterCreateModel: FrontUserInfoMasterCreateModel =
             this.createUserInfoService.createUserInfoMasterCreateBody(userIdModel, parsedRequestBody);
 
         // ユーザーマスタに対する書き込み用データの作成
-        const userInfoMasterListWriteModel: WritableUserInfoMasterListModel =
+        const userInfoMasterListWriteModel: WritableFrontUserInfoMasterListModel =
             this.createUserInfoService.createUserInfoMasterWriteData(writableUserMasterListModel, userInfoMasterCreateModel);
 
         // ユーザーマスタにデータを書き込む

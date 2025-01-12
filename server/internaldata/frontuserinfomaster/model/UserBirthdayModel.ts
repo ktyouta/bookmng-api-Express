@@ -1,4 +1,4 @@
-export class UserBirthdayModel {
+export class FrontUserBirthdayModel {
 
     private _userBirthday: string;
 

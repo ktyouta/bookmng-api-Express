@@ -1,23 +1,23 @@
 import { FLG } from "../../../util/const/CommonConst";
 import { CreateDateModel } from "./CreateDateModel";
 import { DeleteFlgModel } from "./DeleteFlgModel";
-import { UpdateDateModel } from "./UpdateDateModel";
-import { UserBirthdayModel } from "./UserBirthDayModel";
-import { UserIdModel } from "./UserIdModel";
-import { UserNameModel } from "./UserNameModel";
+import { UpdateDateModel } from "./FrontUpdateDateModel";
+import { FrontUserBirthdayModel } from "./UserBirthdayModel";
+import { FrontUserIdModel } from "./FrontUserIdModel";
+import { FrontUserNameModel } from "./FrontUserNameModel";
 
 
 /**
  * ユーザーマスタデータ登録用
  */
-export class UserInfoMasterCreateModel {
+export class FrontUserInfoMasterCreateModel {
 
     // ユーザーID
-    private readonly _userIdModel: UserIdModel;
+    private readonly _userIdModel: FrontUserIdModel;
     // ユーザー名
-    private readonly _userNameModel: UserNameModel;
+    private readonly _userNameModel: FrontUserNameModel;
     // ユーザー誕生日
-    private readonly _userBirthDayModel: UserBirthdayModel;
+    private readonly _userBirthDayModel: FrontUserBirthdayModel;
     // データ作成日
     private readonly _createDateModel: CreateDateModel = CreateDateModel.createNewCreateDate(`ユーザーマスタ`);
     // データ更新日
@@ -26,7 +26,7 @@ export class UserInfoMasterCreateModel {
     private readonly _deleteFlgModel: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
 
 
-    constructor(userId: UserIdModel, userName: UserNameModel, userBirthDay: UserBirthdayModel) {
+    constructor(userId: FrontUserIdModel, userName: FrontUserNameModel, userBirthDay: FrontUserBirthdayModel) {
 
         this._userIdModel = userId;
         this._userNameModel = userName;

@@ -1,18 +1,18 @@
 import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
-import { USER_INFO_MASTER_FILE_PATH } from "../const/UserInfoMasterConst";
-import { UserInfoMasterJsonModelType } from "./UserInfoMasterJsonModelType";
-import { UserInfoMasterModel } from "./UserInfoMasterModel";
-import { WritableUserInfoMasterListModel } from "./WritableUserInfoMasterListModel";
+import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../const/UserInfoMasterConst";
+import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModelType";
+import { FrontUserInfoMasterModel } from "./FrontUserInfoMasterModel";
+import { WritableFrontUserInfoMasterListModel } from "./WritableFrontUserInfoMasterListModel";
 
-export class UserInfoMasterJsonListModel {
+export class FrontUserInfoMasterJsonListModel {
 
-    private readonly _userInfoMasterJsonList: ReadonlyArray<UserInfoMasterJsonModelType>;
+    private readonly _userInfoMasterJsonList: ReadonlyArray<FrontUserInfoMasterJsonModelType>;
 
 
-    constructor(userInfoMasterListModel: WritableUserInfoMasterListModel) {
+    constructor(userInfoMasterListModel: WritableFrontUserInfoMasterListModel) {
 
         // jsonファイル登録用の型に変換する
-        const jsonUserInfoMasterListModel = userInfoMasterListModel.userInfoMasterModelList.map((e: UserInfoMasterModel) => {
+        const jsonUserInfoMasterListModel = userInfoMasterListModel.userInfoMasterModelList.map((e: FrontUserInfoMasterModel) => {
             return this.parseJsonUserInfoMaster(e);
         });
 
@@ -25,10 +25,10 @@ export class UserInfoMasterJsonListModel {
      * @param userInfoMaster 
      * @returns 
      */
-    private parseJsonUserInfoMaster(userInfoMaster: UserInfoMasterModel): UserInfoMasterJsonModelType {
+    private parseJsonUserInfoMaster(userInfoMaster: FrontUserInfoMasterModel): FrontUserInfoMasterJsonModelType {
 
         // jsonファイル登録用の型に変換する
-        const jsonUserInfoMaster: UserInfoMasterJsonModelType = {
+        const jsonUserInfoMaster: FrontUserInfoMasterJsonModelType = {
             userId: userInfoMaster.userId,
             userName: userInfoMaster.userName,
             userBirthDay: userInfoMaster.userBirthDay,
@@ -48,7 +48,7 @@ export class UserInfoMasterJsonListModel {
 
         try {
 
-            JsonFileOperation.overWriteJsonFileData(USER_INFO_MASTER_FILE_PATH, this._userInfoMasterJsonList);
+            JsonFileOperation.overWriteJsonFileData(FRONT_USER_INFO_MASTER_FILE_PATH, this._userInfoMasterJsonList);
         } catch (err) {
 
             throw Error(`ユーザーマスタファイルのデータ書き込み処理中にエラーが発生しました。ERROR:${err}`);

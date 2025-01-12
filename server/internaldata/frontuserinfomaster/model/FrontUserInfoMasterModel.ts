@@ -1,23 +1,22 @@
-import { FLG } from "../../../util/const/CommonConst";
 import { CreateDateModel } from "./CreateDateModel";
 import { DeleteFlgModel } from "./DeleteFlgModel";
-import { UpdateDateModel } from "./UpdateDateModel";
-import { UserBirthdayModel } from "./UserBirthDayModel";
-import { UserIdModel } from "./UserIdModel";
-import { UserNameModel } from "./UserNameModel";
+import { UpdateDateModel } from "./FrontUpdateDateModel";
+import { FrontUserIdModel } from "./FrontUserIdModel";
+import { FrontUserNameModel } from "./FrontUserNameModel";
+import { FrontUserBirthdayModel } from "./UserBirthdayModel";
 
 
 /**
  * ユーザーマスタデータ
  */
-export class UserInfoMasterModel {
+export class FrontUserInfoMasterModel {
 
     // ユーザーID
-    private readonly _userIdModel: UserIdModel;
+    private readonly _userIdModel: FrontUserIdModel;
     // ユーザー名
-    private readonly _userNameModel: UserNameModel;
+    private readonly _userNameModel: FrontUserNameModel;
     // ユーザー誕生日
-    private readonly _userBirthDayModel: UserBirthdayModel;
+    private readonly _userBirthDayModel: FrontUserBirthdayModel;
     // データ作成日
     private readonly _createDateModel: CreateDateModel;
     // データ更新日
@@ -26,9 +25,9 @@ export class UserInfoMasterModel {
     private readonly _deleteFlgModel: DeleteFlgModel;
 
 
-    constructor(userId: UserIdModel,
-        userName: UserNameModel,
-        userBirthDay: UserBirthdayModel,
+    constructor(userId: FrontUserIdModel,
+        userName: FrontUserNameModel,
+        userBirthDay: FrontUserBirthdayModel,
         createDate: CreateDateModel,
         updateDate: UpdateDateModel,
         deleteFlg: DeleteFlgModel

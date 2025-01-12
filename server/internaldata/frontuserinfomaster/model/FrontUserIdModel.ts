@@ -1,17 +1,17 @@
-import { UserInfoMasterJsonModelType } from "./UserInfoMasterJsonModelType";
-import { UserInfoMasterModel } from "./UserInfoMasterModel";
-import { WritableUserInfoMasterListModel } from "./WritableUserInfoMasterListModel";
+import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
+import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../const/UserInfoMasterConst";
+import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModelType";
 
 // ユーザーIDの接頭辞
 const PRE_USER_ID = `userId-`;
 
-export class UserIdModel {
+export class FrontUserIdModel {
 
     private _userId: string;
 
     private constructor(userId: string) {
 
-        if (!UserIdModel.checkUserIdValidate(userId)) {
+        if (!FrontUserIdModel.checkUserIdValidate(userId)) {
             throw Error(`ユーザーIDのフォーマットが不正です。userId:${userId}`);
         }
 
@@ -26,20 +26,20 @@ export class UserIdModel {
     public static createNewUserId() {
 
         // ユーザーID採番用にユーザー情報マスタからデータを取得する
-        const userInfoMasterListModel = WritableUserInfoMasterListModel.getUserInfoMasterList();
+        const jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[] = JsonFileOperation.getFileObj(FRONT_USER_INFO_MASTER_FILE_PATH);
 
-        if (!userInfoMasterListModel) {
+        if (!jsonUserInfoMasterList) {
             throw Error("ユーザーIDの採番に必要なユーザー情報マスタが取得できませんでした。");
         }
 
         // ユーザーIDを採番する
-        const latestUserId: string = UserIdModel.createLatestUserId(userInfoMasterListModel);
+        const latestUserId: string = FrontUserIdModel.createLatestUserId(jsonUserInfoMasterList);
 
         if (!latestUserId) {
             throw Error("ユーザーIDの採番に失敗しました。");
         }
 
-        return new UserIdModel(latestUserId);
+        return new FrontUserIdModel(latestUserId);
     }
 
 
@@ -50,7 +50,7 @@ export class UserIdModel {
      */
     public static reConstruct(userId: string) {
 
-        return new UserIdModel(userId);
+        return new FrontUserIdModel(userId);
     }
 
 
@@ -64,12 +64,10 @@ export class UserIdModel {
      * @param userInfoList 
      * @returns 
      */
-    private static createLatestUserId(userInfoMasterListModel: WritableUserInfoMasterListModel): string {
-
-        const userInfoMasterList = userInfoMasterListModel.userInfoMasterModelList;
+    private static createLatestUserId(jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[]): string {
 
         //IDが最大のNOを取得
-        const maxNo = userInfoMasterList.reduce<number>((prev: number, current: UserInfoMasterModel) => {
+        const maxNo = jsonUserInfoMasterList.reduce<number>((prev: number, current: FrontUserInfoMasterJsonModelType) => {
 
             const currentNm = parseInt(current.userId.replace(`${PRE_USER_ID}`, ""));
             return Math.max(prev, currentNm);
