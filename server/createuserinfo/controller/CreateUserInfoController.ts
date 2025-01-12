@@ -12,6 +12,8 @@ import { FrontUserInfoMasterModel } from '../../internaldata/frontuserinfomaster
 import { UserInfoCreateRequestModel } from '../model/UserInfoCreateRequestModel';
 import { UserInfoCreateRequestType } from '../model/UserInfoCreateRequestType';
 import { WritableFrontUserInfoMasterListModel } from '../../internaldata/frontuserinfomaster/model/WritableFrontUserInfoMasterListModel';
+import { FrontUserInfoMasterListModel } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterListModel';
+import { FrontUserInfoMasterJsonModelType } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType';
 
 
 export class CreateUserInfoController extends RouteController {
@@ -50,18 +52,11 @@ export class CreateUserInfoController extends RouteController {
             });
         }
 
-        // 書き込み用ユーザー情報リスト
-        const writableUserMasterListModel: WritableFrontUserInfoMasterListModel = this.createUserInfoService.getUserMasterInfo();
-
-        // 未削除のユーザー情報リスト
-        const activeUserInfoMasterList: FrontUserInfoMasterModel[] =
-            this.createUserInfoService.getActiveUserMasterInfo(writableUserMasterListModel);
-
         // リクエストボディの型を変換する
         const parsedRequestBody: UserInfoCreateRequestModel = this.createUserInfoService.parseRequestBody(requestBody);
 
         // ユーザー重複チェック
-        if (this.createUserInfoService.checkUserNameExists(activeUserInfoMasterList, parsedRequestBody)) {
+        if (this.createUserInfoService.checkUserNameExists(parsedRequestBody)) {
 
             return res.status(HTTP_STATUS_UNPROCESSABLE_ENTITY).json({
                 status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
@@ -72,8 +67,12 @@ export class CreateUserInfoController extends RouteController {
         // ユーザーIDを採番する
         const userIdModel = FrontUserIdModel.createNewUserId();
 
+        // ユーザーマスタ書き込み用データ
+        const writableUserMasterListModel: WritableFrontUserInfoMasterListModel =
+            this.createUserInfoService.getWritableUserMasterInfo();
+
         // ユーザーマスタ登録用データの作成
-        const userInfoMasterCreateModel: FrontUserInfoMasterCreateModel =
+        const userInfoMasterCreateModel: FrontUserInfoMasterModel =
             this.createUserInfoService.createUserInfoMasterCreateBody(userIdModel, parsedRequestBody);
 
         // ユーザーマスタに対する書き込み用データの作成

@@ -10,15 +10,17 @@ import { FrontUserInfoMasterCreateModel } from "./FrontUserInfoMasterCreateModel
 import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModelType";
 import { FrontUserInfoMasterModel } from "./FrontUserInfoMasterModel";
 import { FrontUserNameModel } from "./FrontUserNameModel";
+import { FrontUserInfoMasterListModel } from "./FrontUserInfoMasterListModel";
 
 
 export class WritableFrontUserInfoMasterListModel {
 
     private readonly _userInfoMasterModelList: ReadonlyArray<FrontUserInfoMasterModel>;
 
-    private constructor(UserInfoMasterModelList: FrontUserInfoMasterModel[]) {
 
-        this._userInfoMasterModelList = UserInfoMasterModelList;
+    private constructor(FrontUserInfoMasterList: ReadonlyArray<FrontUserInfoMasterModel>) {
+
+        this._userInfoMasterModelList = FrontUserInfoMasterList;
     }
 
 
@@ -31,18 +33,24 @@ export class WritableFrontUserInfoMasterListModel {
 
 
     /**
-     * ユーザーマスターファイルからデータを取得する
+     * 書き込み用ユーザーリストの作成
+     * @param latestFrontUserInfoMasterListModel 
      * @returns 
      */
-    public static getUserInfoMasterList() {
+    public static crerate() {
 
-        // ユーザーマスタファイルからデータを取得
-        const jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[] = JsonFileOperation.getFileObj(FRONT_USER_INFO_MASTER_FILE_PATH);
+        // ユーザーマスタからデータを取得する
+        const frontUserInfoMasterListModel = new FrontUserInfoMasterListModel();
+
+        const frontUserInfoMasterModel: ReadonlyArray<FrontUserInfoMasterJsonModelType> =
+            frontUserInfoMasterListModel.latestUserInfoMasterJsonList;
 
         // json形式からUserInfoMasterModelに変換する
-        const parsedUserInfoMasterList = jsonUserInfoMasterList.map((e: FrontUserInfoMasterJsonModelType) => {
-            return this.parseUserInfoMaster(e);
-        });
+        const parsedUserInfoMasterList: ReadonlyArray<FrontUserInfoMasterModel> =
+            frontUserInfoMasterModel.map((e: FrontUserInfoMasterJsonModelType) => {
+
+                return WritableFrontUserInfoMasterListModel.parseUserInfoMaster(e);
+            });
 
         return new WritableFrontUserInfoMasterListModel(parsedUserInfoMasterList);
     }
@@ -74,63 +82,18 @@ export class WritableFrontUserInfoMasterListModel {
 
 
     /**
-     * 未削除のユーザーデータを取得
-     * @param userInfoMasterList 
-     * @returns 
-     */
-    public getActiveUserInfoMaster(): FrontUserInfoMasterModel[] {
-
-        // 未削除のユーザーを取得
-        const activeUserInfoMasterList = this._userInfoMasterModelList.filter((e: FrontUserInfoMasterModel) => {
-
-            return e.deleteFlg !== FLG.ON;
-        });
-
-        return activeUserInfoMasterList;
-    }
-
-
-    /**
      * ユーザーマスタに登録用の書籍情報を追加する
      * @param userInfoMasterList 
      * @param userInfoMasterCreateModel 
      * @returns 
      */
-    public createUserInfoMasterWriteData(
-        userInfoMasterCreateModel: FrontUserInfoMasterCreateModel): WritableFrontUserInfoMasterListModel {
-
-        // UserInfoMasterCreateModel→UserInfoMasterModelに変換する
-        const createUserInfoMaster: FrontUserInfoMasterModel = this.parseCreateUserInfoMaster(userInfoMasterCreateModel);
+    public add(userInfoMasterCreateModel: FrontUserInfoMasterModel): WritableFrontUserInfoMasterListModel {
 
         // ユーザーを追加する
-        const createUserInfoMasterList = [...this._userInfoMasterModelList, createUserInfoMaster];
+        const createUserInfoMasterList: FrontUserInfoMasterModel[] = [...this._userInfoMasterModelList, userInfoMasterCreateModel];
 
         return new WritableFrontUserInfoMasterListModel(createUserInfoMasterList);
     }
 
-
-    /**
-     * UserInfoMasterCreateModelからUserInfoMasterModelに変換する
-     * @param userInfoMasterCreateModel 
-     * @returns 
-     */
-    private parseCreateUserInfoMaster(userInfoMasterCreateModel: FrontUserInfoMasterCreateModel): FrontUserInfoMasterModel {
-
-        const userIdModel = userInfoMasterCreateModel.userIdModel;
-        const userNameModel = userInfoMasterCreateModel.userNameModel;
-        const userBirthdayModel = userInfoMasterCreateModel.userBirthDayModel;
-        const createDate = userInfoMasterCreateModel.createDateModel;
-        const updateDate = userInfoMasterCreateModel.updateDateModel;
-        const deleteFlgModel = userInfoMasterCreateModel.deleteFlgModel;
-
-        return new FrontUserInfoMasterModel(
-            userIdModel,
-            userNameModel,
-            userBirthdayModel,
-            createDate,
-            updateDate,
-            deleteFlgModel
-        );
-    }
 
 }
