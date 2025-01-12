@@ -1,6 +1,6 @@
 import { ERROR_LOG_FILE, INFO_LOG_FILE, LOG_FILE_PATH, WARN_LOG_FILE } from "../const/FileInfoConst";
 import { DateUtil } from "./DateUtil";
-import { FileOperation } from "./FileOperation";
+import { FileData } from "./FileData";
 
 export class Logger {
 
@@ -50,7 +50,7 @@ export class Logger {
         }
 
         // ログファイルに出力
-        FileOperation.addWriteFileData(outputFile, output);
+        FileData.append(outputFile, output);
     }
 
 

@@ -1,5 +1,4 @@
-import { FLG } from "../../../util/const/CommonConst";
-import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
+import { JsonFileData } from "../../../util/service/JsonFileData";
 import { AUTHROS_MASTER_FILE_PATH } from "../const/AuthorsMasterConst";
 import { AuthorIdModel } from "./AuthorIdMode";
 import { AuthorNameModel } from "./AuthorNameModel";
@@ -36,7 +35,7 @@ export class AuthorsMasterListModel {
     public static getAuthorsMasterList() {
 
         // 著者マスタファイルからデータを取得
-        const authorsMasterList: AuthorsMasterJsonType[] = JsonFileOperation.getFileObj(AUTHROS_MASTER_FILE_PATH);
+        const authorsMasterList: AuthorsMasterJsonType[] = JsonFileData.getFileObj(AUTHROS_MASTER_FILE_PATH);
 
         // json形式からAuthorsMasterModelに変換する
         const parsedAuthorsMasterList: AuthorsMasterModel[] = authorsMasterList.map((e: AuthorsMasterJsonType) => {

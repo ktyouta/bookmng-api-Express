@@ -1,5 +1,5 @@
 import { FLG } from "../../../util/const/CommonConst";
-import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
+import { JsonFileData } from "../../../util/service/JsonFileData";
 import { BOOK_INFO_MASTER_FILE_PATH } from "../const/BookInfoMasterConst";
 import { BookIdModel } from "../model/BookIdModel";
 import { BookInfoMasterCreateModel } from "../model/BookInfoMasterCreateModel";
@@ -21,7 +21,7 @@ export class BookInfoMasterService {
     public getBookInfoMaster(): BookInfoMasterModel[] {
 
         // 書籍情報マスタファイルからデータを取得
-        const jsonBookInfoMasterList: BookInfoJsonModelType[] = JsonFileOperation.getFileObj(BOOK_INFO_MASTER_FILE_PATH);
+        const jsonBookInfoMasterList: BookInfoJsonModelType[] = JsonFileData.getFileObj(BOOK_INFO_MASTER_FILE_PATH);
 
         // json形式からBookInfoMasterModelに変換する
         const parsedBookInfoMasterList: BookInfoMasterModel[] = jsonBookInfoMasterList.map((e: BookInfoJsonModelType) => {
@@ -168,7 +168,7 @@ export class BookInfoMasterService {
 
         try {
 
-            JsonFileOperation.overWriteJsonFileData(BOOK_INFO_MASTER_FILE_PATH, jsonBookInfoMasterList);
+            JsonFileData.overWrite(BOOK_INFO_MASTER_FILE_PATH, jsonBookInfoMasterList);
         } catch (err) {
 
             throw Error(`書籍情報マスタファイルのデータ書き込み処理中にエラーが発生しました。ERROR:${err}`);

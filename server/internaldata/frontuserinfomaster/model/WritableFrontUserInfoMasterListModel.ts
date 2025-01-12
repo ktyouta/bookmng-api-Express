@@ -1,5 +1,4 @@
 import { FLG } from "../../../util/const/CommonConst";
-import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
 import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../const/UserInfoMasterConst";
 import { CreateDateModel } from "./CreateDateModel";
 import { DeleteFlgModel } from "./DeleteFlgModel";

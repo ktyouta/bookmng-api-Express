@@ -7,8 +7,6 @@ import { BookInfoMasterCreateModel } from "../../internaldata/bookinfomaster/mod
 import { BookInfoJsonModelType } from "../../internaldata/bookinfomaster/model/BookInfoMasterJsonModelType";
 import { BookInfoMasterService } from "../../internaldata/bookinfomaster/service/BookInfoMasterService";
 import { ArrayUtil } from "../../util/service/ArrayUtil";
-import { FileOperation } from "../../util/service/FileOperation";
-import { JsonFileOperation } from "../../util/service/JsonFileOperation";
 import ENV from '../../env.json';
 import { BookInfoMasterModel } from "../../internaldata/bookinfomaster/model/BookInfoMasterModel";
 import { BookInfoCreateRequestType } from "../model/BookInfoCreateRequestType";

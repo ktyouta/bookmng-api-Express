@@ -1,4 +1,4 @@
-import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
+import { JsonFileData } from "../../../util/service/JsonFileData";
 import { BOOK_INFO_MASTER_FILE_PATH } from "../../bookinfomaster/const/BookInfoMasterConst";
 import { AuthorsMasterJsonType } from "./AuthorsMasterJsonType";
 import { AuthorsMasterListModel } from "./AuthorsMasterListModel";
@@ -48,7 +48,7 @@ export class AuthorsMasterJsonListModel {
 
         try {
 
-            JsonFileOperation.overWriteJsonFileData(BOOK_INFO_MASTER_FILE_PATH, this._authorsJsonListModel);
+            JsonFileData.overWrite(BOOK_INFO_MASTER_FILE_PATH, this._authorsJsonListModel);
         } catch (err) {
 
             throw Error(`書籍情報マスタファイルのデータ書き込み処理中にエラーが発生しました。ERROR:${err}`);

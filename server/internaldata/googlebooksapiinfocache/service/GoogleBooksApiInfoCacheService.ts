@@ -1,4 +1,4 @@
-import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
+import { JsonFileData } from "../../../util/service/JsonFileData";
 import { KeywordModel } from "../../googlebooksapiaccesshistory/model/KeywordModel";
 import { GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH } from "../const/GoogleBooksApiInfoCacheConst";
 import { GoogleBooksApiDescriptionModel } from "../model/GoogleBooksApiDescriptionModel";
@@ -21,7 +21,7 @@ export class GoogleBooksApiInfoCacheService {
     public getGoogleBooksApiInfoCache() {
 
         // Google Books Api著者キャッシュ情報ファイルからデータを取得
-        const googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[] = JsonFileOperation.getFileObj(GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH);
+        const googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[] = JsonFileData.getFileObj(GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH);
 
         return googleBooksApiInfoCacheList;
     }
@@ -91,7 +91,7 @@ export class GoogleBooksApiInfoCacheService {
 
         try {
 
-            JsonFileOperation.overWriteJsonFileData(GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH, googleBooksApiInfoCacheList);
+            JsonFileData.overWrite(GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH, googleBooksApiInfoCacheList);
         } catch (err) {
 
             throw Error(`Google Books Api書籍キャッシュ情報ファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);

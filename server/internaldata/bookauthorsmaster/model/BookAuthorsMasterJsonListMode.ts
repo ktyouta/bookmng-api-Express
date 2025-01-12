@@ -1,4 +1,4 @@
-import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
+import { JsonFileData } from "../../../util/service/JsonFileData";
 import { BOOK_AUTHROS_MASTER_FILE_PATH } from "../const/BookAuthrosMasterConst";
 import { BookAuthorsMasterJsonType } from "./BookAuthorsMasterJsonType";
 import { BookAuthorsMasterListModel } from "./BookAuthorsMasterListModel";
@@ -47,7 +47,7 @@ export class BookAuthorsMasterJsonListMode {
     public overWriteBookAuthorsMaster() {
 
         try {
-            JsonFileOperation.overWriteJsonFileData(BOOK_AUTHROS_MASTER_FILE_PATH, this._bookInfoJsonList);
+            JsonFileData.overWrite(BOOK_AUTHROS_MASTER_FILE_PATH, this._bookInfoJsonList);
         } catch (err) {
             throw Error(`書籍著者情報マスタファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);
         }

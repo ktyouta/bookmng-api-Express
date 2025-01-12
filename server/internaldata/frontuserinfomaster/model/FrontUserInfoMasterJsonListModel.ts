@@ -1,4 +1,4 @@
-import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
+import { JsonFileData } from "../../../util/service/JsonFileData";
 import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../const/UserInfoMasterConst";
 import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModelType";
 import { FrontUserInfoMasterModel } from "./FrontUserInfoMasterModel";
@@ -48,7 +48,7 @@ export class FrontUserInfoMasterJsonListModel {
 
         try {
 
-            JsonFileOperation.overWriteJsonFileData(FRONT_USER_INFO_MASTER_FILE_PATH, this._userInfoMasterJsonList);
+            JsonFileData.overWrite(FRONT_USER_INFO_MASTER_FILE_PATH, this._userInfoMasterJsonList);
         } catch (err) {
 
             throw Error(`ユーザーマスタファイルのデータ書き込み処理中にエラーが発生しました。ERROR:${err}`);

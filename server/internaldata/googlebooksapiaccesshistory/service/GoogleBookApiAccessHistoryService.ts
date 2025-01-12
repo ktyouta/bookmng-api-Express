@@ -1,4 +1,4 @@
-import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
+import { JsonFileData } from "../../../util/service/JsonFileData";
 import { GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH } from "../const/GoogleBooksApiAccessHistoryConst";
 import { AccessDateModel } from "../model/AccessDateModel";
 import { GoogleBooksApiAccessHistoryCreateModel } from "../model/GoogleBooksApiAccessHistoryCreateModel";
@@ -15,7 +15,7 @@ export class GoogleBookApiAccessHistoryService {
     public GoogleBookApiAccessHistory() {
 
         // GoogleBookApiアクセス情報ファイルからデータを取得
-        const googleBookApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[] = JsonFileOperation.getFileObj(GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH);
+        const googleBookApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[] = JsonFileData.getFileObj(GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH);
 
         return googleBookApiAccessHistoryList;
     }
@@ -82,7 +82,7 @@ export class GoogleBookApiAccessHistoryService {
 
         try {
 
-            JsonFileOperation.overWriteJsonFileData(GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH, googleBookApiAccessHistoryList);
+            JsonFileData.overWrite(GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH, googleBookApiAccessHistoryList);
         } catch (err) {
 
             throw Error(`Google Books Apiアクセス情報ファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);

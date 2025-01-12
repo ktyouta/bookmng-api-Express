@@ -1,4 +1,4 @@
-import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
+import { JsonFileData } from "../../../util/service/JsonFileData";
 import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../const/UserInfoMasterConst";
 import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModelType";
 
@@ -26,7 +26,7 @@ export class FrontUserIdModel {
     public static createNewUserId() {
 
         // ユーザーID採番用にユーザー情報マスタからデータを取得する
-        const jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[] = JsonFileOperation.getFileObj(FRONT_USER_INFO_MASTER_FILE_PATH);
+        const jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[] = JsonFileData.getFileObj(FRONT_USER_INFO_MASTER_FILE_PATH);
 
         if (!jsonUserInfoMasterList) {
             throw Error("ユーザーIDの採番に必要なユーザー情報マスタが取得できませんでした。");

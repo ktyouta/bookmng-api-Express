@@ -1,5 +1,5 @@
 import { FLG } from "../../../util/const/CommonConst";
-import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
+import { JsonFileData } from "../../../util/service/JsonFileData";
 import { AUTHROS_MASTER_FILE_PATH } from "../const/AuthorsMasterConst";
 import { AuthorBirthDayModel } from "../model/AuthorBirthDayModel";
 import { AuthorIdModel } from "../model/AuthorIdMode";
@@ -21,7 +21,7 @@ export class AuthorsMasterService {
     public getAuthorsMaster(): AuthorsMasterModel[] {
 
         // 著者マスタファイルからデータを取得
-        const authorsMasterList: AuthorsMasterJsonType[] = JsonFileOperation.getFileObj(AUTHROS_MASTER_FILE_PATH);
+        const authorsMasterList: AuthorsMasterJsonType[] = JsonFileData.getFileObj(AUTHROS_MASTER_FILE_PATH);
 
         // json形式からAuthorsMasterModelに変換する
         const parsedAuthorsMasterList: AuthorsMasterModel[] = authorsMasterList.map((e: AuthorsMasterJsonType) => {
@@ -176,7 +176,7 @@ export class AuthorsMasterService {
 
         try {
 
-            JsonFileOperation.overWriteJsonFileData(AUTHROS_MASTER_FILE_PATH, jsonAuthorsMasterList);
+            JsonFileData.overWrite(AUTHROS_MASTER_FILE_PATH, jsonAuthorsMasterList);
         } catch (err) {
 
             throw Error(`著者情報マスタファイルのデータ書き込み中にエラーが発生しました。ERROR:${err}`);

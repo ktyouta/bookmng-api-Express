@@ -1,4 +1,4 @@
-import { JsonFileOperation } from "../../../util/service/JsonFileOperation";
+import { JsonFileData } from "../../../util/service/JsonFileData";
 import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/model/GoogleBooksApiIdModel";
 import { GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE_PATH } from "../const/GoogleBooksApiSmallThumbnailCacheConst";
 import { GoogleBooksApiSmallThumbnailCacheCreateModel } from "../model/GoogleBooksApiSmallThumbnailCacheCreateModel";
@@ -18,7 +18,7 @@ export class GoogleBooksApiSmallThumbnailCacheService {
 
         // Google Books Apiサムネイル(小)キャッシュ情報ファイルからデータを取得
         const googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[]
-            = JsonFileOperation.getFileObj(GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE_PATH);
+            = JsonFileData.getFileObj(GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE_PATH);
 
         return googleBooksApiSmallThumbnailCacheList;
     }
@@ -69,7 +69,7 @@ export class GoogleBooksApiSmallThumbnailCacheService {
 
         try {
 
-            JsonFileOperation.overWriteJsonFileData(GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE_PATH,
+            JsonFileData.overWrite(GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE_PATH,
                 googleBooksApiSmallThumbnailCacheList);
         } catch (err) {
 
