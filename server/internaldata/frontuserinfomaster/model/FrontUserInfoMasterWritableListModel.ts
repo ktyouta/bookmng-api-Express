@@ -9,6 +9,7 @@ import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModel
 import { FrontUserInfoMasterModel } from "./FrontUserInfoMasterModel";
 import { FrontUserNameModel } from "./FrontUserNameModel";
 import { FrontUserInfoMasterListModel } from "./FrontUserInfoMasterListModel";
+import { JsonFileData } from "../../../util/service/JsonFileData";
 
 
 /**
@@ -97,4 +98,41 @@ export class FrontUserInfoMasterWritableListModel {
     }
 
 
+    /**
+     * json形式に変換する
+     * @param userInfoMaster 
+     * @returns 
+     */
+    private parseJsonUserInfoMaster(userInfoMaster: FrontUserInfoMasterModel): FrontUserInfoMasterJsonModelType {
+
+        // jsonファイル登録用の型に変換する
+        const jsonUserInfoMaster: FrontUserInfoMasterJsonModelType = {
+            userId: userInfoMaster.userId,
+            userName: userInfoMaster.userName,
+            userBirthDay: userInfoMaster.userBirthDay,
+            createDate: userInfoMaster.createDate,
+            updateDate: userInfoMaster.updateDate,
+            deleteFlg: userInfoMaster.deleteFlg,
+        };
+
+        return jsonUserInfoMaster;
+    }
+
+
+    /**
+     * ユーザーマスタファイルにデータを書き込む
+     */
+    public commit() {
+
+        // jsonファイル登録用の型に変換する
+        const jsonUserInfoMasterListModel = this._userInfoMasterModelList.map((e: FrontUserInfoMasterModel) => {
+            return this.parseJsonUserInfoMaster(e);
+        });
+
+        try {
+            JsonFileData.overWrite(FRONT_USER_INFO_MASTER_FILE_PATH, jsonUserInfoMasterListModel);
+        } catch (err) {
+            throw Error(`ユーザーマスタファイルのデータ書き込み処理中にエラーが発生しました。ERROR:${err}`);
+        }
+    }
 }

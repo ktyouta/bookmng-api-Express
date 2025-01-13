@@ -5,7 +5,6 @@ import { FrontUserInfoMasterModel } from "../../internaldata/frontuserinfomaster
 import { FrontUserInfoCreateRequestModel } from "../model/FrontUserInfoCreateRequestModel";
 import { FrontUserInfoCreateRequestType } from "../model/FrontUserInfoCreateRequestType";
 import { FrontUserInfoMasterWritableListModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterWritableListModel";
-import { FrontUserInfoMasterJsonListModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonListModel";
 import { FrontUserInfoMasterListModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterListModel";
 import { FrontUserInfoMasterJsonModelType } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType";
 import { CreateDateModel } from "../../internaldata/frontuserinfomaster/model/CreateDateModel";
@@ -108,15 +107,10 @@ export class CreateFrontUserInfoService {
      */
     public overWriteUserInfoMaster(userInfoMasterListWriteModel: FrontUserInfoMasterWritableListModel) {
 
-        // json用のモデルに変換する
-        const userInfoMasterJsonListModel: FrontUserInfoMasterJsonListModel = new FrontUserInfoMasterJsonListModel(userInfoMasterListWriteModel);
-
         try {
-
             // ユーザーマスタファイルにデータを書き込む
-            userInfoMasterJsonListModel.commit();
+            userInfoMasterListWriteModel.commit();
         } catch (err) {
-
             throw Error(`${err} endpoint:${ENV.CREATE_FRONT_USER_INFO}`);
         }
     }
