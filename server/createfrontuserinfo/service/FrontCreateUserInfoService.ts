@@ -1,11 +1,10 @@
 import { FrontUserIdModel } from "../../internaldata/frontuserinfomaster/model/FrontUserIdModel";
-import { FrontUserInfoMasterCreateModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterCreateModel";
 import { FrontUserNameModel } from "../../internaldata/frontuserinfomaster/model/FrontUserNameModel";
 import ENV from '../../env.json';
 import { FrontUserInfoMasterModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterModel";
-import { UserInfoCreateRequestModel } from "../model/UserInfoCreateRequestModel";
-import { UserInfoCreateRequestType } from "../model/UserInfoCreateRequestType";
-import { WritableFrontUserInfoMasterListModel } from "../../internaldata/frontuserinfomaster/model/WritableFrontUserInfoMasterListModel";
+import { FrontUserInfoCreateRequestModel } from "../model/FrontUserInfoCreateRequestModel";
+import { FrontUserInfoCreateRequestType } from "../model/FrontUserInfoCreateRequestType";
+import { FrontUserInfoMasterWritableListModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterWritableListModel";
 import { FrontUserInfoMasterJsonListModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonListModel";
 import { FrontUserInfoMasterListModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterListModel";
 import { FrontUserInfoMasterJsonModelType } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType";
@@ -15,16 +14,16 @@ import { DeleteFlgModel } from "../../internaldata/frontuserinfomaster/model/Del
 import { FLG } from "../../util/const/CommonConst";
 
 
-export class CreateUserInfoService {
+export class CreateFrontUserInfoService {
 
 
     /**
-     * UserInfoCreateRequestModelTypeからUserInfoCreateRequestModelに変換する
+     * リクエストボディの型変換
      * @param requestBody 
      */
-    public parseRequestBody(requestBody: UserInfoCreateRequestType): UserInfoCreateRequestModel {
+    public parseRequestBody(requestBody: FrontUserInfoCreateRequestType): FrontUserInfoCreateRequestModel {
 
-        return new UserInfoCreateRequestModel(requestBody);
+        return new FrontUserInfoCreateRequestModel(requestBody);
     }
 
 
@@ -32,7 +31,7 @@ export class CreateUserInfoService {
      * ユーザー重複チェック
      * @param userNameModel 
      */
-    public checkUserNameExists(parsedRequestBody: UserInfoCreateRequestModel): boolean {
+    public checkUserNameExists(parsedRequestBody: FrontUserInfoCreateRequestModel): boolean {
 
         const userInfoMasterListModel: FrontUserInfoMasterListModel = new FrontUserInfoMasterListModel();
         const userNameModel: FrontUserNameModel = parsedRequestBody.userNameModel;
@@ -53,10 +52,10 @@ export class CreateUserInfoService {
      * ユーザーマスタ書き込み用データの取得
      * @returns 
      */
-    public getWritableUserMasterInfo(): WritableFrontUserInfoMasterListModel {
+    public getWritableUserMasterInfo(): FrontUserInfoMasterWritableListModel {
 
-        const writableUserMasterListModel: WritableFrontUserInfoMasterListModel =
-            WritableFrontUserInfoMasterListModel.crerate();
+        const writableUserMasterListModel: FrontUserInfoMasterWritableListModel =
+            FrontUserInfoMasterWritableListModel.crerate();
 
         return writableUserMasterListModel;
     }
@@ -70,7 +69,7 @@ export class CreateUserInfoService {
      * @returns 
      */
     public createUserInfoMasterCreateBody(userId: FrontUserIdModel,
-        parsedRequestBody: UserInfoCreateRequestModel): FrontUserInfoMasterModel {
+        parsedRequestBody: FrontUserInfoCreateRequestModel): FrontUserInfoMasterModel {
 
         const createDateModel: CreateDateModel = CreateDateModel.createNewCreateDate(`ユーザーマスタ`);
         const updateDateModel: UpdateDateModel = UpdateDateModel.createNewUpdateDate(`ユーザーマスタ`);
@@ -92,11 +91,11 @@ export class CreateUserInfoService {
      * @param userInfoMasterCreateModel 
      */
     public createUserInfoMasterWriteData(
-        userInfoMasterListModel: WritableFrontUserInfoMasterListModel,
-        userInfoMasterCreateModel: FrontUserInfoMasterModel): WritableFrontUserInfoMasterListModel {
+        userInfoMasterListModel: FrontUserInfoMasterWritableListModel,
+        userInfoMasterCreateModel: FrontUserInfoMasterModel): FrontUserInfoMasterWritableListModel {
 
         // ユーザーを追加する
-        const userInfoMasterListWriteModel: WritableFrontUserInfoMasterListModel =
+        const userInfoMasterListWriteModel: FrontUserInfoMasterWritableListModel =
             userInfoMasterListModel.add(userInfoMasterCreateModel);
 
         return userInfoMasterListWriteModel;
@@ -107,7 +106,7 @@ export class CreateUserInfoService {
      * ユーザーマスタファイルにデータを書き込む
      * @param userInfoMasterList 
      */
-    public overWriteUserInfoMaster(userInfoMasterListWriteModel: WritableFrontUserInfoMasterListModel) {
+    public overWriteUserInfoMaster(userInfoMasterListWriteModel: FrontUserInfoMasterWritableListModel) {
 
         // json用のモデルに変換する
         const userInfoMasterJsonListModel: FrontUserInfoMasterJsonListModel = new FrontUserInfoMasterJsonListModel(userInfoMasterListWriteModel);
@@ -115,10 +114,10 @@ export class CreateUserInfoService {
         try {
 
             // ユーザーマスタファイルにデータを書き込む
-            userInfoMasterJsonListModel.overWriteUserInfoMaster();
+            userInfoMasterJsonListModel.commit();
         } catch (err) {
 
-            throw Error(`${err} endpoint:${ENV.CREATE_USER_INFO}`);
+            throw Error(`${err} endpoint:${ENV.CREATE_FRONT_USER_INFO}`);
         }
     }
 

@@ -176,3 +176,8 @@
 [2025-01-12 23:41:17] [INFO] POST /createuserinfo/v1/volumes | User-Agent: PostmanRuntime/7.43.0 | Query: {} | Request Body: {"userName":"testuser","userBirthday":"20250101"} | ip: ::1
 [2025-01-12 23:56:17] [INFO] POST /createuserinfo/v1/volumes | User-Agent: PostmanRuntime/7.43.0 | Query: {} | Request Body: {"userName":"testuser","userBirthday":"20250101"} | ip: ::1
 [2025-01-12 23:56:30] [INFO] POST /createuserinfo/v1/volumes | User-Agent: PostmanRuntime/7.43.0 | Query: {} | Request Body: {"userName":"testuser","userBirthday":"20250101"} | ip: ::1
+[2025-01-13 16:06:47] [INFO] POST /createuserinfo/v1/volumes | User-Agent: PostmanRuntime/7.43.0 | Query: {} | Request Body: {"userName":"testuser","userBirthday":"20250101"} | ip: ::1
+[2025-01-13 16:07:13] [INFO] POST /createfrontuserinfo/v1/volumes | User-Agent: PostmanRuntime/7.43.0 | Query: {} | Request Body: {"userName":"testuser","userBirthday":"20250101"} | ip: ::1
+[2025-01-13 16:07:32] [INFO] POST /createfrontuserinfo/v1/volumes | User-Agent: PostmanRuntime/7.43.0 | Query: {} | Request Body: {"userName":"testuser","userBirthday":"20250101"} | ip: ::1
+[2025-01-13 16:22:42] [INFO] POST /createfrontuserinfo/v1/volumes | User-Agent: PostmanRuntime/7.43.0 | Query: {} | Request Body: {"userName":"testuser","userBirthday":"20250101"} | ip: ::1
+[2025-01-13 16:22:49] [INFO] POST /createfrontuserinfo/v1/volumes | User-Agent: PostmanRuntime/7.43.0 | Query: {} | Request Body: {"userName":"testuser","userBirthday":"20250101"} | ip: ::1

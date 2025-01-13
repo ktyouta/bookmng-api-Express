@@ -2,14 +2,18 @@ import { JsonFileData } from "../../../util/service/JsonFileData";
 import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../const/UserInfoMasterConst";
 import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModelType";
 import { FrontUserInfoMasterModel } from "./FrontUserInfoMasterModel";
-import { WritableFrontUserInfoMasterListModel } from "./WritableFrontUserInfoMasterListModel";
+import { FrontUserInfoMasterWritableListModel } from "./FrontUserInfoMasterWritableListModel";
 
+
+/**
+ * 書き込み用のユーザー情報をファイルにコミット用クラス
+ */
 export class FrontUserInfoMasterJsonListModel {
 
     private readonly _userInfoMasterJsonList: ReadonlyArray<FrontUserInfoMasterJsonModelType>;
 
 
-    constructor(userInfoMasterListModel: WritableFrontUserInfoMasterListModel) {
+    constructor(userInfoMasterListModel: FrontUserInfoMasterWritableListModel) {
 
         // jsonファイル登録用の型に変換する
         const jsonUserInfoMasterListModel = userInfoMasterListModel.userInfoMasterModelList.map((e: FrontUserInfoMasterModel) => {
@@ -44,7 +48,7 @@ export class FrontUserInfoMasterJsonListModel {
     /**
      * ユーザーマスタファイルにデータを書き込む
      */
-    public overWriteUserInfoMaster() {
+    public commit() {
 
         try {
 

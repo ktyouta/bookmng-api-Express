@@ -1,14 +1,14 @@
 import { FrontUserBirthdayModel } from "../../internaldata/frontuserinfomaster/model/UserBirthdayModel";
 import { FrontUserNameModel } from "../../internaldata/frontuserinfomaster/model/FrontUserNameModel";
-import { UserInfoCreateRequestType } from "./UserInfoCreateRequestType";
+import { FrontUserInfoCreateRequestType } from "./FrontUserInfoCreateRequestType";
 
-export class UserInfoCreateRequestModel {
+export class FrontUserInfoCreateRequestModel {
 
     private _userNameModel: FrontUserNameModel;
     private _userBidthdayModel: FrontUserBirthdayModel;
 
 
-    constructor(userInfoCreateBody: UserInfoCreateRequestType) {
+    constructor(userInfoCreateBody: FrontUserInfoCreateRequestType) {
 
         this._userNameModel = new FrontUserNameModel(userInfoCreateBody.userName);
         this._userBidthdayModel = new FrontUserBirthdayModel(userInfoCreateBody.userBirthday);

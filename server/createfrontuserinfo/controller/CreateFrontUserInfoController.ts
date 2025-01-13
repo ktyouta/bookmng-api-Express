@@ -1,27 +1,24 @@
 import { Router, Request, Response } from 'express';
 import ENV from '../../env.json';
 import { RouteController } from '../../router/controller/RouteController';
-import { CreateUserInfoService } from '../service/CreateUserInfoService';
+import { CreateFrontUserInfoService } from '../service/FrontCreateUserInfoService';
 import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
 import { HTTP_STATUS_CREATED, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
-import { UserInfoCreateRequestModelSchema } from '../model/UserInfoCreateRequestModelSchema';
+import { FrontUserInfoCreateRequestModelSchema } from '../model/FrontUserInfoCreateRequestModelSchema';
 import { ZodIssue } from 'zod';
 import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/model/FrontUserIdModel';
-import { FrontUserInfoMasterCreateModel } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterCreateModel';
 import { FrontUserInfoMasterModel } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterModel';
-import { UserInfoCreateRequestModel } from '../model/UserInfoCreateRequestModel';
-import { UserInfoCreateRequestType } from '../model/UserInfoCreateRequestType';
-import { WritableFrontUserInfoMasterListModel } from '../../internaldata/frontuserinfomaster/model/WritableFrontUserInfoMasterListModel';
-import { FrontUserInfoMasterListModel } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterListModel';
-import { FrontUserInfoMasterJsonModelType } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType';
+import { FrontUserInfoCreateRequestModel } from '../model/FrontUserInfoCreateRequestModel';
+import { FrontUserInfoCreateRequestType } from '../model/FrontUserInfoCreateRequestType';
+import { FrontUserInfoMasterWritableListModel } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterWritableListModel';
 
 
-export class CreateUserInfoController extends RouteController {
+export class CreateFrontUserInfoController extends RouteController {
 
-    private createUserInfoService = new CreateUserInfoService();
+    private createFrontUserInfoService = new CreateFrontUserInfoService();
 
     public routes() {
-        this.router.post(`${ENV.CREATE_USER_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+        this.router.post(`${ENV.CREATE_FRONT_USER_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
     }
 
     /**
@@ -33,10 +30,10 @@ export class CreateUserInfoController extends RouteController {
     public doExecute(req: Request, res: Response) {
 
         // リクエストボディ
-        const requestBody: UserInfoCreateRequestType = req.body;
+        const requestBody: FrontUserInfoCreateRequestType = req.body;
 
         // リクエストのバリデーションチェック
-        const validateResult = UserInfoCreateRequestModelSchema.safeParse(requestBody);
+        const validateResult = FrontUserInfoCreateRequestModelSchema.safeParse(requestBody);
 
         // バリデーションエラー
         if (!validateResult.success) {
@@ -53,10 +50,10 @@ export class CreateUserInfoController extends RouteController {
         }
 
         // リクエストボディの型を変換する
-        const parsedRequestBody: UserInfoCreateRequestModel = this.createUserInfoService.parseRequestBody(requestBody);
+        const parsedRequestBody: FrontUserInfoCreateRequestModel = this.createFrontUserInfoService.parseRequestBody(requestBody);
 
         // ユーザー重複チェック
-        if (this.createUserInfoService.checkUserNameExists(parsedRequestBody)) {
+        if (this.createFrontUserInfoService.checkUserNameExists(parsedRequestBody)) {
 
             return res.status(HTTP_STATUS_UNPROCESSABLE_ENTITY).json({
                 status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
@@ -68,19 +65,19 @@ export class CreateUserInfoController extends RouteController {
         const userIdModel = FrontUserIdModel.createNewUserId();
 
         // ユーザーマスタ書き込み用データ
-        const writableUserMasterListModel: WritableFrontUserInfoMasterListModel =
-            this.createUserInfoService.getWritableUserMasterInfo();
+        const writableUserMasterListModel: FrontUserInfoMasterWritableListModel =
+            this.createFrontUserInfoService.getWritableUserMasterInfo();
 
         // ユーザーマスタ登録用データの作成
         const userInfoMasterCreateModel: FrontUserInfoMasterModel =
-            this.createUserInfoService.createUserInfoMasterCreateBody(userIdModel, parsedRequestBody);
+            this.createFrontUserInfoService.createUserInfoMasterCreateBody(userIdModel, parsedRequestBody);
 
         // ユーザーマスタに対する書き込み用データの作成
-        const userInfoMasterListWriteModel: WritableFrontUserInfoMasterListModel =
-            this.createUserInfoService.createUserInfoMasterWriteData(writableUserMasterListModel, userInfoMasterCreateModel);
+        const userInfoMasterListWriteModel: FrontUserInfoMasterWritableListModel =
+            this.createFrontUserInfoService.createUserInfoMasterWriteData(writableUserMasterListModel, userInfoMasterCreateModel);
 
         // ユーザーマスタにデータを書き込む
-        this.createUserInfoService.overWriteUserInfoMaster(userInfoMasterListWriteModel);
+        this.createFrontUserInfoService.overWriteUserInfoMaster(userInfoMasterListWriteModel);
 
         return res.status(HTTP_STATUS_CREATED).json({
             status: HTTP_STATUS_CREATED,

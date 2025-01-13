@@ -1,6 +1,6 @@
 import { CreateBookInfoController } from "../../createbookinfo/conrtoller/CreateBookInfoController";
 import { BookSearchController } from "../../booksearch/controller/BookSearchController";
-import { CreateUserInfoController } from "../../createuserinfo/controller/CreateUserInfoController";
+import { CreateFrontUserInfoController } from "../../createfrontuserinfo/controller/CreateFrontUserInfoController";
 import { RouteController } from "../controller/RouteController";
 
 
@@ -9,6 +9,6 @@ export const ROUTE_CONTROLLER_LIST: RouteController[] = [
     new BookSearchController(),
     // 書籍情報登録
     new CreateBookInfoController(),
-    // ユーザー情報登録
-    new CreateUserInfoController(),
+    // フロントユーザー情報登録
+    new CreateFrontUserInfoController(),
 ]

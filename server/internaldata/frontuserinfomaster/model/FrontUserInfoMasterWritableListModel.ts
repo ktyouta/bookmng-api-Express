@@ -5,14 +5,16 @@ import { DeleteFlgModel } from "./DeleteFlgModel";
 import { UpdateDateModel } from "./FrontUpdateDateModel";
 import { FrontUserBirthdayModel } from "./UserBirthdayModel";
 import { FrontUserIdModel } from "./FrontUserIdModel";
-import { FrontUserInfoMasterCreateModel } from "./FrontUserInfoMasterCreateModel";
 import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModelType";
 import { FrontUserInfoMasterModel } from "./FrontUserInfoMasterModel";
 import { FrontUserNameModel } from "./FrontUserNameModel";
 import { FrontUserInfoMasterListModel } from "./FrontUserInfoMasterListModel";
 
 
-export class WritableFrontUserInfoMasterListModel {
+/**
+ * 書き込み用のユーザーリスト管理クラス
+ */
+export class FrontUserInfoMasterWritableListModel {
 
     private readonly _userInfoMasterModelList: ReadonlyArray<FrontUserInfoMasterModel>;
 
@@ -48,10 +50,10 @@ export class WritableFrontUserInfoMasterListModel {
         const parsedUserInfoMasterList: ReadonlyArray<FrontUserInfoMasterModel> =
             frontUserInfoMasterModel.map((e: FrontUserInfoMasterJsonModelType) => {
 
-                return WritableFrontUserInfoMasterListModel.parseUserInfoMaster(e);
+                return FrontUserInfoMasterWritableListModel.parseUserInfoMaster(e);
             });
 
-        return new WritableFrontUserInfoMasterListModel(parsedUserInfoMasterList);
+        return new FrontUserInfoMasterWritableListModel(parsedUserInfoMasterList);
     }
 
 
@@ -86,12 +88,12 @@ export class WritableFrontUserInfoMasterListModel {
      * @param userInfoMasterCreateModel 
      * @returns 
      */
-    public add(userInfoMasterCreateModel: FrontUserInfoMasterModel): WritableFrontUserInfoMasterListModel {
+    public add(userInfoMasterCreateModel: FrontUserInfoMasterModel): FrontUserInfoMasterWritableListModel {
 
         // ユーザーを追加する
         const createUserInfoMasterList: FrontUserInfoMasterModel[] = [...this._userInfoMasterModelList, userInfoMasterCreateModel];
 
-        return new WritableFrontUserInfoMasterListModel(createUserInfoMasterList);
+        return new FrontUserInfoMasterWritableListModel(createUserInfoMasterList);
     }
 
 
