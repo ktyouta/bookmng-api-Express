@@ -1,6 +1,6 @@
 export class FrontUserBirthdayModel {
 
-    private _userBirthday: string;
+    private _frontUserBirthday: string;
 
     constructor(userBirthDay: string) {
 
@@ -14,11 +14,14 @@ export class FrontUserBirthdayModel {
             throw Error("ユーザーの誕生日が正しくありません。");
         }
 
-        this._userBirthday = userBirthDay;
+        this._frontUserBirthday = userBirthDay;
     }
 
-    public get userBirthDay() {
-        return this._userBirthday;
+    /**
+     * getter
+     */
+    public get frontUserBirthDay() {
+        return this._frontUserBirthday;
     }
 
 

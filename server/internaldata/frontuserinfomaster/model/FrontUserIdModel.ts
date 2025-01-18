@@ -7,7 +7,7 @@ const PRE_USER_ID = `userId-`;
 
 export class FrontUserIdModel {
 
-    private _userId: string;
+    private _frontUserId: string;
 
     private constructor(userId: string) {
 
@@ -15,7 +15,7 @@ export class FrontUserIdModel {
             throw Error(`ユーザーIDのフォーマットが不正です。userId:${userId}`);
         }
 
-        this._userId = userId;
+        this._frontUserId = userId;
     }
 
 
@@ -54,8 +54,8 @@ export class FrontUserIdModel {
     }
 
 
-    public get userId() {
-        return this._userId;
+    public get frontUserId() {
+        return this._frontUserId;
     }
 
 

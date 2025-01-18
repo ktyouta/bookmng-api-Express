@@ -1,7 +1,7 @@
 import { CreateDateModel } from "./CreateDateModel";
 import { DeleteFlgModel } from "./DeleteFlgModel";
-import { UpdateDateModel } from "./FrontUpdateDateModel";
-import { FrontUserBirthdayModel } from "./UserBirthdayModel";
+import { UpdateDateModel } from "./UpdateDateModel";
+import { FrontUserBirthdayModel } from "./FrontUserBirthdayModel";
 import { FrontUserIdModel } from "./FrontUserIdModel";
 import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModelType";
 import { FrontUserInfoMasterModel } from "./FrontUserInfoMasterModel";
@@ -89,6 +89,15 @@ export class FrontUserInfoMasterWritableListModel {
      */
     public add(userInfoMasterCreateModel: FrontUserInfoMasterModel): FrontUserInfoMasterWritableListModel {
 
+        // IDの重複チェック
+        const duplicateUser = this._userInfoMasterModelList.find((e: FrontUserInfoMasterModel) => {
+            return e.frontUserId === userInfoMasterCreateModel.frontUserId;
+        });
+
+        if (duplicateUser) {
+            throw Error(`ユーザー情報が重複してるため登録できません。`);
+        }
+
         // ユーザーを追加する
         const createUserInfoMasterList: FrontUserInfoMasterModel[] = [...this._userInfoMasterModelList, userInfoMasterCreateModel];
 
@@ -105,9 +114,9 @@ export class FrontUserInfoMasterWritableListModel {
 
         // jsonファイル登録用の型に変換する
         const jsonUserInfoMaster: FrontUserInfoMasterJsonModelType = {
-            userId: userInfoMaster.userId,
-            userName: userInfoMaster.userName,
-            userBirthDay: userInfoMaster.userBirthDay,
+            userId: userInfoMaster.frontUserId,
+            userName: userInfoMaster.frontUserName,
+            userBirthDay: userInfoMaster.frontUserBirthDay,
             createDate: userInfoMaster.createDate,
             updateDate: userInfoMaster.updateDate,
             deleteFlg: userInfoMaster.deleteFlg,

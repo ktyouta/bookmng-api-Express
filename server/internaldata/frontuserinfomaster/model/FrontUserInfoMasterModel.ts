@@ -1,9 +1,9 @@
 import { CreateDateModel } from "./CreateDateModel";
 import { DeleteFlgModel } from "./DeleteFlgModel";
-import { UpdateDateModel } from "./FrontUpdateDateModel";
+import { UpdateDateModel } from "./UpdateDateModel";
 import { FrontUserIdModel } from "./FrontUserIdModel";
 import { FrontUserNameModel } from "./FrontUserNameModel";
-import { FrontUserBirthdayModel } from "./UserBirthdayModel";
+import { FrontUserBirthdayModel } from "./FrontUserBirthdayModel";
 
 
 /**
@@ -12,11 +12,11 @@ import { FrontUserBirthdayModel } from "./UserBirthdayModel";
 export class FrontUserInfoMasterModel {
 
     // ユーザーID
-    private readonly _userIdModel: FrontUserIdModel;
+    private readonly _frontUserIdModel: FrontUserIdModel;
     // ユーザー名
-    private readonly _userNameModel: FrontUserNameModel;
+    private readonly _frontUserNameModel: FrontUserNameModel;
     // ユーザー誕生日
-    private readonly _userBirthDayModel: FrontUserBirthdayModel;
+    private readonly _frontUserBirthDayModel: FrontUserBirthdayModel;
     // データ作成日
     private readonly _createDateModel: CreateDateModel;
     // データ更新日
@@ -33,24 +33,24 @@ export class FrontUserInfoMasterModel {
         deleteFlg: DeleteFlgModel
     ) {
 
-        this._userIdModel = userId;
-        this._userNameModel = userName;
-        this._userBirthDayModel = userBirthDay;
+        this._frontUserIdModel = userId;
+        this._frontUserNameModel = userName;
+        this._frontUserBirthDayModel = userBirthDay;
         this._createDateModel = createDate;
         this._updateDateModel = updateDate;
         this._deleteFlgModel = deleteFlg;
     }
 
-    public get userIdModel() {
-        return this._userIdModel;
+    public get frontUserIdModel() {
+        return this._frontUserIdModel;
     }
 
-    public get userNameModel() {
-        return this._userNameModel;
+    public get frontUserNameModel() {
+        return this._frontUserNameModel;
     }
 
-    public get userBirthDayModel() {
-        return this._userBirthDayModel;
+    public get frontUserBirthDayModel() {
+        return this._frontUserBirthDayModel;
     }
 
     public get createDateModel() {
@@ -65,16 +65,16 @@ export class FrontUserInfoMasterModel {
         return this._deleteFlgModel;
     }
 
-    public get userId() {
-        return this._userIdModel.userId;
+    public get frontUserId() {
+        return this._frontUserIdModel.frontUserId;
     }
 
-    public get userName() {
-        return this._userNameModel.userName;
+    public get frontUserName() {
+        return this._frontUserNameModel.frontUserName;
     }
 
-    public get userBirthDay() {
-        return this._userBirthDayModel.userBirthDay;
+    public get frontUserBirthDay() {
+        return this._frontUserBirthDayModel.frontUserBirthDay;
     }
 
     public get createDate() {

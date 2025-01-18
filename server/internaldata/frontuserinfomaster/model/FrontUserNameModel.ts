@@ -1,14 +1,14 @@
 export class FrontUserNameModel {
 
-    private _userName: string;
+    private _frontUserName: string;
 
     constructor(userName: string) {
 
-        this._userName = userName;
+        this._frontUserName = userName;
     }
 
-    public get userName() {
-        return this._userName;
+    public get frontUserName() {
+        return this._frontUserName;
     }
 
     /**
@@ -18,6 +18,6 @@ export class FrontUserNameModel {
      */
     public checkUsernameDuplicate(userNameModel: FrontUserNameModel) {
 
-        return this._userName === userNameModel._userName;
+        return this._frontUserName === userNameModel._frontUserName;
     }
 }

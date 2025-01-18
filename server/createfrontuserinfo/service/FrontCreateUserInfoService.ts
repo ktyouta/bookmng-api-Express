@@ -8,7 +8,7 @@ import { FrontUserInfoMasterWritableListModel } from "../../internaldata/frontus
 import { FrontUserInfoMasterListModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterListModel";
 import { FrontUserInfoMasterJsonModelType } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType";
 import { CreateDateModel } from "../../internaldata/frontuserinfomaster/model/CreateDateModel";
-import { UpdateDateModel } from "../../internaldata/frontuserinfomaster/model/FrontUpdateDateModel";
+import { UpdateDateModel } from "../../internaldata/frontuserinfomaster/model/UpdateDateModel";
 import { DeleteFlgModel } from "../../internaldata/frontuserinfomaster/model/DeleteFlgModel";
 import { FLG } from "../../util/const/CommonConst";
 
@@ -33,14 +33,14 @@ export class CreateFrontUserInfoService {
     public checkUserNameExists(parsedRequestBody: FrontUserInfoCreateRequestModel): boolean {
 
         const userInfoMasterListModel: FrontUserInfoMasterListModel = new FrontUserInfoMasterListModel();
-        const userNameModel: FrontUserNameModel = parsedRequestBody.userNameModel;
+        const userNameModel: FrontUserNameModel = parsedRequestBody.frontUserNameModel;
 
         // 未削除のユーザー情報リスト
         const activeUserInfoMasterList: FrontUserInfoMasterJsonModelType[] =
             userInfoMasterListModel.getActiveInfo();
 
         const isExistDuplicateUser = activeUserInfoMasterList.some((e: FrontUserInfoMasterJsonModelType) => {
-            return e.userName === userNameModel.userName;
+            return e.userName === userNameModel.frontUserName;
         });
 
         return isExistDuplicateUser;
@@ -63,8 +63,8 @@ export class CreateFrontUserInfoService {
 
         return new FrontUserInfoMasterModel(
             userId,
-            parsedRequestBody.userNameModel,
-            parsedRequestBody.userBirthdayModel,
+            parsedRequestBody.frontUserNameModel,
+            parsedRequestBody.frontUserBirthdayModel,
             createDateModel,
             updateDateModel,
             deleteFlgModel,
