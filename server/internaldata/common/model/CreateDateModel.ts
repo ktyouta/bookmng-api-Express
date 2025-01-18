@@ -2,26 +2,46 @@ import { DateUtil } from "../../../util/service/DateUtil";
 
 export class CreateDateModel {
 
-    private _createDate: string;
+    private readonly _createDate: string;
 
-    constructor(target?: string) {
-
-        // 現在日付を取得する
-        const createDate = DateUtil.getNowDateYYYYMMDD();
+    private constructor(createDate: string, target: string) {
 
         // 正規表現チェック
         if (!this.checkFormat(createDate)) {
-            throw Error(`${target}データ作成日のフォーマットが不正です。`);
+            throw Error(`${target}データ作成日のフォーマットが不正です。createDate:${createDate}`);
         }
 
         // 日付の妥当性チェック
         if (!this.chechDateValid(createDate)) {
-            throw Error(`${target}データ作成日が正しくありません。`);
+            throw Error(`${target}データ作成日が正しくありません。createDate:${createDate}`);
         }
 
         this._createDate = createDate;
     }
 
+
+    /**
+     * データ作成日を作成
+     * @returns 
+     */
+    public static create(target: string) {
+
+        // 現在日付を取得する
+        const createDate = DateUtil.getNowDateYYYYMMDD();
+
+        return new CreateDateModel(createDate, target);
+    }
+
+
+    /**
+     * データ作成日をセット
+     * @param createDate 
+     * @returns 
+     */
+    public static reConstruct(createDate: string, target: string) {
+
+        return new CreateDateModel(createDate, `${target}(reConstruct)`);
+    }
 
     /**
      * 作成日を取得する

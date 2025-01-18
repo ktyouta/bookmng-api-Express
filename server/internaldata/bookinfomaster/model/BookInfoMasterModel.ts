@@ -1,11 +1,11 @@
 import { FLG } from "../../../util/const/CommonConst";
+import { CreateDateModel } from "../../common/model/CreateDateModel";
+import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
+import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { BookIdModel } from "./BookIdModel";
-import { CreateDateModel } from "./CreateDateModel";
-import { DeleteFlgModel } from "./DeleteFlgModel";
 import { DescriptionModel } from "./DescriptionModel";
 import { PublishedDateModel } from "./PublishedDateModel";
 import { TitleModel } from "./TitleModel";
-import { UpdateDateModel } from "./UpdateDateModel";
 
 
 /**

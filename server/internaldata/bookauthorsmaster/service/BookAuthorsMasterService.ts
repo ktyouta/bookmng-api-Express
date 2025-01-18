@@ -4,13 +4,13 @@ import { AuthorIdModel } from "../../authorsinfomaster/model/AuthorIdMode";
 import { BookIdModel } from "../../bookinfomaster/model/BookIdModel";
 import { BookInfoMasterCreateModel } from "../../bookinfomaster/model/BookInfoMasterCreateModel";
 import { BookInfoMasterModel } from "../../bookinfomaster/model/BookInfoMasterModel";
+import { CreateDateModel } from "../../common/model/CreateDateModel";
+import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
+import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { BOOK_AUTHROS_MASTER_FILE_PATH } from "../const/BookAuthrosMasterConst";
 import { BookAuthorsMasterCreateModel } from "../model/BookAuthorsMasterCreateModel";
 import { BookAuthorsMasterJsonType } from "../model/BookAuthorsMasterJsonType";
 import { BookAuthorsMasterModel } from "../model/BookAuthorsMasterModel";
-import { CreateDateModel } from "../model/CreateDateModel";
-import { DeleteFlgModel } from "../model/DeleteFlgModel";
-import { UpdateDateModel } from "../model/UpdateDateModel";
 
 
 export class BookAuthorsMasterService {

@@ -1,5 +1,8 @@
 import { FLG } from "../../../util/const/CommonConst";
 import { JsonFileData } from "../../../util/service/JsonFileData";
+import { CreateDateModel } from "../../common/model/CreateDateModel";
+import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
+import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { AUTHROS_MASTER_FILE_PATH } from "../const/AuthorsMasterConst";
 import { AuthorBirthDayModel } from "../model/AuthorBirthDayModel";
 import { AuthorIdModel } from "../model/AuthorIdMode";
@@ -7,9 +10,7 @@ import { AuthorNameModel } from "../model/AuthorNameModel";
 import { AuthorsMasterCreateModel } from "../model/AuthorsMasterCreateModel";
 import { AuthorsMasterJsonType } from "../model/AuthorsMasterJsonType";
 import { AuthorsMasterModel } from "../model/AuthorsMasterModel";
-import { CreateDateModel } from "../model/CreateDateModel";
-import { DeleteFlgModel } from "../model/DeleteFlgModel";
-import { UpdateDateModel } from "../model/UpdateDateModel";
+
 
 export class AuthorsMasterService {
 

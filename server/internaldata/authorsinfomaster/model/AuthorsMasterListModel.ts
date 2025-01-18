@@ -1,13 +1,14 @@
 import { JsonFileData } from "../../../util/service/JsonFileData";
+import { CreateDateModel } from "../../common/model/CreateDateModel";
+import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
+import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { AUTHROS_MASTER_FILE_PATH } from "../const/AuthorsMasterConst";
 import { AuthorIdModel } from "./AuthorIdMode";
 import { AuthorNameModel } from "./AuthorNameModel";
 import { AuthorsMasterCreateModel } from "./AuthorsMasterCreateModel";
 import { AuthorsMasterJsonType } from "./AuthorsMasterJsonType";
 import { AuthorsMasterModel } from "./AuthorsMasterModel";
-import { CreateDateModel } from "./CreateDateModel";
-import { DeleteFlgModel } from "./DeleteFlgModel";
-import { UpdateDateModel } from "./UpdateDateModel";
+
 
 export class AuthorsMasterListModel {
 

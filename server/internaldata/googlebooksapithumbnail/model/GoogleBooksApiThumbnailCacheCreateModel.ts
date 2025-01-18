@@ -9,8 +9,8 @@ export class GoogleBooksApiThumbnailCacheCreateModel {
     private readonly _bookId: GoogleBooksApiIdModel;
     // Google Books Apiのサムネイル
     private readonly _thumbnail: ThumbnailModel;
-    private readonly _createDate: CreateDateModel = new CreateDateModel(`Google Books Apiサムネイルキャッシュ情報`);
-    private readonly _updateDate: UpdateDateModel = new UpdateDateModel(`Google Books Apiサムネイルキャッシュ情報`);
+    private readonly _createDate: CreateDateModel = CreateDateModel.create(`Google Books Apiサムネイルキャッシュ情報`);
+    private readonly _updateDate: UpdateDateModel = UpdateDateModel.create(`Google Books Apiサムネイルキャッシュ情報`);
 
     constructor(bookId: GoogleBooksApiIdModel, thumbnail: ThumbnailModel) {
 

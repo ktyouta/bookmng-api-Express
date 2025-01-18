@@ -1,9 +1,9 @@
-import { CreateDateModel } from "./CreateDateModel";
-import { DeleteFlgModel } from "./DeleteFlgModel";
-import { UpdateDateModel } from "./UpdateDateModel";
 import { FrontUserIdModel } from "./FrontUserIdModel";
 import { FrontUserNameModel } from "./FrontUserNameModel";
 import { FrontUserBirthdayModel } from "./FrontUserBirthdayModel";
+import { CreateDateModel } from "../../common/model/CreateDateModel";
+import { UpdateDateModel } from "../../common/model/UpdateDateModel";
+import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
 
 
 /**

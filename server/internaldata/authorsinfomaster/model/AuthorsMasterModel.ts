@@ -1,10 +1,11 @@
 import { FLG } from "../../../util/const/CommonConst";
+import { CreateDateModel } from "../../common/model/CreateDateModel";
+import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
+import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { AuthorBirthDayModel } from "./AuthorBirthDayModel";
 import { AuthorIdModel } from "./AuthorIdMode";
 import { AuthorNameModel } from "./AuthorNameModel";
-import { CreateDateModel } from "./CreateDateModel";
-import { DeleteFlgModel } from "./DeleteFlgModel";
-import { UpdateDateModel } from "./UpdateDateModel";
+
 
 export class AuthorsMasterModel {
 

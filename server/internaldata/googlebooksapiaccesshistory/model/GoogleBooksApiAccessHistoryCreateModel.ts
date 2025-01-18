@@ -11,9 +11,9 @@ export class GoogleBooksApiAccessHistoryCreateModel {
     // Google Books Apiアクセス日付
     private readonly _accessDate: AccessDateModel;
     // データ作成日
-    private readonly _createDate: CreateDateModel = new CreateDateModel(`Google Books Apiアクセス情報`);
+    private readonly _createDate: CreateDateModel = CreateDateModel.create(`Google Books Apiアクセス情報`);
     // データ更新日
-    private readonly _updateDate: UpdateDateModel = new UpdateDateModel(`Google Books Apiアクセス情報`);
+    private readonly _updateDate: UpdateDateModel = UpdateDateModel.create(`Google Books Apiアクセス情報`);
 
 
     constructor(keyword: KeywordModel, accessDate: AccessDateModel) {

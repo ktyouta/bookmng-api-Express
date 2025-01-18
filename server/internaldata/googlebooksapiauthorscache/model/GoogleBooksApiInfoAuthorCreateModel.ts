@@ -13,8 +13,8 @@ export class GoogleBooksApiInfoAuthorCreateModel {
     private readonly _authorNo: GoogleBooksApiAuthorNoModel;
     // Google Books Apiの著者
     private readonly _authorName: GoogleBooksApiAuthorNameModel;
-    private readonly _createDate: CreateDateModel = new CreateDateModel(`Google Books Api書籍キャッシュ情報`);
-    private readonly _updateDate: UpdateDateModel = new UpdateDateModel(`Google Books Api書籍キャッシュ情報`);
+    private readonly _createDate: CreateDateModel = CreateDateModel.create(`Google Books Api書籍キャッシュ情報`);
+    private readonly _updateDate: UpdateDateModel = UpdateDateModel.create(`Google Books Api書籍キャッシュ情報`);
 
 
     constructor(bookId: GoogleBooksApiIdModel, authorNo: GoogleBooksApiAuthorNoModel,

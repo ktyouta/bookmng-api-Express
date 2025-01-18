@@ -1,11 +1,11 @@
 import { FLG } from "../../../util/const/CommonConst";
+import { CreateDateModel } from "../../common/model/CreateDateModel";
+import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
+import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { BookIdModel } from "./BookIdModel";
-import { CreateDateModel } from "./CreateDateModel";
-import { DeleteFlgModel } from "./DeleteFlgModel";
 import { DescriptionModel } from "./DescriptionModel";
 import { PublishedDateModel } from "./PublishedDateModel";
 import { TitleModel } from "./TitleModel";
-import { UpdateDateModel } from "./UpdateDateModel";
 
 
 /**
@@ -22,9 +22,9 @@ export class BookInfoMasterCreateModel {
     // 書籍詳細
     private readonly _descriptionModel: DescriptionModel;
     // データ作成日
-    private readonly _createDateModel: CreateDateModel = CreateDateModel.createNewCreateDate(`書籍情報マスタ`);
+    private readonly _createDateModel: CreateDateModel = CreateDateModel.create(`書籍情報マスタ`);
     // データ更新日
-    private readonly _updateDateModel: UpdateDateModel = UpdateDateModel.createNewUpdateDate(`書籍情報マスタ`);
+    private readonly _updateDateModel: UpdateDateModel = UpdateDateModel.create(`書籍情報マスタ`);
     // 削除フラグ
     private readonly _deleteFlgModel: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
 

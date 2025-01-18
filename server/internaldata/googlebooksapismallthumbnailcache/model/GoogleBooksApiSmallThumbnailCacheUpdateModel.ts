@@ -10,7 +10,7 @@ export class GoogleBooksApiSmallThumbnailCacheUpdateModel {
     private readonly _bookId: GoogleBooksApiIdModel;
     // Google Books Apiのサムネイル(小)
     private readonly _smallThumbnail: SmallThumbnailModel;
-    private readonly _updateDate: UpdateDateModel = new UpdateDateModel(`Google Books Apiサムネイル(小)キャッシュ情報`);
+    private readonly _updateDate: UpdateDateModel = UpdateDateModel.create(`Google Books Apiサムネイル(小)キャッシュ情報`);
 
     constructor(bookId: GoogleBooksApiIdModel, smallThumbnail: SmallThumbnailModel) {
 

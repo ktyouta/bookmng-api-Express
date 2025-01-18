@@ -4,22 +4,44 @@ export class UpdateDateModel {
 
     private readonly _updateDate: string;
 
-    constructor(target: string) {
-
-        // 現在日付を取得する
-        const updateDate = DateUtil.getNowDateYYYYMMDD();
+    private constructor(updateDate: string, target: string) {
 
         // 正規表現チェック
         if (!this.checkFormat(updateDate)) {
-            throw Error(`${target}データ更新日のフォーマットが不正です。`);
+            throw Error(`${target}データ更新日のフォーマットが不正です。${updateDate}`);
         }
 
         // 日付の妥当性チェック
         if (!this.chechDateValid(updateDate)) {
-            throw Error(`${target}データ更新日が正しくありません。`);
+            throw Error(`${target}データ更新日が正しくありません。${updateDate}`);
         }
 
         this._updateDate = updateDate;
+    }
+
+
+    /**
+     * データ更新日を作成
+     * @param target 
+     * @returns 
+     */
+    public static create(target: string) {
+
+        // 現在日付を取得する
+        const updateDate = DateUtil.getNowDateYYYYMMDD();
+
+        return new UpdateDateModel(updateDate, target);
+    }
+
+
+    /**
+     * データ作成日をセット
+     * @param updateDate 
+     * @returns 
+     */
+    public static reConstruct(updateDate: string, target: string) {
+
+        return new UpdateDateModel(updateDate, `${target}(reConstruct)`);
     }
 
 

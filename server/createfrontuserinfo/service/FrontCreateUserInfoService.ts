@@ -7,10 +7,10 @@ import { FrontUserInfoCreateRequestType } from "../model/FrontUserInfoCreateRequ
 import { FrontUserInfoMasterWritableListModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterWritableListModel";
 import { FrontUserInfoMasterListModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterListModel";
 import { FrontUserInfoMasterJsonModelType } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType";
-import { CreateDateModel } from "../../internaldata/frontuserinfomaster/model/CreateDateModel";
-import { UpdateDateModel } from "../../internaldata/frontuserinfomaster/model/UpdateDateModel";
-import { DeleteFlgModel } from "../../internaldata/frontuserinfomaster/model/DeleteFlgModel";
 import { FLG } from "../../util/const/CommonConst";
+import { CreateDateModel } from "../../internaldata/common/model/CreateDateModel";
+import { UpdateDateModel } from "../../internaldata/common/model/UpdateDateModel";
+import { DeleteFlgModel } from "../../internaldata/common/model/DeleteFlgModel";
 
 
 export class CreateFrontUserInfoService {
@@ -57,8 +57,8 @@ export class CreateFrontUserInfoService {
     public createUserInfoMasterCreateBody(userId: FrontUserIdModel,
         parsedRequestBody: FrontUserInfoCreateRequestModel): FrontUserInfoMasterModel {
 
-        const createDateModel: CreateDateModel = CreateDateModel.createNewCreateDate(`ユーザーマスタ`);
-        const updateDateModel: UpdateDateModel = UpdateDateModel.createNewUpdateDate(`ユーザーマスタ`);
+        const createDateModel: CreateDateModel = CreateDateModel.create(`ユーザーマスタ`);
+        const updateDateModel: UpdateDateModel = UpdateDateModel.create(`ユーザーマスタ`);
         const deleteFlgModel: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
 
         return new FrontUserInfoMasterModel(

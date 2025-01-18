@@ -1,6 +1,3 @@
-import { CreateDateModel } from "./CreateDateModel";
-import { DeleteFlgModel } from "./DeleteFlgModel";
-import { UpdateDateModel } from "./UpdateDateModel";
 import { FrontUserBirthdayModel } from "./FrontUserBirthdayModel";
 import { FrontUserIdModel } from "./FrontUserIdModel";
 import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModelType";
@@ -8,6 +5,9 @@ import { FrontUserInfoMasterModel } from "./FrontUserInfoMasterModel";
 import { FrontUserNameModel } from "./FrontUserNameModel";
 import { FRONT_USER_INFO_MASTER_FILE_PATH, FrontUserInfoMasterListModel } from "./FrontUserInfoMasterListModel";
 import { JsonFileData } from "../../../util/service/JsonFileData";
+import { CreateDateModel } from "../../common/model/CreateDateModel";
+import { UpdateDateModel } from "../../common/model/UpdateDateModel";
+import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
 
 
 /**

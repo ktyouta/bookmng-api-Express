@@ -17,8 +17,8 @@ export class GoogleBooksApiInfoCacheCreateModel {
     private readonly _publishedDate: GoogleBooksApiPublishedDateModel;
     // Google Books Apiの書籍説明
     private readonly _description: GoogleBooksApiDescriptionModel;
-    private readonly _createDate: CreateDateModel = new CreateDateModel(`Google Books Api書籍キャッシュ情報`);
-    private readonly _updateDate: UpdateDateModel = new UpdateDateModel(`Google Books Api書籍キャッシュ情報`);
+    private readonly _createDate: CreateDateModel = CreateDateModel.create(`Google Books Api書籍キャッシュ情報`);
+    private readonly _updateDate: UpdateDateModel = UpdateDateModel.create(`Google Books Api書籍キャッシュ情報`);
 
 
     constructor(bookId: GoogleBooksApiIdModel, title: GoogleBooksApiTitleModel,

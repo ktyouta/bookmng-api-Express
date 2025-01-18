@@ -1,16 +1,17 @@
 import { FLG } from "../../../util/const/CommonConst";
 import { JsonFileData } from "../../../util/service/JsonFileData";
+import { CreateDateModel } from "../../common/model/CreateDateModel";
+import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
+import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { BOOK_INFO_MASTER_FILE_PATH } from "../const/BookInfoMasterConst";
 import { BookIdModel } from "./BookIdModel";
 import { BookInfoMasterCreateModel } from "./BookInfoMasterCreateModel";
 import { BookInfoJsonModelType } from "./BookInfoMasterJsonModelType";
 import { BookInfoMasterModel } from "./BookInfoMasterModel";
-import { CreateDateModel } from "./CreateDateModel";
-import { DeleteFlgModel } from "./DeleteFlgModel";
 import { DescriptionModel } from "./DescriptionModel";
 import { PublishedDateModel } from "./PublishedDateModel";
 import { TitleModel } from "./TitleModel";
-import { UpdateDateModel } from "./UpdateDateModel";
+
 
 export class BookInfoMasterListModel {
 
