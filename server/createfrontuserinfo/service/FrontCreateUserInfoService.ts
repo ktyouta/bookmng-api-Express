@@ -48,19 +48,6 @@ export class CreateFrontUserInfoService {
 
 
     /**
-     * ユーザーマスタ書き込み用データの取得
-     * @returns 
-     */
-    public getWritableUserMasterInfo(): FrontUserInfoMasterWritableListModel {
-
-        const writableUserMasterListModel: FrontUserInfoMasterWritableListModel =
-            FrontUserInfoMasterWritableListModel.crerate();
-
-        return writableUserMasterListModel;
-    }
-
-
-    /**
      * ユーザー登録用データの作成
      * @param title 
      * @param publishedDate 
@@ -82,22 +69,6 @@ export class CreateFrontUserInfoService {
             updateDateModel,
             deleteFlgModel,
         );
-    }
-
-
-    /**
-     * ユーザーマスタに対する書き込み用データの作成
-     * @param userInfoMasterCreateModel 
-     */
-    public createUserInfoMasterWriteData(
-        userInfoMasterListModel: FrontUserInfoMasterWritableListModel,
-        userInfoMasterCreateModel: FrontUserInfoMasterModel): FrontUserInfoMasterWritableListModel {
-
-        // ユーザーを追加する
-        const userInfoMasterListWriteModel: FrontUserInfoMasterWritableListModel =
-            userInfoMasterListModel.add(userInfoMasterCreateModel);
-
-        return userInfoMasterListWriteModel;
     }
 
 

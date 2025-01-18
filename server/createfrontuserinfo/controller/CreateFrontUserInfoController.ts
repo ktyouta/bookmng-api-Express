@@ -66,18 +66,18 @@ export class CreateFrontUserInfoController extends RouteController {
 
         // ユーザーマスタ書き込み用データ
         const writableUserMasterListModel: FrontUserInfoMasterWritableListModel =
-            this.createFrontUserInfoService.getWritableUserMasterInfo();
+            FrontUserInfoMasterWritableListModel.crerate();
 
         // ユーザーマスタ登録用データの作成
         const userInfoMasterCreateModel: FrontUserInfoMasterModel =
             this.createFrontUserInfoService.createUserInfoMasterCreateBody(userIdModel, parsedRequestBody);
 
-        // ユーザーマスタに対する書き込み用データの作成
-        const userInfoMasterListWriteModel: FrontUserInfoMasterWritableListModel =
-            this.createFrontUserInfoService.createUserInfoMasterWriteData(writableUserMasterListModel, userInfoMasterCreateModel);
+        // ユーザー情報を追加する
+        const newUserInfoMasterListWriteModel: FrontUserInfoMasterWritableListModel =
+            writableUserMasterListModel.add(userInfoMasterCreateModel);
 
         // ユーザーマスタにデータを書き込む
-        this.createFrontUserInfoService.overWriteUserInfoMaster(userInfoMasterListWriteModel);
+        this.createFrontUserInfoService.overWriteUserInfoMaster(newUserInfoMasterListWriteModel);
 
         return res.status(HTTP_STATUS_CREATED).json({
             status: HTTP_STATUS_CREATED,

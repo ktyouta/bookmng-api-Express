@@ -1,5 +1,3 @@
-import { FLG } from "../../../util/const/CommonConst";
-import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../const/UserInfoMasterConst";
 import { CreateDateModel } from "./CreateDateModel";
 import { DeleteFlgModel } from "./DeleteFlgModel";
 import { UpdateDateModel } from "./FrontUpdateDateModel";
@@ -8,7 +6,7 @@ import { FrontUserIdModel } from "./FrontUserIdModel";
 import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModelType";
 import { FrontUserInfoMasterModel } from "./FrontUserInfoMasterModel";
 import { FrontUserNameModel } from "./FrontUserNameModel";
-import { FrontUserInfoMasterListModel } from "./FrontUserInfoMasterListModel";
+import { FRONT_USER_INFO_MASTER_FILE_PATH, FrontUserInfoMasterListModel } from "./FrontUserInfoMasterListModel";
 import { JsonFileData } from "../../../util/service/JsonFileData";
 
 
