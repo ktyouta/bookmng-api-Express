@@ -1,5 +1,5 @@
-import { FrontUserBirthdayModel } from "../../internaldata/frontuserinfomaster/model/FrontUserBirthdayModel";
-import { FrontUserNameModel } from "../../internaldata/frontuserinfomaster/model/FrontUserNameModel";
+import { FrontUserBirthdayModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserBirthdayModel";
+import { FrontUserNameModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserNameModel";
 import { FrontUserInfoCreateRequestType } from "./FrontUserInfoCreateRequestType";
 
 export class FrontUserInfoCreateRequestModel {

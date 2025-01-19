@@ -1,5 +1,5 @@
-import { FrontUserIdModel } from "../../internaldata/frontuserinfomaster/model/FrontUserIdModel";
-import { FrontUserNameModel } from "../../internaldata/frontuserinfomaster/model/FrontUserNameModel";
+import { FrontUserIdModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserIdModel";
+import { FrontUserNameModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserNameModel";
 import ENV from '../../env.json';
 import { FrontUserInfoMasterModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterModel";
 import { FrontUserInfoCreateRequestModel } from "../model/FrontUserInfoCreateRequestModel";

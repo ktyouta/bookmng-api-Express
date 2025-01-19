@@ -1,6 +1,6 @@
 import { JsonFileData } from "../../../util/service/JsonFileData";
-import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModelType";
-import { FRONT_USER_INFO_MASTER_FILE_PATH } from "./FrontUserInfoMasterListModel";
+import { FrontUserInfoMasterJsonModelType } from "../model/FrontUserInfoMasterJsonModelType";
+import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../model/FrontUserInfoMasterListModel";
 
 // ユーザーIDの接頭辞
 const PRE_USER_ID = `userId-`;

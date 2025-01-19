@@ -6,7 +6,7 @@ import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
 import { HTTP_STATUS_CREATED, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
 import { FrontUserInfoCreateRequestModelSchema } from '../model/FrontUserInfoCreateRequestModelSchema';
 import { ZodIssue } from 'zod';
-import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/model/FrontUserIdModel';
+import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/properties/FrontUserIdModel';
 import { FrontUserInfoMasterModel } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterModel';
 import { FrontUserInfoCreateRequestModel } from '../model/FrontUserInfoCreateRequestModel';
 import { FrontUserInfoCreateRequestType } from '../model/FrontUserInfoCreateRequestType';
@@ -66,7 +66,7 @@ export class CreateFrontUserInfoController extends RouteController {
 
         // ユーザーマスタ書き込み用データ
         const writableUserMasterListModel: FrontUserInfoMasterWritableListModel =
-            FrontUserInfoMasterWritableListModel.crerate();
+            FrontUserInfoMasterWritableListModel.read();
 
         // ユーザーマスタ登録用データの作成
         const userInfoMasterCreateModel: FrontUserInfoMasterModel =

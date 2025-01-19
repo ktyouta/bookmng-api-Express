@@ -1,6 +1,6 @@
-import { FrontUserIdModel } from "./FrontUserIdModel";
-import { FrontUserNameModel } from "./FrontUserNameModel";
-import { FrontUserBirthdayModel } from "./FrontUserBirthdayModel";
+import { FrontUserIdModel } from "../properties/FrontUserIdModel";
+import { FrontUserNameModel } from "../properties/FrontUserNameModel";
+import { FrontUserBirthdayModel } from "../properties/FrontUserBirthdayModel";
 import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";

@@ -1,8 +1,8 @@
-import { FrontUserBirthdayModel } from "./FrontUserBirthdayModel";
-import { FrontUserIdModel } from "./FrontUserIdModel";
+import { FrontUserBirthdayModel } from "../properties/FrontUserBirthdayModel";
+import { FrontUserIdModel } from "../properties/FrontUserIdModel";
 import { FrontUserInfoMasterJsonModelType } from "./FrontUserInfoMasterJsonModelType";
 import { FrontUserInfoMasterModel } from "./FrontUserInfoMasterModel";
-import { FrontUserNameModel } from "./FrontUserNameModel";
+import { FrontUserNameModel } from "../properties/FrontUserNameModel";
 import { FRONT_USER_INFO_MASTER_FILE_PATH, FrontUserInfoMasterListModel } from "./FrontUserInfoMasterListModel";
 import { JsonFileData } from "../../../util/service/JsonFileData";
 import { CreateDateModel } from "../../common/model/CreateDateModel";
@@ -37,7 +37,7 @@ export class FrontUserInfoMasterWritableListModel {
      * @param latestFrontUserInfoMasterListModel 
      * @returns 
      */
-    public static crerate() {
+    public static read() {
 
         // ユーザーマスタからデータを取得する
         const frontUserInfoMasterListModel = new FrontUserInfoMasterListModel();
@@ -49,7 +49,7 @@ export class FrontUserInfoMasterWritableListModel {
         const parsedUserInfoMasterList: ReadonlyArray<FrontUserInfoMasterModel> =
             frontUserInfoMasterModel.map((e: FrontUserInfoMasterJsonModelType) => {
 
-                return FrontUserInfoMasterWritableListModel.parseUserInfoMaster(e);
+                return FrontUserInfoMasterWritableListModel.parseToUserInfo(e);
             });
 
         return new FrontUserInfoMasterWritableListModel(parsedUserInfoMasterList);
@@ -61,7 +61,7 @@ export class FrontUserInfoMasterWritableListModel {
      * @param jsonUserInfoMaster 
      * @returns 
      */
-    private static parseUserInfoMaster(jsonUserInfoMaster: FrontUserInfoMasterJsonModelType): FrontUserInfoMasterModel {
+    private static parseToUserInfo(jsonUserInfoMaster: FrontUserInfoMasterJsonModelType): FrontUserInfoMasterModel {
 
         const userIdModel = FrontUserIdModel.reConstruct(jsonUserInfoMaster.userId);
         const userNameModel = new FrontUserNameModel(jsonUserInfoMaster.userName);
@@ -110,7 +110,7 @@ export class FrontUserInfoMasterWritableListModel {
      * @param userInfoMaster 
      * @returns 
      */
-    private parseJsonUserInfoMaster(userInfoMaster: FrontUserInfoMasterModel): FrontUserInfoMasterJsonModelType {
+    private parseToJson(userInfoMaster: FrontUserInfoMasterModel): FrontUserInfoMasterJsonModelType {
 
         // jsonファイル登録用の型に変換する
         const jsonUserInfoMaster: FrontUserInfoMasterJsonModelType = {
@@ -133,7 +133,7 @@ export class FrontUserInfoMasterWritableListModel {
 
         // jsonファイル登録用の型に変換する
         const jsonUserInfoMasterListModel = this._userInfoMasterModelList.map((e: FrontUserInfoMasterModel) => {
-            return this.parseJsonUserInfoMaster(e);
+            return this.parseToJson(e);
         });
 
         try {
