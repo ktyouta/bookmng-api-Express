@@ -4,13 +4,15 @@ import ENV from '../../env.json';
 import { FrontUserInfoMasterModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterModel";
 import { FrontUserInfoCreateRequestModel } from "../model/FrontUserInfoCreateRequestModel";
 import { FrontUserInfoCreateRequestType } from "../model/FrontUserInfoCreateRequestType";
-import { FrontUserInfoMasterWritableListModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterWritableListModel";
 import { FrontUserInfoMasterListModel } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterListModel";
 import { FrontUserInfoMasterJsonModelType } from "../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType";
 import { FLG } from "../../util/const/CommonConst";
 import { CreateDateModel } from "../../internaldata/common/model/CreateDateModel";
 import { UpdateDateModel } from "../../internaldata/common/model/UpdateDateModel";
 import { DeleteFlgModel } from "../../internaldata/common/model/DeleteFlgModel";
+import { FrontUserInfoMasterRepositorys, RepositoryType } from "../../internaldata/frontuserinfomaster/repository/FrontUserInfoMasterRepositorys";
+import { FrontUserInfoMasterRepositoryInterface } from "../../internaldata/frontuserinfomaster/repository/interface/FrontUserInfoMasterRepositoryInterface";
+import { FrontUserInfoMasterInsertEntity } from "../../internaldata/frontuserinfomaster/entity/FrontUserInfoMasterInsertEntity";
 
 
 export class CreateFrontUserInfoService {
@@ -23,6 +25,17 @@ export class CreateFrontUserInfoService {
     public parseRequestBody(requestBody: FrontUserInfoCreateRequestType): FrontUserInfoCreateRequestModel {
 
         return new FrontUserInfoCreateRequestModel(requestBody);
+    }
+
+
+    /**
+     * 永続ロジック用オブジェクトを取得
+     */
+    public getRepository(): FrontUserInfoMasterRepositoryInterface {
+
+        const frontUserInfoMasterRepositorys = new FrontUserInfoMasterRepositorys();
+
+        return frontUserInfoMasterRepositorys.select(RepositoryType.JSON);
     }
 
 
@@ -55,19 +68,12 @@ export class CreateFrontUserInfoService {
      * @returns 
      */
     public createUserInfoMasterCreateBody(userId: FrontUserIdModel,
-        parsedRequestBody: FrontUserInfoCreateRequestModel): FrontUserInfoMasterModel {
+        parsedRequestBody: FrontUserInfoCreateRequestModel): FrontUserInfoMasterInsertEntity {
 
-        const createDateModel: CreateDateModel = CreateDateModel.create(`ユーザーマスタ`);
-        const updateDateModel: UpdateDateModel = UpdateDateModel.create(`ユーザーマスタ`);
-        const deleteFlgModel: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
-
-        return new FrontUserInfoMasterModel(
+        return new FrontUserInfoMasterInsertEntity(
             userId,
             parsedRequestBody.frontUserNameModel,
             parsedRequestBody.frontUserBirthdayModel,
-            createDateModel,
-            updateDateModel,
-            deleteFlgModel,
         );
     }
 
@@ -76,11 +82,11 @@ export class CreateFrontUserInfoService {
      * ユーザーマスタファイルにデータを書き込む
      * @param userInfoMasterList 
      */
-    public overWriteUserInfoMaster(userInfoMasterListWriteModel: FrontUserInfoMasterWritableListModel) {
+    public commit(frontUserInfoMasterRepository: FrontUserInfoMasterRepositoryInterface) {
 
         try {
             // ユーザーマスタファイルにデータを書き込む
-            userInfoMasterListWriteModel.commit();
+            frontUserInfoMasterRepository.commit();
         } catch (err) {
             throw Error(`${err} endpoint:${ENV.CREATE_FRONT_USER_INFO}`);
         }

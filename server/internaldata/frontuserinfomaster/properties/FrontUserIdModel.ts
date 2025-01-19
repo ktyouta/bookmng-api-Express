@@ -23,7 +23,7 @@ export class FrontUserIdModel {
      * userId作成
      * @returns 
      */
-    public static createNewUserId() {
+    public static create() {
 
         // ユーザーID採番用にユーザー情報マスタからデータを取得する
         const jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[] = JsonFileData.getFileObj(FRONT_USER_INFO_MASTER_FILE_PATH);

@@ -10,7 +10,8 @@ import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/propert
 import { FrontUserInfoMasterModel } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterModel';
 import { FrontUserInfoCreateRequestModel } from '../model/FrontUserInfoCreateRequestModel';
 import { FrontUserInfoCreateRequestType } from '../model/FrontUserInfoCreateRequestType';
-import { FrontUserInfoMasterWritableListModel } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterWritableListModel';
+import { FrontUserInfoMasterRepositoryInterface } from '../../internaldata/frontuserinfomaster/repository/interface/FrontUserInfoMasterRepositoryInterface';
+import { FrontUserInfoMasterInsertEntity } from '../../internaldata/frontuserinfomaster/entity/FrontUserInfoMasterInsertEntity';
 
 
 export class CreateFrontUserInfoController extends RouteController {
@@ -49,6 +50,10 @@ export class CreateFrontUserInfoController extends RouteController {
             });
         }
 
+        // 永続ロジック用オブジェクトを取得
+        const frontUserInfoMasterRepository: FrontUserInfoMasterRepositoryInterface =
+            this.createFrontUserInfoService.getRepository();
+
         // リクエストボディの型を変換する
         const parsedRequestBody: FrontUserInfoCreateRequestModel = this.createFrontUserInfoService.parseRequestBody(requestBody);
 
@@ -62,22 +67,17 @@ export class CreateFrontUserInfoController extends RouteController {
         }
 
         // ユーザーIDを採番する
-        const userIdModel = FrontUserIdModel.createNewUserId();
-
-        // ユーザーマスタ書き込み用データ
-        const writableUserMasterListModel: FrontUserInfoMasterWritableListModel =
-            FrontUserInfoMasterWritableListModel.read();
+        const userIdModel = FrontUserIdModel.create();
 
         // ユーザーマスタ登録用データの作成
-        const userInfoMasterCreateModel: FrontUserInfoMasterModel =
+        const frontUserInfoMasterInsertEntity: FrontUserInfoMasterInsertEntity =
             this.createFrontUserInfoService.createUserInfoMasterCreateBody(userIdModel, parsedRequestBody);
 
         // ユーザー情報を追加する
-        const newUserInfoMasterListWriteModel: FrontUserInfoMasterWritableListModel =
-            writableUserMasterListModel.add(userInfoMasterCreateModel);
+        frontUserInfoMasterRepository.insert(frontUserInfoMasterInsertEntity);
 
-        // ユーザーマスタにデータを書き込む
-        this.createFrontUserInfoService.overWriteUserInfoMaster(newUserInfoMasterListWriteModel);
+        // コミット
+        this.createFrontUserInfoService.commit(frontUserInfoMasterRepository);
 
         return res.status(HTTP_STATUS_CREATED).json({
             status: HTTP_STATUS_CREATED,

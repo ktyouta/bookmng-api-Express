@@ -11,7 +11,7 @@ export interface FrontUserInfoMasterRepositoryInterface {
      * ユーザー追加
      * @param frontUserInfoMasterInsertEntity 
      */
-    insert(frontUserInfoMasterModel: FrontUserInfoMasterModel): void;
+    insert(frontUserInfoMasterModel: FrontUserInfoMasterInsertEntity): void;
 
     /**
      * ユーザー更新

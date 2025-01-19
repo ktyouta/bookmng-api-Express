@@ -17,25 +17,17 @@ import { FrontUserInfoMasterRepositoryInterface } from "../interface/FrontUserIn
  */
 export class FrontUserInfoMasterRepositoryJson implements FrontUserInfoMasterRepositoryInterface {
 
-    private _userInfoMasterModelList: ReadonlyArray<FrontUserInfoMasterModel>;
-
+    private _frontUserInfoMasterJsonList: ReadonlyArray<FrontUserInfoMasterJsonModelType>;
 
     constructor() {
 
         // ユーザーマスタからデータを取得する
         const frontUserInfoMasterListModel = new FrontUserInfoMasterListModel();
 
-        const frontUserInfoMasterModel: ReadonlyArray<FrontUserInfoMasterJsonModelType> =
+        const frontUserInfoMasterJsonList: ReadonlyArray<FrontUserInfoMasterJsonModelType> =
             frontUserInfoMasterListModel.latestUserInfoMasterJsonList;
 
-        // json形式からUserInfoMasterModelに変換する
-        const parsedUserInfoMasterList: ReadonlyArray<FrontUserInfoMasterModel> =
-            frontUserInfoMasterModel.map((e: FrontUserInfoMasterJsonModelType) => {
-
-                return this.parseToUserInfo(e);
-            });
-
-        this._userInfoMasterModelList = parsedUserInfoMasterList;
+        this._frontUserInfoMasterJsonList = frontUserInfoMasterJsonList;
     }
 
 
@@ -44,19 +36,22 @@ export class FrontUserInfoMasterRepositoryJson implements FrontUserInfoMasterRep
      * @param frontUserInfoMasterModel 
      * @returns 
      */
-    public insert(frontUserInfoMasterModel: FrontUserInfoMasterModel) {
+    public insert(frontUserInfoMasterInsertEntity: FrontUserInfoMasterInsertEntity) {
 
         // IDの重複チェック
-        const duplicateUser = this._userInfoMasterModelList.find((e: FrontUserInfoMasterModel) => {
-            return e.frontUserId === frontUserInfoMasterModel.frontUserId;
+        const duplicateUser = this._frontUserInfoMasterJsonList.find((e: FrontUserInfoMasterJsonModelType) => {
+            return e.userId === frontUserInfoMasterInsertEntity.frontUserId;
         });
 
         if (duplicateUser) {
             throw Error(`ユーザー情報が重複してるため登録できません。`);
         }
 
+        // jsonに変換する
+        const frontUserInfoJsonList = this.parseInsertToJson(frontUserInfoMasterInsertEntity);
+
         // ユーザーを追加する
-        this._userInfoMasterModelList = [...this._userInfoMasterModelList, frontUserInfoMasterModel];
+        this._frontUserInfoMasterJsonList = [...this._frontUserInfoMasterJsonList, frontUserInfoJsonList];
     }
 
 
@@ -66,8 +61,8 @@ export class FrontUserInfoMasterRepositoryJson implements FrontUserInfoMasterRep
     public update(frontUserInfoMasterModel: FrontUserInfoMasterModel) {
 
         // ユーザーの存在チェック
-        const updateUser = this._userInfoMasterModelList.find((e: FrontUserInfoMasterModel) => {
-            return e.frontUserId === frontUserInfoMasterModel.frontUserId;
+        const updateUser = this._frontUserInfoMasterJsonList.find((e: FrontUserInfoMasterJsonModelType) => {
+            return e.userId === frontUserInfoMasterModel.frontUserId;
         });
 
         if (!updateUser) {
@@ -81,61 +76,31 @@ export class FrontUserInfoMasterRepositoryJson implements FrontUserInfoMasterRep
      */
     public commit() {
 
-        // jsonファイル登録用の型に変換する
-        const jsonUserInfoMasterListModel = this._userInfoMasterModelList.map((e: FrontUserInfoMasterModel) => {
-            return this.parseToJson(e);
-        });
-
         try {
-            JsonFileData.overWrite(FRONT_USER_INFO_MASTER_FILE_PATH, jsonUserInfoMasterListModel);
+            JsonFileData.overWrite(FRONT_USER_INFO_MASTER_FILE_PATH, this._frontUserInfoMasterJsonList);
         } catch (err) {
             throw Error(`ユーザーマスタファイルのデータ書き込み処理中にエラーが発生しました。ERROR:${err}`);
         }
     }
+
 
     /**
      * json形式に変換する
      * @param userInfoMaster 
      * @returns 
      */
-    private parseToJson(userInfoMaster: FrontUserInfoMasterModel): FrontUserInfoMasterJsonModelType {
+    public parseInsertToJson(frontUserInfoMasterInsertEntity: FrontUserInfoMasterInsertEntity): FrontUserInfoMasterJsonModelType {
 
         // jsonファイル登録用の型に変換する
         const jsonUserInfoMaster: FrontUserInfoMasterJsonModelType = {
-            userId: userInfoMaster.frontUserId,
-            userName: userInfoMaster.frontUserName,
-            userBirthDay: userInfoMaster.frontUserBirthDay,
-            createDate: userInfoMaster.createDate,
-            updateDate: userInfoMaster.updateDate,
-            deleteFlg: userInfoMaster.deleteFlg,
+            userId: frontUserInfoMasterInsertEntity.frontUserId,
+            userName: frontUserInfoMasterInsertEntity.frontUserName,
+            userBirthDay: frontUserInfoMasterInsertEntity.frontUserBirthDay,
+            createDate: frontUserInfoMasterInsertEntity.createDate,
+            updateDate: frontUserInfoMasterInsertEntity.updateDate,
+            deleteFlg: frontUserInfoMasterInsertEntity.deleteFlg,
         };
 
         return jsonUserInfoMaster;
     }
-
-
-    /**
-     * json形式からUserInfoMasterModelに変換する
-     * @param jsonUserInfoMaster 
-     * @returns 
-     */
-    private parseToUserInfo(jsonUserInfoMaster: FrontUserInfoMasterJsonModelType): FrontUserInfoMasterModel {
-
-        const userIdModel = FrontUserIdModel.reConstruct(jsonUserInfoMaster.userId);
-        const userNameModel = new FrontUserNameModel(jsonUserInfoMaster.userName);
-        const userBirthdayModel = new FrontUserBirthdayModel(jsonUserInfoMaster.userBirthDay);
-        const createDate = CreateDateModel.reConstruct(jsonUserInfoMaster.createDate, `ユーザーマスタ`);
-        const updateDate = UpdateDateModel.reConstruct(jsonUserInfoMaster.updateDate, `ユーザーマスタ`);
-        const deleteFlgModel = new DeleteFlgModel(jsonUserInfoMaster.deleteFlg);
-
-        return new FrontUserInfoMasterModel(
-            userIdModel,
-            userNameModel,
-            userBirthdayModel,
-            createDate,
-            updateDate,
-            deleteFlgModel
-        );
-    }
-
 }
