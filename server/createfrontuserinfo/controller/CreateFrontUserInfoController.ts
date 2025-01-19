@@ -12,6 +12,7 @@ import { FrontUserInfoCreateRequestModel } from '../model/FrontUserInfoCreateReq
 import { FrontUserInfoCreateRequestType } from '../model/FrontUserInfoCreateRequestType';
 import { FrontUserInfoMasterRepositoryInterface } from '../../internaldata/frontuserinfomaster/repository/interface/FrontUserInfoMasterRepositoryInterface';
 import { FrontUserInfoMasterInsertEntity } from '../../internaldata/frontuserinfomaster/entity/FrontUserInfoMasterInsertEntity';
+import { ApiResponse } from '../../util/service/ApiResponse';
 
 
 export class CreateFrontUserInfoController extends RouteController {
@@ -44,10 +45,7 @@ export class CreateFrontUserInfoController extends RouteController {
                 return e.message;
             }).join(`,`);
 
-            return res.status(HTTP_STATUS_UNPROCESSABLE_ENTITY).json({
-                status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
-                message: validatErrMessage,
-            });
+            return ApiResponse.create(res, HTTP_STATUS_UNPROCESSABLE_ENTITY, validatErrMessage);
         }
 
         // 永続ロジック用オブジェクトを取得
@@ -60,10 +58,7 @@ export class CreateFrontUserInfoController extends RouteController {
         // ユーザー重複チェック
         if (this.createFrontUserInfoService.checkUserNameExists(parsedRequestBody)) {
 
-            return res.status(HTTP_STATUS_UNPROCESSABLE_ENTITY).json({
-                status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
-                message: "既にユーザーが存在しています。",
-            });
+            return ApiResponse.create(res, HTTP_STATUS_UNPROCESSABLE_ENTITY, `既にユーザーが存在しています。`);
         }
 
         // ユーザーIDを採番する
@@ -79,9 +74,6 @@ export class CreateFrontUserInfoController extends RouteController {
         // コミット
         this.createFrontUserInfoService.commit(frontUserInfoMasterRepository);
 
-        return res.status(HTTP_STATUS_CREATED).json({
-            status: HTTP_STATUS_CREATED,
-            message: "ユーザー情報の登録が完了しました。",
-        });
+        return ApiResponse.create(res, HTTP_STATUS_CREATED, `ユーザー情報の登録が完了しました。`);
     }
 }
