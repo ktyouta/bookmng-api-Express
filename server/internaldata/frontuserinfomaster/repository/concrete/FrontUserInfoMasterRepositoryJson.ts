@@ -3,6 +3,7 @@ import { CreateDateModel } from "../../../common/model/CreateDateModel";
 import { DeleteFlgModel } from "../../../common/model/DeleteFlgModel";
 import { UpdateDateModel } from "../../../common/model/UpdateDateModel";
 import { FrontUserInfoMasterInsertEntity } from "../../entity/FrontUserInfoMasterInsertEntity";
+import { FrontUserInfoMasterUpdateEntity } from "../../entity/FrontUserInfoMasterUpdateEntity";
 import { FrontUserInfoMasterJsonModelType } from "../../model/FrontUserInfoMasterJsonModelType";
 import { FRONT_USER_INFO_MASTER_FILE_PATH, FrontUserInfoMasterListModel } from "../../model/FrontUserInfoMasterListModel";
 import { FrontUserInfoMasterModel } from "../../model/FrontUserInfoMasterModel";
@@ -58,11 +59,11 @@ export class FrontUserInfoMasterRepositoryJson implements FrontUserInfoMasterRep
     /**
      * ユーザー更新
      */
-    public update(frontUserInfoMasterModel: FrontUserInfoMasterModel) {
+    public update(frontUserInfoMasterUpdateEntity: FrontUserInfoMasterUpdateEntity) {
 
         // ユーザーの存在チェック
         const updateUser = this._frontUserInfoMasterJsonList.find((e: FrontUserInfoMasterJsonModelType) => {
-            return e.userId === frontUserInfoMasterModel.frontUserId;
+            return e.userId === frontUserInfoMasterUpdateEntity.frontUserId;
         });
 
         if (!updateUser) {
