@@ -29,20 +29,4 @@ export class FrontUserInfoMasterListModel {
         return this._latestUserInfoMasterJsonList;
     }
 
-
-    /**
-     * 未削除のユーザーデータを取得
-     * @returns 
-     */
-    public getActiveInfo(): FrontUserInfoMasterJsonModelType[] {
-
-        // 未削除のユーザーを取得
-        const activeUserInfoMasterList = this._latestUserInfoMasterJsonList.filter((e: FrontUserInfoMasterJsonModelType) => {
-
-            return e.deleteFlg !== FLG.ON;
-        });
-
-        return activeUserInfoMasterList;
-    }
-
 }

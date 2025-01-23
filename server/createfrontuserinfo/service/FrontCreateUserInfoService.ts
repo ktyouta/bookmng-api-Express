@@ -13,6 +13,8 @@ import { DeleteFlgModel } from "../../internaldata/common/model/DeleteFlgModel";
 import { FrontUserInfoMasterRepositorys, RepositoryType } from "../../internaldata/frontuserinfomaster/repository/FrontUserInfoMasterRepositorys";
 import { FrontUserInfoMasterRepositoryInterface } from "../../internaldata/frontuserinfomaster/repository/interface/FrontUserInfoMasterRepositoryInterface";
 import { FrontUserInfoMasterInsertEntity } from "../../internaldata/frontuserinfomaster/entity/FrontUserInfoMasterInsertEntity";
+import { FrontUserInfoCreateRepositorys } from "../repository/FrontUserInfoCreateRepositorys";
+import { FrontUserInfoCreateSelectEntity } from "../entity/FrontUserInfoCreateSelectEntity";
 
 
 export class CreateFrontUserInfoService {
@@ -45,18 +47,20 @@ export class CreateFrontUserInfoService {
      */
     public checkUserNameExists(parsedRequestBody: FrontUserInfoCreateRequestModel): boolean {
 
-        const userInfoMasterListModel: FrontUserInfoMasterListModel = new FrontUserInfoMasterListModel();
         const userNameModel: FrontUserNameModel = parsedRequestBody.frontUserNameModel;
 
-        // 未削除のユーザー情報リスト
-        const activeUserInfoMasterList: FrontUserInfoMasterJsonModelType[] =
-            userInfoMasterListModel.getActiveInfo();
+        // 永続ロジック用オブジェクトを取得
+        const frontUserInfoCreateRepositorys = new FrontUserInfoCreateRepositorys();
+        const frontUserInfoCreateRepository = frontUserInfoCreateRepositorys.select(RepositoryType.JSON);
 
-        const isExistDuplicateUser = activeUserInfoMasterList.some((e: FrontUserInfoMasterJsonModelType) => {
-            return e.userName === userNameModel.frontUserName;
-        });
+        // ユーザー情報取得用Entity
+        const frontUserInfoCreateSelectEntity = new FrontUserInfoCreateSelectEntity(userNameModel);
 
-        return isExistDuplicateUser;
+        // 未削除のユーザー情報を取得
+        const activeUserInfoMasterList: ReadonlyArray<FrontUserInfoMasterJsonModelType> =
+            frontUserInfoCreateRepository.select(frontUserInfoCreateSelectEntity);
+
+        return activeUserInfoMasterList.length > 0;
     }
 
 
