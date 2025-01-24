@@ -1,13 +1,7 @@
+import { RepositoryType } from "../../util/const/CommonConst";
 import { FrontUserInfoCreateRepositoryJson } from "./concrete/FrontUserInfoCreateRepositoryJson";
 import { FrontUserInfoCreateRepositoryInterface } from "./interface/FrontUserInfoCreateRepositoryInterface";
 
-
-/**
- * リポジトリ切り替え用
- */
-export enum RepositoryType {
-    JSON,
-}
 
 
 /**

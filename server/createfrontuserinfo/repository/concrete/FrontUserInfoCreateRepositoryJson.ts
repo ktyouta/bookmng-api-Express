@@ -1,6 +1,6 @@
 import { FrontUserInfoMasterInsertEntity } from "../../../internaldata/frontuserinfomaster/entity/FrontUserInfoMasterInsertEntity";
 import { FrontUserInfoMasterJsonModelType } from "../../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType";
-import { FRONT_USER_INFO_MASTER_FILE_PATH, FrontUserInfoMasterListModel } from "../../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterListModel";
+import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../../../internaldata/frontuserinfomaster/repository/concrete/FrontUserInfoMasterRepositoryJson";
 import { JsonFileData } from "../../../util/service/JsonFileData";
 import { FrontUserInfoCreateSelectEntity } from "../../entity/FrontUserInfoCreateSelectEntity";
 import { FrontUserInfoCreateRepositoryInterface } from "../interface/FrontUserInfoCreateRepositoryInterface";
@@ -16,13 +16,10 @@ export class FrontUserInfoCreateRepositoryJson implements FrontUserInfoCreateRep
 
     constructor() {
 
-        // ユーザーマスタからデータを取得する
-        const frontUserInfoMasterListModel = new FrontUserInfoMasterListModel();
+        // ユーザーマスタファイルからデータを取得
+        const jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[] = JsonFileData.getFileObj(FRONT_USER_INFO_MASTER_FILE_PATH);
 
-        const frontUserInfoMasterJsonList: ReadonlyArray<FrontUserInfoMasterJsonModelType> =
-            frontUserInfoMasterListModel.latestUserInfoMasterJsonList;
-
-        this._frontUserInfoMasterJsonList = frontUserInfoMasterJsonList;
+        this._frontUserInfoMasterJsonList = jsonUserInfoMasterList;
     }
 
 

@@ -1,4 +1,4 @@
-import { AuthorIdModel } from "../../internaldata/authorsinfomaster/model/AuthorIdMode";
+import { AuthorIdModel } from "../../internaldata/authorsinfomaster/properties/AuthorIdMode";
 import { DescriptionModel } from "../../internaldata/bookinfomaster/model/DescriptionModel";
 import { PublishedDateModel } from "../../internaldata/bookinfomaster/model/PublishedDateModel";
 import { TitleModel } from "../../internaldata/bookinfomaster/model/TitleModel";

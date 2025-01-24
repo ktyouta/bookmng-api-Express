@@ -2,9 +2,9 @@ import { FLG } from "../../../util/const/CommonConst";
 import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
 import { UpdateDateModel } from "../../common/model/UpdateDateModel";
-import { AuthorBirthDayModel } from "./AuthorBirthDayModel";
-import { AuthorIdModel } from "./AuthorIdMode";
-import { AuthorNameModel } from "./AuthorNameModel";
+import { AuthorBirthDayModel } from "../properties/AuthorBirthDayModel";
+import { AuthorIdModel } from "../properties/AuthorIdMode";
+import { AuthorNameModel } from "../properties/AuthorNameModel";
 
 
 export class AuthorsMasterModel {

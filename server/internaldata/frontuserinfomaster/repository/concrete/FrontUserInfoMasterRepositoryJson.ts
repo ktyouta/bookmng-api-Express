@@ -1,3 +1,4 @@
+import { FRONT_USER_INFO_MASTER_FILE, MASTER_FILE_PATH } from "../../../../util/const/FileInfoConst";
 import { JsonFileData } from "../../../../util/service/JsonFileData";
 import { CreateDateModel } from "../../../common/model/CreateDateModel";
 import { DeleteFlgModel } from "../../../common/model/DeleteFlgModel";
@@ -5,12 +6,15 @@ import { UpdateDateModel } from "../../../common/model/UpdateDateModel";
 import { FrontUserInfoMasterInsertEntity } from "../../entity/FrontUserInfoMasterInsertEntity";
 import { FrontUserInfoMasterUpdateEntity } from "../../entity/FrontUserInfoMasterUpdateEntity";
 import { FrontUserInfoMasterJsonModelType } from "../../model/FrontUserInfoMasterJsonModelType";
-import { FRONT_USER_INFO_MASTER_FILE_PATH, FrontUserInfoMasterListModel } from "../../model/FrontUserInfoMasterListModel";
 import { FrontUserInfoMasterModel } from "../../model/FrontUserInfoMasterModel";
 import { FrontUserBirthdayModel } from "../../properties/FrontUserBirthdayModel";
 import { FrontUserIdModel } from "../../properties/FrontUserIdModel";
 import { FrontUserNameModel } from "../../properties/FrontUserNameModel";
 import { FrontUserInfoMasterRepositoryInterface } from "../interface/FrontUserInfoMasterRepositoryInterface";
+
+
+// ユーザーマスタファイルパス
+export const FRONT_USER_INFO_MASTER_FILE_PATH = `${MASTER_FILE_PATH}${FRONT_USER_INFO_MASTER_FILE}`;
 
 
 /**
@@ -22,13 +26,10 @@ export class FrontUserInfoMasterRepositoryJson implements FrontUserInfoMasterRep
 
     constructor() {
 
-        // ユーザーマスタからデータを取得する
-        const frontUserInfoMasterListModel = new FrontUserInfoMasterListModel();
+        // ユーザーマスタファイルからデータを取得
+        const jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[] = JsonFileData.getFileObj(FRONT_USER_INFO_MASTER_FILE_PATH);
 
-        const frontUserInfoMasterJsonList: ReadonlyArray<FrontUserInfoMasterJsonModelType> =
-            frontUserInfoMasterListModel.latestUserInfoMasterJsonList;
-
-        this._frontUserInfoMasterJsonList = frontUserInfoMasterJsonList;
+        this._frontUserInfoMasterJsonList = jsonUserInfoMasterList;
     }
 
 
@@ -90,7 +91,7 @@ export class FrontUserInfoMasterRepositoryJson implements FrontUserInfoMasterRep
      * @param userInfoMaster 
      * @returns 
      */
-    public parseInsertToJson(frontUserInfoMasterInsertEntity: FrontUserInfoMasterInsertEntity): FrontUserInfoMasterJsonModelType {
+    private parseInsertToJson(frontUserInfoMasterInsertEntity: FrontUserInfoMasterInsertEntity): FrontUserInfoMasterJsonModelType {
 
         // jsonファイル登録用の型に変換する
         const jsonUserInfoMaster: FrontUserInfoMasterJsonModelType = {

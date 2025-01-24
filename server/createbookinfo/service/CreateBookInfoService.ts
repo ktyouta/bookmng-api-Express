@@ -13,7 +13,7 @@ import { BookInfoCreateRequestType } from "../model/BookInfoCreateRequestType";
 import { BookInfoCreateRequestModel } from "../model/BookInfoCreateRequestModel";
 import { TitleModel } from "../../internaldata/bookinfomaster/model/TitleModel";
 import { PublishedDateModel } from "../../internaldata/bookinfomaster/model/PublishedDateModel";
-import { AuthorIdModel } from "../../internaldata/authorsinfomaster/model/AuthorIdMode";
+import { AuthorIdModel } from "../../internaldata/authorsinfomaster/properties/AuthorIdMode";
 import { BookAuthorsMasterModel } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModel";
 import { AuthorsMasterModel } from "../../internaldata/authorsinfomaster/model/AuthorsMasterModel";
 import { BookInfoMasterListModel } from "../../internaldata/bookinfomaster/model/BookInfoMasterListModel";

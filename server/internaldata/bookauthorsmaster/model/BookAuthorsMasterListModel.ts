@@ -1,6 +1,6 @@
 import { FLG } from "../../../util/const/CommonConst";
 import { JsonFileData } from "../../../util/service/JsonFileData";
-import { AuthorIdModel } from "../../authorsinfomaster/model/AuthorIdMode";
+import { AuthorIdModel } from "../../authorsinfomaster/properties/AuthorIdMode";
 import { BookIdModel } from "../../bookinfomaster/model/BookIdModel";
 import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";

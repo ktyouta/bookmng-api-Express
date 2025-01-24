@@ -1,5 +1,5 @@
 import { AuthorsMasterService } from "../service/AuthorsMasterService";
-import { AuthorsMasterModel } from "./AuthorsMasterModel";
+import { AuthorsMasterModel } from "../model/AuthorsMasterModel";
 
 
 // 著者IDの接頭辞
