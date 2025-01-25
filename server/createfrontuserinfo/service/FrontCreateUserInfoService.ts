@@ -36,7 +36,7 @@ export class CreateFrontUserInfoService {
 
         const frontUserInfoMasterRepositorys = new FrontUserInfoMasterRepositorys();
 
-        return frontUserInfoMasterRepositorys.select(RepositoryType.JSON);
+        return frontUserInfoMasterRepositorys.get(RepositoryType.JSON);
     }
 
 

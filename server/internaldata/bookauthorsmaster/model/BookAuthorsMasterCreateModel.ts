@@ -1,6 +1,6 @@
 import { FLG } from "../../../util/const/CommonConst";
 import { AuthorIdModel } from "../../authorsinfomaster/properties/AuthorIdMode";
-import { BookIdModel } from "../../bookinfomaster/model/BookIdModel";
+import { BookIdModel } from "../../bookinfomaster/properties/BookIdModel";
 import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
 import { UpdateDateModel } from "../../common/model/UpdateDateModel";

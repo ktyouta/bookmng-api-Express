@@ -40,7 +40,7 @@ export class AuthorsInfoMasterRepositoryJson implements AuthorsInfoMasterReposit
         // jsonに変換する
         const authorsMasterJsonList = this.parseInsertToJson(authorsInfoMasterInsertEntity);
 
-        // ユーザーを追加する
+        // データを追加する
         this._authorsMasterJsonList = [...this._authorsMasterJsonList, authorsMasterJsonList];
     }
 

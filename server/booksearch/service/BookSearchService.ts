@@ -31,14 +31,11 @@ import { GoogleBooksApiSmallThumbnailCacheCreateModel } from "../../internaldata
 import { GoogleBooksApiThumbnailCacheUpdateModel } from "../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheUpdateModel";
 import { GoogleBooksApiThumbnailCacheCreateModel } from "../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheCreateModel";
 import { BookInfoJsonModelType } from "../../internaldata/bookinfomaster/model/BookInfoMasterJsonModelType";
-import { BookInfoMasterService } from "../../internaldata/bookinfomaster/service/BookInfoMasterService";
-import { BookAuthorsMasterService } from "../../internaldata/bookauthorsmaster/service/BookAuthorsMasterService";
 import { GoogleBooksApiCacheInfoParseService } from "../../internaldata/googlebooksapiinfocacheparse/service/GoogleBooksApiInfoCacheParseService";
 import { GoogleBooksApiAuthorsCacheParseService } from "../../internaldata/googlebooksapiauthorscacheparse/service/GoogleBooksApiAuthorsCacheParseService";
 import { GoogleBooksApiSmallThumbnailCacheParseService } from "../../internaldata/googlebooksapismallthumbnailcacheparse/servce/GoogleBooksApiSmallThumbnailCacheParseService";
 import { GoogleBooksApiThumbnailCacheParseService } from "../../internaldata/googlebooksapithumbnailparse/service/GoogleBooksApiThumbnailCacheParseService";
 import { GoogleBooksApiMergedCacheService } from "../../internaldata/googlebooksapimergedcacheparse/service/GoogleBooksApiMergedCacheService";
-import { AuthorsMasterService } from "../../internaldata/authorsinfomaster/service/AuthorsMasterService";
 import { BookInfoMergeService } from "../../internaldata/bookinfomerge/service/BookInfoMergeService";
 import { BookInfoMergedModelType } from "../../internaldata/bookinfomerge/model/BookInfoMergedModelType";
 import { BookInfoOperationService } from "../../internaldata/bookinfooperation/service/BookInfoOperationService";
@@ -65,12 +62,6 @@ export class BookSearchService {
     private googleBooksApiThumbnailCacheService = new GoogleBooksApiThumbnailCacheService();
     // Google Books Apiとキャッシュ情報操作
     private googleBooksApiCacheOperationService = new GoogleBooksApiCacheOperationService();
-    // 書籍情報マスタ
-    private bookInfoMasterService = new BookInfoMasterService();
-    // 書籍著者マスタ
-    private bookAuthorsMasterService = new BookAuthorsMasterService();
-    // 著者マスタ
-    private authorsMasterService = new AuthorsMasterService();
     // Google Books Api → 書籍キャッシュ情報変換
     private googleBooksApiCacheInfoParseService = new GoogleBooksApiCacheInfoParseService();
     // Google Books Api → 著者キャッシュ情報変換
@@ -579,12 +570,12 @@ export class BookSearchService {
     private getActiveBookMasterInfo(): BookInfoMasterModel[] {
 
         // 書籍情報マスタからデータを取得
-        let bookInfoMasterList: BookInfoMasterModel[] = this.bookInfoMasterService.getBookInfoMaster();
+        //let bookInfoMasterList: BookInfoMasterModel[] = this.bookInfoMasterService.getBookInfoMaster();
 
         // 未削除の書籍情報データを取得
-        const activeBookInfoMasterList: BookInfoMasterModel[] = this.bookInfoMasterService.getActiveBookInfoMaster(bookInfoMasterList);
+        //const activeBookInfoMasterList: BookInfoMasterModel[] = this.bookInfoMasterService.getActiveBookInfoMaster(bookInfoMasterList);
 
-        return activeBookInfoMasterList;
+        return [];
     }
 
 
@@ -595,26 +586,11 @@ export class BookSearchService {
      */
     private getActiveBookAuthorsMasterInfo(): BookAuthorsMasterModel[] {
 
-        let bookAuthrosMasterList: BookAuthorsMasterModel[] = this.bookAuthorsMasterService.getBookAuthorsMaster();
+        //let bookAuthrosMasterList: BookAuthorsMasterModel[] = this.bookAuthorsMasterService.getBookAuthorsMaster();
 
-        const activeBookInfoMasterList: BookAuthorsMasterModel[] = this.bookAuthorsMasterService.getActiveBookAuthorsMaster(bookAuthrosMasterList);
+        //const activeBookInfoMasterList: BookAuthorsMasterModel[] = this.bookAuthorsMasterService.getActiveBookAuthorsMaster(bookAuthrosMasterList);
 
-        return activeBookInfoMasterList;
-    }
-
-
-    /**
-     * 未削除の著者マスタを取得する
-     * @param authorsMasterList 
-     * @returns 
-     */
-    private getActiveAuthorsMaster(): AuthorsMasterModel[] {
-
-        const authorsMasterList: AuthorsMasterModel[] = this.authorsMasterService.getAuthorsMaster();
-
-        const activeAuthorsMasterList = this.authorsMasterService.getActiveAuthorsMaster(authorsMasterList);
-
-        return activeAuthorsMasterList;
+        return [];
     }
 
 
@@ -632,11 +608,11 @@ export class BookSearchService {
         const activeBookAuthorsMasterList: BookAuthorsMasterModel[] = this.getActiveBookAuthorsMasterInfo();
 
         // 未削除の著者情報マスタを取得
-        const activeAuthorsMasterList: AuthorsMasterModel[] = this.getActiveAuthorsMaster();
+        //const activeAuthorsMasterList: AuthorsMasterModel[] = this.getActiveAuthorsMaster();
 
         // 書籍情報をマージ
         const mergedBookInfoList: BookInfoMergedModelType[] = this.bookInfoMergeService.megrgeBookInfoMaster(
-            bookInfoMasterList, activeBookAuthorsMasterList, activeAuthorsMasterList);
+            bookInfoMasterList, activeBookAuthorsMasterList, []);
 
         // タイトル、説明、著者に対してキーワードでフィルターする
         const filterdMergedBookInfoMasterList: BookInfoMergedModelType[] =

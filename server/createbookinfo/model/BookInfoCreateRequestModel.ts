@@ -1,7 +1,7 @@
 import { AuthorIdModel } from "../../internaldata/authorsinfomaster/properties/AuthorIdMode";
-import { DescriptionModel } from "../../internaldata/bookinfomaster/model/DescriptionModel";
-import { PublishedDateModel } from "../../internaldata/bookinfomaster/model/PublishedDateModel";
-import { TitleModel } from "../../internaldata/bookinfomaster/model/TitleModel";
+import { DescriptionModel } from "../../internaldata/bookinfomaster/properties/DescriptionModel";
+import { PublishedDateModel } from "../../internaldata/bookinfomaster/properties/PublishedDateModel";
+import { TitleModel } from "../../internaldata/bookinfomaster/properties/TitleModel";
 import { ArrayUtil } from "../../util/service/ArrayUtil";
 import { BookInfoCreateRequestType } from "./BookInfoCreateRequestType";
 

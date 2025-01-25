@@ -21,7 +21,7 @@ export class AuthorsInfoMasterRepositorys {
      * @param repositoryType 
      * @returns 
      */
-    public select(repositoryType: RepositoryType): AuthorsInfoMasterRepositoryInterface {
+    public get(repositoryType: RepositoryType): AuthorsInfoMasterRepositoryInterface {
         return this.repositorys[repositoryType];
     }
 }

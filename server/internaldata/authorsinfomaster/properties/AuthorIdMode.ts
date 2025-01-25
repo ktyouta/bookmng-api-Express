@@ -1,5 +1,6 @@
-import { AuthorsMasterService } from "../service/AuthorsMasterService";
-import { AuthorsMasterModel } from "../model/AuthorsMasterModel";
+import { JsonFileData } from "../../../util/service/JsonFileData";
+import { AUTHROS_MASTER_FILE_PATH } from "../repository/concrete/AuthorsInfoMasterRepositoryJson";
+import { AuthorsMasterJsonType } from "../model/AuthorsMasterJsonType";
 
 
 // 著者IDの接頭辞
@@ -17,7 +18,7 @@ export class AuthorIdModel {
         }
 
         // 著者IDのバリデーションチェック
-        if (!AuthorIdModel.checkAuthorIdValidate(authorId)) {
+        if (!AuthorIdModel.validate(authorId)) {
             throw Error(`著者IDのフォーマットが不正です。authorId:${authorId}`);
         }
 
@@ -27,17 +28,15 @@ export class AuthorIdModel {
 
     public static createNewAuthorId() {
 
-        const authorMasterService = new AuthorsMasterService();
-
         // 著者ID採番用に著者情報マスタからデータを取得する
-        const authorMasterModel: AuthorsMasterModel[] = authorMasterService.getAuthorsMaster();
+        const authorsMasterList: AuthorsMasterJsonType[] = JsonFileData.getFileObj(AUTHROS_MASTER_FILE_PATH);
 
-        if (!authorMasterModel) {
+        if (!authorsMasterList) {
             throw Error("著者IDの採番に必要な著者情報マスタが取得できませんでした。");
         }
 
         // 著者IDを採番する
-        const latestAuthorId = this.createLatestAuthorId(authorMasterModel);
+        const latestAuthorId = this.create(authorsMasterList);
 
         if (!latestAuthorId) {
             throw Error("著者IDの採番に失敗しました。");
@@ -70,10 +69,10 @@ export class AuthorIdModel {
     /**
      * 著者IDを採番する
      */
-    private static createLatestAuthorId(authorMasterModel: AuthorsMasterModel[]): string {
+    private static create(authorsMasterList: AuthorsMasterJsonType[]): string {
 
         //IDが最大のNOを取得
-        let maxNo = authorMasterModel.reduce<number>((prev: number, current: AuthorsMasterModel) => {
+        let maxNo = authorsMasterList.reduce<number>((prev: number, current: AuthorsMasterJsonType) => {
 
             let currentNm = parseInt(current.authorId.replace(`${PRE_AUTHOR_ID}`, ""));
             return Math.max(prev, currentNm);
@@ -88,7 +87,7 @@ export class AuthorIdModel {
      * @param authorId 
      * @returns 
      */
-    private static checkAuthorIdValidate(authorId: string) {
+    private static validate(authorId: string) {
 
         return authorId.includes(PRE_AUTHOR_ID);
     }

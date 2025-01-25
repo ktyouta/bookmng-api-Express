@@ -1,5 +1,6 @@
-import { BookInfoMasterListModel } from "./BookInfoMasterListModel";
-import { BookInfoMasterModel } from "./BookInfoMasterModel";
+import { JsonFileData } from "../../../util/service/JsonFileData";
+import { BookInfoJsonModelType } from "../model/BookInfoMasterJsonModelType";
+import { BOOK_INFO_MASTER_FILE_PATH } from "../repository/concrete/BookInfoMasterRepositoryJson";
 
 // 書籍IDの接頭辞
 const PRE_BOOK_ID = `bookId-`;
@@ -27,14 +28,14 @@ export class BookIdModel {
     public static createNewBookId() {
 
         // 書籍ID採番用に書籍情報マスタからデータを取得する
-        const bookInfoMasterListModel: BookInfoMasterListModel = BookInfoMasterListModel.getBookInfoMasterList();
+        const jsonBookInfoMasterList: BookInfoJsonModelType[] = JsonFileData.getFileObj(BOOK_INFO_MASTER_FILE_PATH);
 
-        if (!bookInfoMasterListModel) {
+        if (!jsonBookInfoMasterList) {
             throw Error("書籍IDの採番に必要な書籍情報マスタが取得できませんでした。");
         }
 
         // 書籍IDを採番する
-        const latestBookId = BookIdModel.createLatestBookId(bookInfoMasterListModel);
+        const latestBookId = BookIdModel.createLatestBookId(jsonBookInfoMasterList);
 
         if (!latestBookId) {
             throw Error("書籍IDの採番に失敗しました。");
@@ -66,12 +67,10 @@ export class BookIdModel {
     /**
      * 書籍IDを採番する
      */
-    private static createLatestBookId(bookInfoMasterListModel: BookInfoMasterListModel): string {
-
-        const bookInfoMasterModelList = bookInfoMasterListModel.bookInfoMasterModelList
+    private static createLatestBookId(jsonBookInfoMasterList: BookInfoJsonModelType[]): string {
 
         //IDが最大のNOを取得
-        let maxNo = bookInfoMasterModelList.reduce<number>((prev: number, current: BookInfoMasterModel) => {
+        let maxNo = jsonBookInfoMasterList.reduce<number>((prev: number, current: BookInfoJsonModelType) => {
 
             let currentNm = parseInt(current.bookId.replace(`${PRE_BOOK_ID}`, ""));
             return Math.max(prev, currentNm);
