@@ -3,9 +3,9 @@
 		"bookId": "bookId-1",
 		"title": "Test Book Title",
 		"publishedDate": "20241227",
-		"description": "description of test book.",
-		"createDate": "20250108",
-		"updateDate": "20250108",
+		"description": "description of test book",
+		"createDate": "20250126",
+		"updateDate": "20250126",
 		"deleteFlg": "0"
 	}
 ]

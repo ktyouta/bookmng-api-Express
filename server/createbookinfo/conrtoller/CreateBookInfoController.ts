@@ -5,7 +5,6 @@ import { RouteController } from '../../router/controller/RouteController';
 import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
 import { BookInfoJsonModelType } from '../../internaldata/bookinfomaster/model/BookInfoMasterJsonModelType';
 import { BookIdModel } from '../../internaldata/bookinfomaster/properties/BookIdModel';
-import { BookAuthorsMasterCreateModel } from '../../internaldata/bookauthorsmaster/model/BookAuthorsMasterCreateModel';
 import { BookInfoCreateRequestModelSchema } from '../model/BookInfoCreateRequestModelSchema';
 import { ZodIssue } from 'zod';
 import { CreateBookInfoService } from '../service/CreateBookInfoService';
@@ -75,9 +74,9 @@ export class CreateBookInfoController extends RouteController {
         // 書籍情報の存在チェック
         const isExistBookInfo = this.addBookInfoService.checkBookInfoExists(createBookInfoRepositorys, parsedRequestBody);
 
-        // 登録しようとしている書籍情報が既に存在する
-        if (!isExistBookInfo) {
-            return ApiResponse.create(res, HTTP_STATUS_UNPROCESSABLE_ENTITY, `登録しようとしている書籍情報が既に存在しています。`);
+        // 登録する書籍情報が既に存在する
+        if (isExistBookInfo) {
+            return ApiResponse.create(res, HTTP_STATUS_UNPROCESSABLE_ENTITY, `登録する書籍情報が既に存在しています。`);
         }
 
         // 書籍情報の永続ロジックを取得
@@ -103,7 +102,7 @@ export class CreateBookInfoController extends RouteController {
             this.addBookInfoService.createBookAuthorsMasterCreateBody(bookId, parsedRequestBody);
 
         // 書籍著者情報を追加
-        //bookAuthorsMasterRepository.insert(bookAuthorsMasterCareteBody);
+        this.addBookInfoService.insert(bookAuthorsMasterRepository, bookAuthorsMasterCareteBody);
 
         // コミットする
         this.addBookInfoService.commit(bookInfoMasterRepository, bookAuthorsMasterRepository);

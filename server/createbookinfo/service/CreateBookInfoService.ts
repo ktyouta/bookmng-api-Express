@@ -1,5 +1,4 @@
 import { GoogleBookInfoApis } from "../../externalapi/googlebookinfo/service/GoogleBookInfoApis";
-import { BookAuthorsMasterCreateModel } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterCreateModel";
 import { BookIdModel } from "../../internaldata/bookinfomaster/properties/BookIdModel";
 import { BookInfoJsonModelType } from "../../internaldata/bookinfomaster/model/BookInfoMasterJsonModelType";
 import { ArrayUtil } from "../../util/service/ArrayUtil";
@@ -30,7 +29,7 @@ export class CreateBookInfoService {
 
 
     /**
-     * BookInfoCreateRequestTypeからBookInfoCreateRequestModelに変換する
+     * リクエストボディを型変換
      * @param requestBody 
      */
     public parseRequestBody(requestBody: BookInfoCreateRequestType): BookInfoCreateRequestModel {
@@ -71,26 +70,6 @@ export class CreateBookInfoService {
     }
 
 
-    // /**
-    //  * 書籍著者情報マスタファイルにデータを書き込む
-    //  * @param bookInfoMasterList 
-    //  * @returns 
-    //  */
-    // public overWriteBookAuthorsMaster(bookAuthorsMasterListModel: BookAuthorsMasterListModel) {
-
-    //     // json形式に変換する
-    //     const bookAuthorsMasterJsonListMode = new BookAuthorsMasterJsonListMode(bookAuthorsMasterListModel);
-
-    //     try {
-
-    //         bookAuthorsMasterJsonListMode.overWriteBookAuthorsMaster();
-    //     } catch (err) {
-
-    //         throw Error(`${err} endpoint:${ENV.CREATE_BOOK_INFO}`);
-    //     }
-    // }
-
-
     /**
      * 著者マスタからデータを取得
      */
@@ -108,59 +87,6 @@ export class CreateBookInfoService {
 
         return selectedAuthorsList.length > 0;
     }
-
-
-    /**
-     * 書籍情報の重複チェック
-     * @param acticeBookInfoMasterList 
-     * @param activeBookAuthorsMasterList 
-     * @param requestBody 
-     */
-    // public checkBookInfoExists(activeBookInfoMasterList: ReadonlyArray<BookInfoMasterModel>,
-    //     acticeBookAuthorsMasterList: ReadonlyArray<BookAuthorsMasterModel>, requestBody: BookInfoCreateRequestModel): string {
-
-    //     let errMessage = "";
-    //     // リクエストボディから値を取得
-    //     const titleModel: TitleModel = requestBody.titleModel;
-    //     const publishedDateModel: PublishedDateModel = requestBody.publishedDateModel;
-
-    //     // リクエストのタイトルと発売日に一致する書籍情報を取得する
-    //     const booksFilteredByTitleAndDate: BookInfoMasterModel[] = activeBookInfoMasterList.filter((e: BookInfoMasterModel) => {
-    //         return e.titleModel.checkTitleDuplicate(titleModel) &&
-    //             e.publishedDateModel.checkPublishedDateDuplicate(publishedDateModel);
-    //     });
-
-    //     // 著者IDがすべて一致する書籍情報を取得する
-    //     booksFilteredByTitleAndDate.some((e: BookInfoMasterModel) => {
-
-    //         // 書籍IDの一致する書籍著者リストを取得する
-    //         const activeBookAuthorsMaster: BookAuthorsMasterModel[] =
-    //             acticeBookAuthorsMasterList.filter((e1: BookAuthorsMasterModel) => {
-
-    //                 return e1.bookId === e.bookId;
-    //             });
-
-    //         if (activeBookAuthorsMaster.length === 0) {
-    //             return true;
-    //         }
-
-    //         // 書籍著者情報マスタの著者IDリスト
-    //         const masterAuthorIdList = activeBookAuthorsMaster.map((e1: BookAuthorsMasterModel) => {
-
-    //             return e1.authorIdModel;
-    //         });
-
-    //         // リクエストの著者IDリストと書籍著者マスタの著者IDリストが完全に一致している場合はエラーとする
-    //         if (requestBody.checkAuthorIdListDuplicate(masterAuthorIdList)) {
-
-    //             errMessage = "登録しようとしている書籍情報が既に存在しています。"
-    //             return true;
-    //         }
-
-    //     });
-
-    //     return errMessage;
-    // }
 
 
     /**
@@ -222,6 +148,16 @@ export class CreateBookInfoService {
     }
 
 
+    // 書籍著者情報にデータを追加する
+    public insert(bookAuthorsMasterRepository: BookAuthorsMasterRepositoryInterface,
+        bookAuthorsMasterCareteBody: BookAuthorsMasterInsertEntity[]) {
+
+        bookAuthorsMasterCareteBody.forEach((e: BookAuthorsMasterInsertEntity) => {
+            bookAuthorsMasterRepository.insert(e);
+        });
+    }
+
+
     /**
      * コミットする
      * @param bookInfoMasterList 
@@ -234,7 +170,6 @@ export class CreateBookInfoService {
             bookInfoMasterRepository.commit();
             bookAuthorsMasterRepository.commit();
         } catch (err) {
-
             throw Error(`${err} endpoint:${ENV.CREATE_BOOK_INFO}`);
         }
     }

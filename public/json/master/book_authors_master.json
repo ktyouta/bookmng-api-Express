@@ -2,15 +2,15 @@
 	{
 		"bookId": "bookId-1",
 		"authorId": "authorId-1",
-		"createDate": "20250108",
-		"updateDate": "20250108",
+		"createDate": "20250126",
+		"updateDate": "20250126",
 		"deleteFlg": "0"
 	},
 	{
 		"bookId": "bookId-1",
 		"authorId": "authorId-2",
-		"createDate": "20250108",
-		"updateDate": "20250108",
+		"createDate": "20250126",
+		"updateDate": "20250126",
 		"deleteFlg": "0"
 	}
 ]

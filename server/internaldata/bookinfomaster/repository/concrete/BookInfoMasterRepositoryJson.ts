@@ -76,12 +76,12 @@ export class BookInfoMasterRepositoryJson implements BookInfoMasterRepositoryInt
         // jsonファイル登録用の型に変換する
         const bookInfoJson: BookInfoJsonModelType = {
             bookId: bookInfoMasterInsertEntity.bookId,
-            createDate: bookInfoMasterInsertEntity.createDate,
-            updateDate: bookInfoMasterInsertEntity.updateDate,
-            deleteFlg: bookInfoMasterInsertEntity.deleteFlg,
             title: bookInfoMasterInsertEntity.title,
             publishedDate: bookInfoMasterInsertEntity.publishedDate,
             description: bookInfoMasterInsertEntity.description,
+            createDate: bookInfoMasterInsertEntity.createDate,
+            updateDate: bookInfoMasterInsertEntity.updateDate,
+            deleteFlg: bookInfoMasterInsertEntity.deleteFlg,
         };
 
         return bookInfoJson;

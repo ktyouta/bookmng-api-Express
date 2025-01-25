@@ -64,7 +64,7 @@ ROUTE_CONTROLLER_LIST.forEach((e) => {
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
     // コンソールログ出力
-    console.error(`error occurred in xxx bookmng-api : ${err.message}`);
+    console.error(`error occurred in bookmng-api : ${err.message}`);
 
     // エラーログ出力
     errorLogMiddleware(err, req);
