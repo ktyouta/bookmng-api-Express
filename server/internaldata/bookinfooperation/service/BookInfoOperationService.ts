@@ -1,5 +1,5 @@
 import { BookInfoMergedModelType } from "../../bookinfomerge/model/BookInfoMergedModelType";
-import { KeywordModel } from "../../googlebooksapiaccesshistory/model/KeywordModel";
+import { KeywordModel } from "../../googlebooksapiaccesshistory/properties/KeywordModel";
 
 
 export class BookInfoOperationService {

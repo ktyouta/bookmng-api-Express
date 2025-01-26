@@ -50,7 +50,7 @@ export class CreateFrontUserInfoService {
 
         // 永続ロジック用オブジェクトを取得
         const frontUserInfoCreateRepositorys = new FrontUserInfoCreateRepositorys();
-        const frontUserInfoCreateRepository = frontUserInfoCreateRepositorys.select(RepositoryType.JSON);
+        const frontUserInfoCreateRepository = frontUserInfoCreateRepositorys.get(RepositoryType.JSON);
 
         // ユーザー情報取得用Entity
         const frontUserInfoCreateSelectEntity = new FrontUserInfoCreateSelectEntity(userNameModel);

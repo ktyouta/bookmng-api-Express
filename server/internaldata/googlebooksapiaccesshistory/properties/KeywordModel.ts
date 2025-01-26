@@ -4,7 +4,7 @@ export class KeywordModel {
 
     constructor(keyword: string) {
 
-        if (keyword.length === 0) {
+        if (!keyword) {
             throw Error("Google Books Apiのアクセス情報に必要なキーワードが存在しません。");
         }
 

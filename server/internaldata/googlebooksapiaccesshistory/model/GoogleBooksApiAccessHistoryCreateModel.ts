@@ -1,7 +1,7 @@
 import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { UpdateDateModel } from "../../common/model/UpdateDateModel";
-import { AccessDateModel } from "./AccessDateModel";
-import { KeywordModel } from "./KeywordModel";
+import { AccessDateModel } from "../properties/AccessDateModel";
+import { KeywordModel } from "../properties/KeywordModel";
 
 
 export class GoogleBooksApiAccessHistoryCreateModel {

@@ -64,18 +64,12 @@ export class CreateBookInfoController extends RouteController {
         const createBookInfoRepositorys: CreateBookInfoRepositoryInterface = this.addBookInfoService.getCreateBookInfoRepository();
 
         // 著者IDのマスタ存在チェック
-        const isExistAuthor = this.addBookInfoService.checkExistAuthor(createBookInfoRepositorys, parsedRequestBody);
-
-        // 著者マスタにIDが存在しない
-        if (!isExistAuthor) {
+        if (!this.addBookInfoService.checkExistAuthor(createBookInfoRepositorys, parsedRequestBody)) {
             return ApiResponse.create(res, HTTP_STATUS_UNPROCESSABLE_ENTITY, `著者マスタに存在しない著者が選択されています。`);
         }
 
         // 書籍情報の存在チェック
-        const isExistBookInfo = this.addBookInfoService.checkBookInfoExists(createBookInfoRepositorys, parsedRequestBody);
-
-        // 登録する書籍情報が既に存在する
-        if (isExistBookInfo) {
+        if (this.addBookInfoService.checkBookInfoExists(createBookInfoRepositorys, parsedRequestBody)) {
             return ApiResponse.create(res, HTTP_STATUS_UNPROCESSABLE_ENTITY, `登録する書籍情報が既に存在しています。`);
         }
 

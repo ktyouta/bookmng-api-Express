@@ -27,7 +27,7 @@ export class FrontUserInfoCreateRepositorys {
      * @param repositoryType 
      * @returns 
      */
-    public select(repositoryType: RepositoryType): FrontUserInfoCreateRepositoryInterface {
+    public get(repositoryType: RepositoryType): FrontUserInfoCreateRepositoryInterface {
         return this.repositorys[repositoryType];
     }
 }

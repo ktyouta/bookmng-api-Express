@@ -1,5 +1,5 @@
 import { JsonFileData } from "../../../util/service/JsonFileData";
-import { KeywordModel } from "../../googlebooksapiaccesshistory/model/KeywordModel";
+import { KeywordModel } from "../../googlebooksapiaccesshistory/properties/KeywordModel";
 import { GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH } from "../const/GoogleBooksApiInfoCacheConst";
 import { GoogleBooksApiDescriptionModel } from "../model/GoogleBooksApiDescriptionModel";
 import { GoogleBooksApiIdModel } from "../model/GoogleBooksApiIdModel";

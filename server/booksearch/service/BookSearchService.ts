@@ -1,10 +1,8 @@
 import { GoogleBookInfoApis } from "../../externalapi/googlebookinfo/service/GoogleBookInfoApis";
 import ENV from '../../env.json';
 import { CreateDateModel } from "../../internaldata/common/model/CreateDateModel";
-import { GoogleBookApiAccessHistoryService } from "../../internaldata/googlebooksapiaccesshistory/service/GoogleBookApiAccessHistoryService";
-import { GoogleBooksApiAccessHistoryModelType } from "../../internaldata/googlebooksapiaccesshistory/model/GoogleBooksApiAccessHistoryModelType";
-import { KeywordModel } from "../../internaldata/googlebooksapiaccesshistory/model/KeywordModel";
-import { AccessDateModel } from "../../internaldata/googlebooksapiaccesshistory/model/AccessDateModel";
+import { KeywordModel } from "../../internaldata/googlebooksapiaccesshistory/properties/KeywordModel";
+import { AccessDateModel } from "../../internaldata/googlebooksapiaccesshistory/properties/AccessDateModel";
 import { GoogleBooksApiInfoCacheService } from "../../internaldata/googlebooksapiinfocache/service/GoogleBooksApiInfoCacheService";
 import { GoogleBooksApiAuthorsCacheService } from "../../internaldata/googlebooksapiauthorscache/service/GoogleBooksApiAuthorsCacheService";
 import { GoogleBooksApiSmallThumbnailCacheService } from "../../internaldata/googlebooksapismallthumbnailcache/service/GoogleBooksApiSmallThumbnailCacheService";
@@ -44,14 +42,17 @@ import { ArrayUtil } from "../../util/service/ArrayUtil";
 import { BookAuthorsMasterModel } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModel";
 import { BookInfoMasterModel } from "../../internaldata/bookinfomaster/model/BookInfoMasterModel";
 import { AuthorsMasterModel } from "../../internaldata/authorsinfomaster/model/AuthorsMasterModel";
+import { BookSearchRepositorys } from "../repository/BookSearchRepositorys";
+import { RepositoryType } from "../../util/const/CommonConst";
+import { BookSearchGoogleBooksApiAccessHistorySelectEntity } from "../entity/BookSearchGoogleBooksApiAccessHistorySelectEntity";
+import { GoogleBooksApiAccessHistoryRepositorys } from "../../internaldata/googlebooksapiaccesshistory/repository/GoogleBooksApiAccessHistoryRepositorys";
+import { GoogleBooksApiAccessHistoryInsertEntity } from "../../internaldata/googlebooksapiaccesshistory/entity/GoogleBooksApiAccessHistoryInsertEntity";
 
 
 export class BookSearchService {
 
     // Google Books Apiデータ取得
     private googleBookInfoApis: GoogleBookInfoApis = new GoogleBookInfoApis();
-    // Google Books Apiアクセス履歴
-    private googleBookApiAccessHistoryService = new GoogleBookApiAccessHistoryService();
     // Google Books Api書籍情報キャッシュ
     private googleBooksApiInfoCacheService = new GoogleBooksApiInfoCacheService();
     // Google Books Api著者情報キャッシュ
@@ -99,33 +100,24 @@ export class BookSearchService {
 
 
     /**
-     * Google Books Apiのアクセス履歴を取得する
-     */
-    public getGoogleBooksApiAccessHistory() {
-
-        const googleBookApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[] =
-            this.googleBookApiAccessHistoryService.GoogleBookApiAccessHistory();
-
-        return googleBookApiAccessHistoryList;
-    }
-
-
-    /**
      * キーワードと日付でGoogle Books Apiのアクセス履歴をチェックする
      * @param googleBooksApiAccessHistoryList 
      * @param keywordModel 
      * @param accessDateModel 
      */
-    public checkAccessHistoryByKeywordAndDate(googleBooksApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[],
-        keywordModel: KeywordModel, accessDateModel: AccessDateModel,) {
+    public checkAccessHistoryExist(keywordModel: KeywordModel, accessDateModel: AccessDateModel,) {
 
-        const filterdAccessHistoryList: GoogleBooksApiAccessHistoryModelType[] =
-            this.googleBookApiAccessHistoryService.getAccessHistoryByKeywordAndDate(googleBooksApiAccessHistoryList,
-                keywordModel, accessDateModel
-            );
+        const bookSearchRepositorys = new BookSearchRepositorys();
+        const bookSearchJsonRepository = bookSearchRepositorys.get(RepositoryType.JSON);
+
+        const bookSearchGoogleBooksApiAccessHistorySelectEntity =
+            new BookSearchGoogleBooksApiAccessHistorySelectEntity(keywordModel, accessDateModel);
+
+        const GoogleBooksApiAccessHistory =
+            bookSearchJsonRepository.selectGoogleBooksApiAccessHistory(bookSearchGoogleBooksApiAccessHistorySelectEntity);
 
         // キーワードと日付に一致するデータが存在する
-        return filterdAccessHistoryList && filterdAccessHistoryList.length > 0
+        return GoogleBooksApiAccessHistory.length > 0
     }
 
 
@@ -245,35 +237,13 @@ export class BookSearchService {
      * Google Books Apiアクセス情報にデータを追加する
      * @param bookInfoMasterCreateModel 
      */
-    public createGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[],
-        keywordModel: KeywordModel, accessDateModel: AccessDateModel) {
+    public createGoogleBookApiAccessHistory(keywordModel: KeywordModel, accessDateModel: AccessDateModel) {
 
         // Google Books Apiアクセス情報登録用データを作成
-        const GoogleBookApiAccessHistoryCreateBody: GoogleBooksApiAccessHistoryCreateModel =
-            this.googleBookApiAccessHistoryService.createGoogleBookApiAccessHistoryCreateBody(keywordModel, accessDateModel);
+        const googleBooksApiAccessHistoryInsertEntity: GoogleBooksApiAccessHistoryInsertEntity =
+            new GoogleBooksApiAccessHistoryInsertEntity(keywordModel, accessDateModel);
 
-        // 登録用データをリストに追加    
-        googleBooksApiAccessHistoryList = this.googleBookApiAccessHistoryService.createGoogleBookApiAccessHistoryWriteData(googleBooksApiAccessHistoryList,
-            GoogleBookApiAccessHistoryCreateBody
-        );
-
-        return googleBooksApiAccessHistoryList;
-    }
-
-
-    /**
-     * Google Books Apiアクセス情報ファイルにデータを書き込む
-     * @param bookAuthorsMasterList 
-     */
-    public overWriteGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList: GoogleBooksApiAccessHistoryModelType[]) {
-
-        try {
-
-            // Google Books Apiアクセス情報ファイルにデータを書き込む
-            this.googleBookApiAccessHistoryService.overWriteGoogleBookApiAccessHistory(googleBooksApiAccessHistoryList);
-        } catch (err) {
-            throw Error(`${err} endpoint:${ENV.BOOK_SEARCH}`);
-        }
+        return googleBooksApiAccessHistoryInsertEntity;
     }
 
 
@@ -672,4 +642,14 @@ export class BookSearchService {
         return [...parsedBookInfoMasterList, ...mergedBookInfoList];
     }
 
+
+    /**
+     * Google Books Apiアクセス情報の永続ロジックを取得
+     * @returns 
+     */
+    public getGoogleBooksApiAccessHistoryRepository() {
+        const googleBooksApiAccessHistoryRepositorys = new GoogleBooksApiAccessHistoryRepositorys();
+
+        return googleBooksApiAccessHistoryRepositorys.get(RepositoryType.JSON);
+    }
 }
