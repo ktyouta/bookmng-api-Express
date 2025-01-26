@@ -51,7 +51,7 @@ export class CreateBookInfoRepositoryJson implements CreateBookInfoRepositoryInt
 
         const selectedAuthorsList = this._authorsMasterJsonList.filter((e: AuthorsMasterJsonType) => {
 
-            return createBookInfoAuthrosJsonList.includes(e.authorId);
+            return createBookInfoAuthrosJsonList.includes(e.authorId) && e.deleteFlg === createBookInfoAuthrosSelectEntity.deleteFlg;
         });
 
         return selectedAuthorsList;
@@ -69,7 +69,8 @@ export class CreateBookInfoRepositoryJson implements CreateBookInfoRepositoryInt
         const filterdBookInfoList = this._bookInfoMasterJsonList.filter((e: BookInfoJsonModelType) => {
 
             return e.title === createBookInfoBookAuthrosSelectEntity.title &&
-                e.publishedDate === createBookInfoBookAuthrosSelectEntity.publishedDate;
+                e.publishedDate === createBookInfoBookAuthrosSelectEntity.publishedDate &&
+                e.deleteFlg === createBookInfoBookAuthrosSelectEntity.bookAuthordeleteFlg;
         });
 
         // 書籍著者情報のデータをもとにフィルターする
@@ -77,7 +78,7 @@ export class CreateBookInfoRepositoryJson implements CreateBookInfoRepositoryInt
 
             // 書籍IDに一致するデータを取得
             const filterdBookAuthorsList = this._bookAuthorsMasterJsonList.filter((e1: BookAuthorsMasterJsonType) => {
-                return e1.bookId === e.bookId;
+                return e1.bookId === e.bookId && e.deleteFlg === createBookInfoBookAuthrosSelectEntity.bookAuthordeleteFlg;
             });
 
             if (filterdBookAuthorsList.length === 0) {

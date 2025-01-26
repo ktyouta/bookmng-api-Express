@@ -23,6 +23,7 @@ import { BookInfoMasterRepositorys } from "../../internaldata/bookinfomaster/rep
 import { BookAuthorsMasterRepositorys } from "../../internaldata/bookauthorsmaster/repository/BookAuthorsMasterRepositorys";
 import { BookAuthorsMasterRepositoryInterface } from "../../internaldata/bookauthorsmaster/repository/interface/BookAuthorsMasterRepositoryInterface";
 import { BookAuthorsMasterInsertEntity } from "../../internaldata/bookauthorsmaster/entity/BookAuthorsMasterInsertEntity";
+import { DeleteFlgModel } from "../../internaldata/common/model/DeleteFlgModel";
 
 
 export class CreateBookInfoService {
@@ -79,7 +80,8 @@ export class CreateBookInfoService {
         // select用のentityを作成
         const createBookInfoAuthrosSelectEntity: CreateBookInfoAuthrosSelectEntity =
             new CreateBookInfoAuthrosSelectEntity(
-                parsedRequestBody.authorIdListModel
+                parsedRequestBody.authorIdListModel,
+                new DeleteFlgModel(FLG.OFF),
             );
 
         // データを取得
@@ -104,6 +106,8 @@ export class CreateBookInfoService {
                 parsedRequestBody.titleModel,
                 parsedRequestBody.publishedDateModel,
                 parsedRequestBody.authorIdListModel,
+                new DeleteFlgModel(FLG.OFF),
+                new DeleteFlgModel(FLG.OFF),
             );
 
         // データを取得

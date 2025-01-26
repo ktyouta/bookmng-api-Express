@@ -19,14 +19,22 @@ export class CreateBookInfoBookAuthrosSelectEntity {
     private readonly _publishedDateModel: PublishedDateModel;
     // 著者ID
     private readonly _authorIdModelList: ReadonlyArray<AuthorIdModel>;
+    // 書籍情報削除フラグ
+    private readonly _bookInfoDeleteFlgModel: DeleteFlgModel;
+    // 書籍著者情報削除フラグ
+    private readonly _bookAuthordeleteFlgModel: DeleteFlgModel;
 
     constructor(titleModel: TitleModel,
         publishedDateModel: PublishedDateModel,
-        authorIdModelList: AuthorIdModel[]) {
+        authorIdModelList: AuthorIdModel[],
+        bookInfoDeleteFlgModel: DeleteFlgModel,
+        bookAuthordeleteFlgModel: DeleteFlgModel) {
 
         this._titleModel = titleModel;
         this._publishedDateModel = publishedDateModel;
         this._authorIdModelList = authorIdModelList;
+        this._bookInfoDeleteFlgModel = bookInfoDeleteFlgModel;
+        this._bookAuthordeleteFlgModel = bookAuthordeleteFlgModel;
     }
 
 
@@ -50,4 +58,11 @@ export class CreateBookInfoBookAuthrosSelectEntity {
         return this._publishedDateModel.publishedDate;
     }
 
+    public get bookInfoDeleteFlg() {
+        return this._bookInfoDeleteFlgModel.deleteFlg;
+    }
+
+    public get bookAuthordeleteFlg() {
+        return this._bookAuthordeleteFlgModel.deleteFlg;
+    }
 }

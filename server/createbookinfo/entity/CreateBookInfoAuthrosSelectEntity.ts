@@ -12,14 +12,20 @@ export class CreateBookInfoAuthrosSelectEntity {
 
     // 著者ID
     private readonly _authorIdModelList: ReadonlyArray<AuthorIdModel>;
+    // 削除フラグ
+    private readonly _deleteFlgModel: DeleteFlgModel;
 
-    constructor(authorIdModelList: AuthorIdModel[]) {
+    constructor(authorIdModelList: AuthorIdModel[], deleteFlgModel: DeleteFlgModel) {
 
         this._authorIdModelList = authorIdModelList;
+        this._deleteFlgModel = deleteFlgModel;
     }
 
     public get authorIdModelList() {
         return this._authorIdModelList;
     }
 
+    public get deleteFlg() {
+        return this._deleteFlgModel.deleteFlg;
+    }
 }
