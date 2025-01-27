@@ -6,7 +6,6 @@ import { UpdateDateModel } from "../../../common/model/UpdateDateModel";
 import { FrontUserInfoMasterInsertEntity } from "../../entity/FrontUserInfoMasterInsertEntity";
 import { FrontUserInfoMasterUpdateEntity } from "../../entity/FrontUserInfoMasterUpdateEntity";
 import { FrontUserInfoMasterJsonModelType } from "../../model/FrontUserInfoMasterJsonModelType";
-import { FrontUserInfoMasterModel } from "../../model/FrontUserInfoMasterModel";
 import { FrontUserBirthdayModel } from "../../properties/FrontUserBirthdayModel";
 import { FrontUserIdModel } from "../../properties/FrontUserIdModel";
 import { FrontUserNameModel } from "../../properties/FrontUserNameModel";

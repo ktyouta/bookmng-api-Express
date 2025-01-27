@@ -3,7 +3,6 @@ import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
 import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { FrontUserInfoMasterJsonModelType } from "../model/FrontUserInfoMasterJsonModelType";
-import { FrontUserInfoMasterModel } from "../model/FrontUserInfoMasterModel";
 import { FrontUserBirthdayModel } from "../properties/FrontUserBirthdayModel";
 import { FrontUserIdModel } from "../properties/FrontUserIdModel";
 import { FrontUserNameModel } from "../properties/FrontUserNameModel";

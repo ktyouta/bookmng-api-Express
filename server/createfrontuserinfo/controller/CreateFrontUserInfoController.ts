@@ -7,7 +7,6 @@ import { HTTP_STATUS_CREATED, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../uti
 import { FrontUserInfoCreateRequestModelSchema } from '../model/FrontUserInfoCreateRequestModelSchema';
 import { ZodIssue } from 'zod';
 import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/properties/FrontUserIdModel';
-import { FrontUserInfoMasterModel } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterModel';
 import { FrontUserInfoCreateRequestModel } from '../model/FrontUserInfoCreateRequestModel';
 import { FrontUserInfoCreateRequestType } from '../model/FrontUserInfoCreateRequestType';
 import { FrontUserInfoMasterRepositoryInterface } from '../../internaldata/frontuserinfomaster/repository/interface/FrontUserInfoMasterRepositoryInterface';
