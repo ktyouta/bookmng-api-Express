@@ -1,4 +1,3 @@
-import { GoogleBookInfoApis } from "../../externalapi/googlebookinfo/service/GoogleBookInfoApis";
 import ENV from '../../env.json';
 import { CreateDateModel } from "../../internaldata/common/model/CreateDateModel";
 import { KeywordModel } from "../../internaldata/googlebooksapiaccesshistory/properties/KeywordModel";
@@ -47,12 +46,12 @@ import { RepositoryType } from "../../util/const/CommonConst";
 import { BookSearchGoogleBooksApiAccessHistorySelectEntity } from "../entity/BookSearchGoogleBooksApiAccessHistorySelectEntity";
 import { GoogleBooksApiAccessHistoryRepositorys } from "../../internaldata/googlebooksapiaccesshistory/repository/GoogleBooksApiAccessHistoryRepositorys";
 import { GoogleBooksApiAccessHistoryInsertEntity } from "../../internaldata/googlebooksapiaccesshistory/entity/GoogleBooksApiAccessHistoryInsertEntity";
+import { GoogleBookInfoApis } from '../../externalapi/googlebookinfo/service/GoogleBookInfoApis';
+import { GoogleBookInfoApisKeyword } from '../../externalapi/properties/GoogleBookInfoApisKeyword';
 
 
 export class BookSearchService {
 
-    // Google Books Apiデータ取得
-    private googleBookInfoApis: GoogleBookInfoApis = new GoogleBookInfoApis();
     // Google Books Api書籍情報キャッシュ
     private googleBooksApiInfoCacheService = new GoogleBooksApiInfoCacheService();
     // Google Books Api著者情報キャッシュ
@@ -88,13 +87,19 @@ export class BookSearchService {
     public async callGoogleBookApi(keyword: string) {
 
         try {
+
+            const googleBookInfoApisKeyword = new GoogleBookInfoApisKeyword(keyword);
+
+            // Google Books Apiデータ取得
+            const googleBookInfoApis: GoogleBookInfoApis = new GoogleBookInfoApis(googleBookInfoApisKeyword);
+
             // Google Books Apiを呼び出す
-            let googleBookInfoList = await this.googleBookInfoApis.getGoogleBookInfo(keyword);
+            const googleBookInfoList = await googleBookInfoApis.call();
 
             return googleBookInfoList;
 
         } catch (err) {
-            throw Error(`ERROR:${err} endpoing:${ENV.BOOK_SEARCH} keyword:${keyword}`);
+            throw Error(`ERROR:${err} endpoint:${ENV.BOOK_SEARCH} keyword:${keyword}`);
         }
     }
 

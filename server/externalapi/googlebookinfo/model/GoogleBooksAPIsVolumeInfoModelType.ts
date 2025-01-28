@@ -2,9 +2,9 @@ import { GoogleBooksAPIsImageLinksModelType } from "./GoogleBooksAPIsImageLinksM
 
 // 書籍のメイン情報の型
 export type GoogleBooksAPIsVolumeInfoModelType = {
-    title?: string,
-    authors?: string[],
-    publishedDate?: string,
-    imageLinks?: GoogleBooksAPIsImageLinksModelType,
-    description?: string,
+    readonly title?: string,
+    readonly authors?: string[],
+    readonly publishedDate?: string,
+    readonly imageLinks?: GoogleBooksAPIsImageLinksModelType,
+    readonly description?: string,
 }

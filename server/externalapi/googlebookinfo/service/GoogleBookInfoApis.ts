@@ -4,16 +4,18 @@ import axios, { AxiosResponse } from 'axios';
 import { ApiClient } from '../../../util/service/ApiClient';
 import { GoogleBooksAPIsModelType } from '../model/GoogleBooksAPIsModelType';
 import { QueryBuilder } from '../../../util/service/QueryBuilder';
+import { GoogleBookInfoApisKeyword } from '../../properties/GoogleBookInfoApisKeyword';
 
 
 export class GoogleBookInfoApis {
 
     // Google Books ApiのURL
-    private readonly GOOGLE_BOOK_API_BASE_URL: string;
+    private readonly _apiUrl: string;
     // api通信用クラス
-    private readonly apiClient: ApiClient = new ApiClient();
+    private readonly _apiClient: ApiClient = new ApiClient();
 
-    constructor() {
+
+    constructor(googleBookInfoApisKeyword: GoogleBookInfoApisKeyword) {
 
         if (!ENV.GOOGLE_BOOKS_API_PROTOCOL) {
             throw Error("設定ファイルにプロトコルが存在しません。");
@@ -39,19 +41,42 @@ export class GoogleBookInfoApis {
             throw Error("設定ファイルにGoogle Books Apiの最大取得件数が存在しません。");
         }
 
-        this.GOOGLE_BOOK_API_BASE_URL = `${ENV.GOOGLE_BOOKS_API_PROTOCOL}${ENV.GOOGLE_BOOKS_API_DOMAIN}${ENV.GOOGLE_BOOKS_API_PATH}`;
+        const apiBaseUrl = `${ENV.GOOGLE_BOOKS_API_PROTOCOL}${ENV.GOOGLE_BOOKS_API_DOMAIN}${ENV.GOOGLE_BOOKS_API_PATH}`;
+
+        // クエリパラメータを作成
+        const queryParam = this.createQuery(googleBookInfoApisKeyword);
+        this._apiUrl = `${apiBaseUrl}${queryParam ? `?${queryParam}` : ""}`;
     }
 
 
     /**
      * Google Books Apiを呼び出す
      */
-    public async getGoogleBookInfo(keyword: string): Promise<GoogleBooksAPIsModelType> {
+    public async call(): Promise<GoogleBooksAPIsModelType> {
 
-        // Google Books Apiの呼び出しにキーワードが必須のため存在しない場合はエラーにする
-        if (!keyword) {
-            throw Error("Google Books Apiの呼び出しにはキーワードが必須です。");
+        try {
+            // Google Books Apiを呼び出す
+            const response: GoogleBooksAPIsModelType = await this._apiClient.get(this._apiUrl);
+            return response;
+        } catch (err) {
+
+            const errorDetails = {
+                message: `Google Books Apiの呼び出しでエラーが発生しました。`,
+                url: this._apiUrl,
+                error: err
+            };
+
+            throw Error(JSON.stringify(errorDetails));
         }
+    }
+
+
+    /**
+     * api用のクエリパラメータを作成する
+     * @param keyword 
+     * @returns 
+     */
+    private createQuery(keyword: GoogleBookInfoApisKeyword) {
 
         // クエリパラメータ作成用オブジェクト
         const queryBuilder: QueryBuilder = new QueryBuilder();
@@ -59,28 +84,9 @@ export class GoogleBookInfoApis {
         queryBuilder.addQuery(`${ENV.GOOGLE_BOOKS_API_QUERYKEY_MAXRESULTS}`, `${ENV.GOOGLE_BOOKS_API_MAXRESULTS}`);
 
         // キーワードをクエリパラメータにセット
-        queryBuilder.addQuery(`${ENV.GOOGLE_BOOKS_API_QUERYKEY_KEYWORD}`, `${keyword}`);
+        queryBuilder.addQuery(`${ENV.GOOGLE_BOOKS_API_QUERYKEY_KEYWORD}`, `${keyword.keywrod}`);
 
         // クエリパラメータを作成
-        const queryPrm = queryBuilder.createQueryStr();
-        // Google Books Api 呼び出し用URL 
-        const callApiUrl = `${this.GOOGLE_BOOK_API_BASE_URL}${queryPrm ? `?${queryPrm}` : ""}`;
-
-        try {
-            // Google Books Apiを呼び出す
-            const response: GoogleBooksAPIsModelType = await this.apiClient.get(callApiUrl);
-            return response;
-
-        } catch (err) {
-
-            const errorDetails = {
-                message: "Google Books Apiの呼び出しでエラーが発生しました。",
-                url: callApiUrl,
-                keyword,
-                error: err
-            };
-
-            throw Error(JSON.stringify(errorDetails));
-        }
+        return queryBuilder.createQueryStr();
     }
 }

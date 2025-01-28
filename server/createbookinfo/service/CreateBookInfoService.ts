@@ -1,4 +1,3 @@
-import { GoogleBookInfoApis } from "../../externalapi/googlebookinfo/service/GoogleBookInfoApis";
 import { BookIdModel } from "../../internaldata/bookinfomaster/properties/BookIdModel";
 import { BookInfoJsonModelType } from "../../internaldata/bookinfomaster/model/BookInfoMasterJsonModelType";
 import { ArrayUtil } from "../../util/service/ArrayUtil";

@@ -2,6 +2,6 @@ import { GoogleBooksAPIsVolumeInfoModelType } from "./GoogleBooksAPIsVolumeInfoM
 
 // 書籍情報の型
 export type GoogleBooksAPIsModelItemsType = {
-    id: string,
-    volumeInfo: GoogleBooksAPIsVolumeInfoModelType
+    readonly id: string,
+    readonly volumeInfo: GoogleBooksAPIsVolumeInfoModelType
 }

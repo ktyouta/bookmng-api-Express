@@ -103,9 +103,10 @@ export class BookSearchController extends RouteController {
             // フィルターしたキャッシュ情報をGoogle Books Apiの型に変換する
             googleBooksApiItems = this.bookSearchService.parseGoogleBooksAPIsModelItems(filterdGoogleBooksApiCacheMergedList);
         }
+        // アクセス履歴が存在しない
         else {
 
-            // アクセス履歴が存在しない場合はGoogle Books Apiから書籍情報を取得する
+            // Google Books Apiから書籍情報を取得する
             retBookInfo = await this.bookSearchService.callGoogleBookApi(keyword);
 
             // Google Books Apiの書籍情報リスト
