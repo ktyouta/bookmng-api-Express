@@ -89,9 +89,9 @@ export class GoogleBookInfoApis {
         const queryBuilder: QueryBuilder = new QueryBuilder(apiMaxResultKey, apiMaxResultValue);
 
         // キーワードをクエリパラメータにセット
-        queryBuilder.add(searchKeywordKey, searchKeyWordValue);
+        const addeKeywordqueryBuilder = queryBuilder.add(searchKeywordKey, searchKeyWordValue);
 
         // クエリパラメータを作成
-        return queryBuilder.createParam();
+        return addeKeywordqueryBuilder.createParam();
     }
 }

@@ -1,20 +1,18 @@
 export class QueryBuilder {
 
-    private _queryParam: Record<string, string | number>;
+    private readonly _queryParam: Record<string, string | number> = {};
 
-    constructor(key: string, value: string) {
+    constructor(key: string, value: string | number) {
 
         if (!key) {
-            throw Error(`クエリパラメータのキーが設定されていません。`);
+            throw Error(`クエリパラメータのキーが設定されていません。key:${key} value:${value}`);
         }
 
         if (!value) {
-            throw Error(`クエリパラメータの値が設定されていません。`);
+            throw Error(`クエリパラメータの値が設定されていません。key:${key} value:${value}`);
         }
 
-        this._queryParam = {
-            [key]: value
-        }
+        this._queryParam[key] = value;
     }
 
     /**
@@ -24,10 +22,7 @@ export class QueryBuilder {
      */
     public add(key: string, value: string | number) {
 
-        this._queryParam = {
-            ...this._queryParam,
-            [key]: value
-        }
+        return new QueryBuilder(key, value);
     }
 
     /**
