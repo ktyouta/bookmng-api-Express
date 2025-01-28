@@ -1,23 +1,41 @@
 export class QueryBuilder {
 
-    private queryParam: Record<string, string | number> = {};
+    private _queryParam: Record<string, string | number>;
+
+    constructor(key: string, value: string) {
+
+        if (!key) {
+            throw Error(`クエリパラメータのキーが設定されていません。`);
+        }
+
+        if (!value) {
+            throw Error(`クエリパラメータの値が設定されていません。`);
+        }
+
+        this._queryParam = {
+            [key]: value
+        }
+    }
 
     /**
      * クエリを追加する
      * @param key 
      * @param value 
      */
-    public addQuery(key: string, value: string | number) {
+    public add(key: string, value: string | number) {
 
-        this.queryParam[key] = value;
+        this._queryParam = {
+            ...this._queryParam,
+            [key]: value
+        }
     }
 
     /**
      * クエリパラメータを作成する
      */
-    public createQueryStr() {
+    public createParam() {
 
-        return Object.entries(this.queryParam).map(([key, value]) => {
+        return Object.entries(this._queryParam).map(([key, value]) => {
             return {
                 key,
                 value,

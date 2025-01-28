@@ -73,20 +73,25 @@ export class GoogleBookInfoApis {
 
     /**
      * api用のクエリパラメータを作成する
-     * @param keyword 
+     * @param googleBookInfoApisKeyword 
      * @returns 
      */
-    private createQuery(keyword: GoogleBookInfoApisKeyword) {
+    private createQuery(googleBookInfoApisKeyword: GoogleBookInfoApisKeyword) {
+
+        // 最大取得件数
+        const apiMaxResultKey = `${ENV.GOOGLE_BOOKS_API_QUERYKEY_MAXRESULTS}`;
+        const apiMaxResultValue = `${ENV.GOOGLE_BOOKS_API_MAXRESULTS}`;
+        // 検索キーワード
+        const searchKeywordKey = `${ENV.GOOGLE_BOOKS_API_QUERYKEY_KEYWORD}`;
+        const searchKeyWordValue = googleBookInfoApisKeyword.keywrod;
 
         // クエリパラメータ作成用オブジェクト
-        const queryBuilder: QueryBuilder = new QueryBuilder();
-        // 最大取得件数をパラメータにセット
-        queryBuilder.addQuery(`${ENV.GOOGLE_BOOKS_API_QUERYKEY_MAXRESULTS}`, `${ENV.GOOGLE_BOOKS_API_MAXRESULTS}`);
+        const queryBuilder: QueryBuilder = new QueryBuilder(apiMaxResultKey, apiMaxResultValue);
 
         // キーワードをクエリパラメータにセット
-        queryBuilder.addQuery(`${ENV.GOOGLE_BOOKS_API_QUERYKEY_KEYWORD}`, `${keyword.keywrod}`);
+        queryBuilder.add(searchKeywordKey, searchKeyWordValue);
 
         // クエリパラメータを作成
-        return queryBuilder.createQueryStr();
+        return queryBuilder.createParam();
     }
 }
