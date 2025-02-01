@@ -12,8 +12,8 @@ import { AccessDateModel } from '../../internaldata/googlebooksapiaccesshistory/
 import { KeywordModel } from '../../internaldata/googlebooksapiaccesshistory/properties/KeywordModel';
 import { GoogleBooksApiInfoCacheJsonModelType } from '../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheJsonModelType';
 import { GoogleBooksApiAuthorsCacheJsonModelType } from '../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheJsonModelType';
-import { GoogleBooksApiSmallThumbnailCacheModelType } from '../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheModelType';
-import { GoogleBooksApiThumbnailCacheModelType } from '../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheModelType';
+import { GoogleBooksApiSmallThumbnailCacheJsonModelType } from '../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheJsonModelType';
+import { GoogleBooksApiThumbnailCacheJsonModelType } from '../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheJsonModelType';
 import { GoogleBooksApiCacheModelType } from '../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheModelType';
 import { GoogleBooksAPIsModelItemsType } from '../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType';
 import { GOOGLE_BOOKS_API_KIND } from '../const/BookSearchConst';
@@ -62,7 +62,7 @@ export class BookSearchController extends RouteController {
         const keywordModel = new KeywordModel(keyword);
 
         // BookSearchの永続ロジックを取得
-        const bookSearchRepository = this.bookSearchService.getBookSearchRepositorys();
+        const bookSearchRepository = this.bookSearchService.getBookSearchRepository();
 
         // レスポンスの書籍情報
         let retBookInfo: GoogleBooksAPIsModelType = {
@@ -81,10 +81,10 @@ export class BookSearchController extends RouteController {
         let googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheJsonModelType[] = this.bookSearchService.getGoogleBooksApiAuthorsCache();
 
         // Google Books Apiのサムネイル(小)キャッシュ情報を取得する
-        let googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[] = this.bookSearchService.getGoogleBooksApiSmallThumbnailCache();
+        let googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheJsonModelType[] = this.bookSearchService.getGoogleBooksApiSmallThumbnailCache();
 
         // Google Books Apiのサムネイルキャッシュ情報を取得する
-        let googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheModelType[] = this.bookSearchService.getGoogleBooksApiThumbnailCache();
+        let googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheJsonModelType[] = this.bookSearchService.getGoogleBooksApiThumbnailCache();
 
         // 現在日付を取得する
         const accessDateModel = new AccessDateModel();
@@ -122,12 +122,21 @@ export class BookSearchController extends RouteController {
             // Google Books Api著者キャッシュにデータを書き込む
             this.bookSearchService.overWriteGoogleBooksApiAuthorsCache(googleBooksApiAuthorsCacheList);
 
+
+
+            // Google Books Apiのサムネイルの永続ロジックを取得
+            const googleBooksApiSmallThumbnailCacheRepository = this.bookSearchService.getGoogleBooksApiSmallThumbnailCacheRepository();
+
             // Google Books Apiのサムネイル(小)キャッシュ情報の追加/更新データを作成する
             googleBooksApiSmallThumbnailCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiSmallThumbnailCache(
                 googleBooksApiSmallThumbnailCacheList, googleBooksApiItems);
 
             // Google Books Apiのサムネイル(小)キャッシュにデータを書き込む
             this.bookSearchService.overWriteGoogleBooksApiSmallThumbnailCache(googleBooksApiSmallThumbnailCacheList);
+
+
+            // Google Books Apiのサムネイルの永続ロジックを取得
+            const googleBooksApiThumbnailCacheRepository = this.bookSearchService.getGoogleBooksApiThumbnailCacheRepository();
 
             // Google Books Apiのサムネイルキャッシュ情報の追加/更新データを作成する
             googleBooksApiThumbnailCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiThumbnailCache(

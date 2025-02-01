@@ -1,10 +1,10 @@
 import { JsonFileData } from "../../../util/service/JsonFileData";
 import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/properties/GoogleBooksApiIdModel";
-import { GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE_PATH } from "../const/GoogleBooksApiSmallThumbnailCacheConst";
 import { GoogleBooksApiSmallThumbnailCacheCreateModel } from "../model/GoogleBooksApiSmallThumbnailCacheCreateModel";
-import { GoogleBooksApiSmallThumbnailCacheModelType } from "../model/GoogleBooksApiSmallThumbnailCacheModelType";
+import { GoogleBooksApiSmallThumbnailCacheJsonModelType } from "../model/GoogleBooksApiSmallThumbnailCacheJsonModelType";
 import { GoogleBooksApiSmallThumbnailCacheUpdateModel } from "../model/GoogleBooksApiSmallThumbnailCacheUpdateModel";
-import { SmallThumbnailModel } from "../model/SmallThumbnailModel";
+import { SmallThumbnailModel } from "../properties/SmallThumbnailModel";
+import { GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE_PATH } from "../repository/concrete/GoogleBooksApiSmallThumbnailCacheRepositoryJson";
 
 
 export class GoogleBooksApiSmallThumbnailCacheService {
@@ -17,7 +17,7 @@ export class GoogleBooksApiSmallThumbnailCacheService {
     public getGoogleBooksApiSmallThumbnailCache() {
 
         // Google Books Apiサムネイル(小)キャッシュ情報ファイルからデータを取得
-        const googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[]
+        const googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheJsonModelType[]
             = JsonFileData.getFileObj(GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE_PATH);
 
         return googleBooksApiSmallThumbnailCacheList;
@@ -43,11 +43,11 @@ export class GoogleBooksApiSmallThumbnailCacheService {
      * @param bookInfoMasterCreateModel 
      */
     public createGoogleBooksApiSmallThumbnailCacheCreateWriteData(
-        googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[],
-        googleBooksApiSmallThumbnailCacheCreateModel: GoogleBooksApiSmallThumbnailCacheCreateModel): GoogleBooksApiSmallThumbnailCacheModelType[] {
+        googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheJsonModelType[],
+        googleBooksApiSmallThumbnailCacheCreateModel: GoogleBooksApiSmallThumbnailCacheCreateModel): GoogleBooksApiSmallThumbnailCacheJsonModelType[] {
 
         // jsonファイル登録用の型に変換する
-        const createGoogleBooksApiSmallThumbnailCacheBody: GoogleBooksApiSmallThumbnailCacheModelType = {
+        const createGoogleBooksApiSmallThumbnailCacheBody: GoogleBooksApiSmallThumbnailCacheJsonModelType = {
             bookId: googleBooksApiSmallThumbnailCacheCreateModel.bookId.bookId,
             smallThumbnail: googleBooksApiSmallThumbnailCacheCreateModel.smallThumbnail.smallThumbnail,
             createDate: googleBooksApiSmallThumbnailCacheCreateModel.createDate.createDate,
@@ -65,7 +65,7 @@ export class GoogleBooksApiSmallThumbnailCacheService {
      * Google Books Apiサムネイル(小)キャッシュ情報ファイルにデータを書き込む
      * @param googleBooksApiAuthorsCacheList 
      */
-    public overWriteGoogleBooksApiSmallThumbnailCache(googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[]) {
+    public overWriteGoogleBooksApiSmallThumbnailCache(googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheJsonModelType[]) {
 
         try {
 
@@ -98,8 +98,8 @@ export class GoogleBooksApiSmallThumbnailCacheService {
      * @returns 
      */
     public createGoogleBooksApiSmallThumbnailCacheUpdateWriteData(
-        googleBooksApiSmallThumbnailCache: GoogleBooksApiSmallThumbnailCacheModelType,
-        googleBooksApiSmallThumbnailCacheUpdateModel: GoogleBooksApiSmallThumbnailCacheUpdateModel): GoogleBooksApiSmallThumbnailCacheModelType {
+        googleBooksApiSmallThumbnailCache: GoogleBooksApiSmallThumbnailCacheJsonModelType,
+        googleBooksApiSmallThumbnailCacheUpdateModel: GoogleBooksApiSmallThumbnailCacheUpdateModel): GoogleBooksApiSmallThumbnailCacheJsonModelType {
 
         googleBooksApiSmallThumbnailCache.smallThumbnail = googleBooksApiSmallThumbnailCacheUpdateModel.smallThumbnail.smallThumbnail;
         googleBooksApiSmallThumbnailCache.updateDate = googleBooksApiSmallThumbnailCacheUpdateModel.updateDate.updateDate;

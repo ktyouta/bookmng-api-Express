@@ -1,5 +1,5 @@
 // jsonファイルのGoogle Books Api のサムネイル(小)キャッシュ情報
-export type GoogleBooksApiSmallThumbnailCacheModelType = {
+export type GoogleBooksApiSmallThumbnailCacheJsonModelType = {
     bookId: string,
     smallThumbnail: string,
     createDate: string,

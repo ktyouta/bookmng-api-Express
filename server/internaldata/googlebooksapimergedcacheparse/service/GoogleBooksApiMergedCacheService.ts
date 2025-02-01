@@ -11,7 +11,7 @@ export class GoogleBooksApiMergedCacheService {
      * @param googleBooksApiCacheMergedList 
      * @returns 
      */
-    public parseGoogleBooksAPIsModelItems(googleBooksApiCacheMergedList: GoogleBooksApiCacheModelType[]): GoogleBooksAPIsModelItemsType[] {
+    public parseGoogleBooksAPIsModelItems(googleBooksApiCacheMergedList: ReadonlyArray<GoogleBooksApiCacheModelType>): GoogleBooksAPIsModelItemsType[] {
 
         const googleBooksAPIsModelItemsTypeList: GoogleBooksAPIsModelItemsType[] = googleBooksApiCacheMergedList.map((e: GoogleBooksApiCacheModelType) => {
 

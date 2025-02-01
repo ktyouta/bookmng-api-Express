@@ -8,7 +8,7 @@ import { GoogleBooksApiInfoCacheRepositoryInterface } from "./interface/GoogleBo
  * 永続ロジック用クラスの管理用
  * ロジックを追加する場合はコンストラクタ内でrepositoryに追加(push)する
  */
-export class GoogleBooksApiAuthorsCacheRepositorys {
+export class GoogleBooksApiInfoCacheRepositorys {
 
 
     private readonly repositorys: ReadonlyArray<GoogleBooksApiInfoCacheRepositoryInterface>;

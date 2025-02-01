@@ -1,4 +1,0 @@
-import { TRANSACTION_FILE_PATH, GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE } from "../../../util/const/FileInfoConst";
-
-// Google Books Apiサムネイルキャッシュファイルパス
-export const GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE_PATH = `${TRANSACTION_FILE_PATH}${GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE}`;

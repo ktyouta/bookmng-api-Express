@@ -1,7 +1,7 @@
 import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/properties/GoogleBooksApiIdModel";
-import { SmallThumbnailModel } from "./SmallThumbnailModel";
+import { SmallThumbnailModel } from "../properties/SmallThumbnailModel";
 
 export class GoogleBooksApiSmallThumbnailCacheCreateModel {
 
