@@ -1,5 +1,5 @@
 // jsonファイルのGoogle Books Api の著者キャッシュ情報
-export type GoogleBooksApiAuthorsCacheModelType = {
+export type GoogleBooksApiAuthorsCacheJsonModelType = {
     bookId: string,
     authorNo: number,
     authorName: string,

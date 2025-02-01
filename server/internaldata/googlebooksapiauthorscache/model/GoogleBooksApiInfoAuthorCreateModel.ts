@@ -1,8 +1,8 @@
 import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { UpdateDateModel } from "../../common/model/UpdateDateModel";
-import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/model/GoogleBooksApiIdModel";
-import { GoogleBooksApiAuthorNameModel } from "./GoogleBooksApiAuthorNameModel";
-import { GoogleBooksApiAuthorNoModel } from "./GoogleBooksApiAuthorNoModel";
+import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/properties/GoogleBooksApiIdModel";
+import { GoogleBooksApiAuthorNameModel } from "../properties/GoogleBooksApiAuthorNameModel";
+import { GoogleBooksApiAuthorNoModel } from "../properties/GoogleBooksApiAuthorNoModel";
 
 
 export class GoogleBooksApiInfoAuthorCreateModel {

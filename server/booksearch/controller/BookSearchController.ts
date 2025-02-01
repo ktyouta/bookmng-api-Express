@@ -10,8 +10,8 @@ import { ZodIssue } from 'zod';
 import { CreateDateModel } from '../../internaldata/common/model/CreateDateModel';
 import { AccessDateModel } from '../../internaldata/googlebooksapiaccesshistory/properties/AccessDateModel';
 import { KeywordModel } from '../../internaldata/googlebooksapiaccesshistory/properties/KeywordModel';
-import { GoogleBooksApiInfoCacheModelType } from '../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheModelType';
-import { GoogleBooksApiAuthorsCacheModelType } from '../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheModelType';
+import { GoogleBooksApiInfoCacheJsonModelType } from '../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheJsonModelType';
+import { GoogleBooksApiAuthorsCacheJsonModelType } from '../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheJsonModelType';
 import { GoogleBooksApiSmallThumbnailCacheModelType } from '../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheModelType';
 import { GoogleBooksApiThumbnailCacheModelType } from '../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheModelType';
 import { GoogleBooksApiCacheModelType } from '../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheModelType';
@@ -75,10 +75,10 @@ export class BookSearchController extends RouteController {
         let googleBooksApiItems: GoogleBooksAPIsModelItemsType[] = [];
 
         // Google Books Apiの書籍キャッシュ情報を取得する
-        let googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[] = this.bookSearchService.getGoogleBooksApiInfoCache();
+        let googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheJsonModelType[] = this.bookSearchService.getGoogleBooksApiInfoCache();
 
         // Google Books Apiの著者キャッシュ情報を取得する
-        let googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[] = this.bookSearchService.getGoogleBooksApiAuthorsCache();
+        let googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheJsonModelType[] = this.bookSearchService.getGoogleBooksApiAuthorsCache();
 
         // Google Books Apiのサムネイル(小)キャッシュ情報を取得する
         let googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[] = this.bookSearchService.getGoogleBooksApiSmallThumbnailCache();

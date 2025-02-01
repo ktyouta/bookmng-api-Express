@@ -3,11 +3,11 @@ import { FrontUserInfoMasterJsonModelType } from "../../../internaldata/frontuse
 import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../../../internaldata/frontuserinfomaster/repository/concrete/FrontUserInfoMasterRepositoryJson";
 import { GoogleBooksApiAccessHistoryJsonModelType } from "../../../internaldata/googlebooksapiaccesshistory/model/GoogleBooksApiAccessHistoryJsonModelType";
 import { GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH } from "../../../internaldata/googlebooksapiaccesshistory/repository/concrete/GoogleBooksApiAccessHistoryRepositoryJson";
-import { GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapiauthorscache/const/GoogleBooksApiAuthorCacheConst";
-import { GoogleBooksApiAuthorsCacheModelType } from "../../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheModelType";
+import { GoogleBooksApiAuthorsCacheJsonModelType } from "../../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheJsonModelType";
+import { GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapiauthorscache/repository/concrete/GoogleBooksApiAuthorsCacheRepositoryJson";
 import { GoogleBooksApiCacheModelType } from "../../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheModelType";
-import { GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapiinfocache/const/GoogleBooksApiInfoCacheConst";
-import { GoogleBooksApiInfoCacheModelType } from "../../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheModelType";
+import { GoogleBooksApiInfoCacheJsonModelType } from "../../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheJsonModelType";
+import { GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapiinfocache/repository/concrete/GoogleBooksApiInfoCacheRepositoryJson";
 import { GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapismallthumbnailcache/const/GoogleBooksApiSmallThumbnailCacheConst";
 import { GoogleBooksApiSmallThumbnailCacheModelType } from "../../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheModelType";
 import { GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapithumbnail/const/GoogleBooksApiThumbnailCacheConst";
@@ -25,8 +25,8 @@ import { BookSearchRepositoryInterface, } from "../interface/BookSearchRepositor
 export class BookSearchRepositoryJson implements BookSearchRepositoryInterface {
 
     private _googleBooksApiAccessHistoryJsonList: ReadonlyArray<GoogleBooksApiAccessHistoryJsonModelType>;
-    private _googleBooksApiInfoCacheList: ReadonlyArray<GoogleBooksApiInfoCacheModelType>;
-    private _googleBooksApiAuthorsCacheList: ReadonlyArray<GoogleBooksApiAuthorsCacheModelType>;
+    private _googleBooksApiInfoCacheList: ReadonlyArray<GoogleBooksApiInfoCacheJsonModelType>;
+    private _googleBooksApiAuthorsCacheList: ReadonlyArray<GoogleBooksApiAuthorsCacheJsonModelType>;
     private _googleBooksApiSmallThumbnailCacheList: ReadonlyArray<GoogleBooksApiSmallThumbnailCacheModelType>;
     private _googleBooksApiThumbnailCacheList: ReadonlyArray<GoogleBooksApiThumbnailCacheModelType>;
 
@@ -37,10 +37,10 @@ export class BookSearchRepositoryJson implements BookSearchRepositoryInterface {
             JsonFileData.getFileObj(GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH);
 
         // Google Books Api著者キャッシュ情報ファイルのデータを取得
-        const googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[] = JsonFileData.getFileObj(GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH);
+        const googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheJsonModelType[] = JsonFileData.getFileObj(GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH);
 
         // Google Books Api著者キャッシュ情報ファイルからデータを取得
-        const googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[] = JsonFileData.getFileObj(GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH);
+        const googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheJsonModelType[] = JsonFileData.getFileObj(GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH);
 
         // Google Books Apiサムネイル(小)キャッシュ情報ファイルからデータを取得
         const googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[]
@@ -82,22 +82,22 @@ export class BookSearchRepositoryJson implements BookSearchRepositoryInterface {
 
         // キャッシュ情報をマージする
         const GoogleBooksApiCacheMergedList: GoogleBooksApiCacheModelType[] =
-            this._googleBooksApiInfoCacheList.map((e: GoogleBooksApiInfoCacheModelType) => {
+            this._googleBooksApiInfoCacheList.map((e: GoogleBooksApiInfoCacheJsonModelType) => {
 
                 let authors: string[] = [];
                 let smallThumbnail = "";
                 let thumbnail = "";
 
                 // 著者キャッシュ情報から書籍IDに一致するデータを取得する
-                const googleBooksApiAuthorsCache: GoogleBooksApiAuthorsCacheModelType[] =
-                    this._googleBooksApiAuthorsCacheList.filter((e1: GoogleBooksApiAuthorsCacheModelType) => {
+                const googleBooksApiAuthorsCache: GoogleBooksApiAuthorsCacheJsonModelType[] =
+                    this._googleBooksApiAuthorsCacheList.filter((e1: GoogleBooksApiAuthorsCacheJsonModelType) => {
 
                         return e1.bookId === e.bookId;
                     });
 
                 if (googleBooksApiAuthorsCache && googleBooksApiAuthorsCache.length > 0) {
 
-                    authors = googleBooksApiAuthorsCache.map((e1: GoogleBooksApiAuthorsCacheModelType) => {
+                    authors = googleBooksApiAuthorsCache.map((e1: GoogleBooksApiAuthorsCacheJsonModelType) => {
                         return e1.authorName;
                     });
                 }

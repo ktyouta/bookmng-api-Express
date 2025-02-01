@@ -1,5 +1,5 @@
 import { JsonFileData } from "../../../util/service/JsonFileData";
-import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/model/GoogleBooksApiIdModel";
+import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/properties/GoogleBooksApiIdModel";
 import { GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE_PATH } from "../const/GoogleBooksApiSmallThumbnailCacheConst";
 import { GoogleBooksApiSmallThumbnailCacheCreateModel } from "../model/GoogleBooksApiSmallThumbnailCacheCreateModel";
 import { GoogleBooksApiSmallThumbnailCacheModelType } from "../model/GoogleBooksApiSmallThumbnailCacheModelType";

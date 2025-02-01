@@ -1,9 +1,9 @@
 import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { UpdateDateModel } from "../../common/model/UpdateDateModel";
-import { GoogleBooksApiDescriptionModel } from "./GoogleBooksApiDescriptionModel";
-import { GoogleBooksApiIdModel } from "./GoogleBooksApiIdModel";
-import { GoogleBooksApiPublishedDateModel } from "./GoogleBooksApiPublishedDateModel";
-import { GoogleBooksApiTitleModel } from "./GoogleBooksApiTitleModel";
+import { GoogleBooksApiDescriptionModel } from "../properties/GoogleBooksApiDescriptionModel";
+import { GoogleBooksApiIdModel } from "../properties/GoogleBooksApiIdModel";
+import { GoogleBooksApiPublishedDateModel } from "../properties/GoogleBooksApiPublishedDateModel";
+import { GoogleBooksApiTitleModel } from "../properties/GoogleBooksApiTitleModel";
 
 
 // jsonファイルのGoogle Books Api の書籍キャッシュ更新情報

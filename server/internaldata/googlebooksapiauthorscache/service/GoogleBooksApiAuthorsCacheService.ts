@@ -1,12 +1,12 @@
 import { GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE } from "../../../util/const/FileInfoConst";
 import { JsonFileData } from "../../../util/service/JsonFileData";
-import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/model/GoogleBooksApiIdModel";
-import { GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH } from "../const/GoogleBooksApiAuthorCacheConst";
-import { GoogleBooksApiAuthorNameModel } from "../model/GoogleBooksApiAuthorNameModel";
-import { GoogleBooksApiAuthorNoModel } from "../model/GoogleBooksApiAuthorNoModel";
-import { GoogleBooksApiAuthorsCacheModelType } from "../model/GoogleBooksApiAuthorsCacheModelType";
+import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/properties/GoogleBooksApiIdModel";
+import { GoogleBooksApiAuthorNameModel } from "../properties/GoogleBooksApiAuthorNameModel";
+import { GoogleBooksApiAuthorNoModel } from "../properties/GoogleBooksApiAuthorNoModel";
+import { GoogleBooksApiAuthorsCacheJsonModelType } from "../model/GoogleBooksApiAuthorsCacheJsonModelType";
 import { GoogleBooksApiInfoAuthorCreateModel } from "../model/GoogleBooksApiInfoAuthorCreateModel";
 import { GoogleBooksApiInfoAuthorUpdateModel } from "../model/GoogleBooksApiInfoAuthorUpdateModel";
+import { GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH } from "../repository/concrete/GoogleBooksApiAuthorsCacheRepositoryJson";
 
 export class GoogleBooksApiAuthorsCacheService {
 
@@ -18,7 +18,7 @@ export class GoogleBooksApiAuthorsCacheService {
     public getGoogleBooksApiAuthorsCache() {
 
         // Google Books Api著者キャッシュ情報ファイルからデータを取得
-        const googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[] = JsonFileData.getFileObj(GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH);
+        const googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheJsonModelType[] = JsonFileData.getFileObj(GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH);
 
         return googleBooksApiAuthorsCacheList;
     }
@@ -43,11 +43,11 @@ export class GoogleBooksApiAuthorsCacheService {
      * @param bookInfoMasterCreateModel 
      */
     public createGoogleBooksApiAuthorsCacheCreateWriteData(
-        googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[],
-        googleBooksApiAuthorsCacheCreateModel: GoogleBooksApiInfoAuthorCreateModel): GoogleBooksApiAuthorsCacheModelType[] {
+        googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheJsonModelType[],
+        googleBooksApiAuthorsCacheCreateModel: GoogleBooksApiInfoAuthorCreateModel): GoogleBooksApiAuthorsCacheJsonModelType[] {
 
         // jsonファイル登録用の型に変換する
-        const createGoogleBooksApiAuthorsCacheBody: GoogleBooksApiAuthorsCacheModelType = {
+        const createGoogleBooksApiAuthorsCacheBody: GoogleBooksApiAuthorsCacheJsonModelType = {
             bookId: googleBooksApiAuthorsCacheCreateModel.bookId.bookId,
             authorNo: googleBooksApiAuthorsCacheCreateModel.authorNo.authorNo,
             authorName: googleBooksApiAuthorsCacheCreateModel.authorName.authorName,
@@ -66,7 +66,7 @@ export class GoogleBooksApiAuthorsCacheService {
      * Google Books Api著者キャッシュ情報ファイルにデータを書き込む
      * @param googleBooksApiAuthorsCacheList 
      */
-    public overWriteGoogleBooksApiAuthorsCache(googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[]) {
+    public overWriteGoogleBooksApiAuthorsCache(googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheJsonModelType[]) {
 
         try {
 
@@ -85,8 +85,8 @@ export class GoogleBooksApiAuthorsCacheService {
      * @returns 
      */
     public createGoogleBooksApiAuthorsCacheUpdateWriteData(
-        googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[],
-        googleBooksApiAuthorsCacheUpdateModelList: GoogleBooksApiInfoAuthorUpdateModel[]): GoogleBooksApiAuthorsCacheModelType[] {
+        googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheJsonModelType[],
+        googleBooksApiAuthorsCacheUpdateModelList: GoogleBooksApiInfoAuthorUpdateModel[]): GoogleBooksApiAuthorsCacheJsonModelType[] {
 
         // フィルター対象の書籍IDリスト
         const filterTargetBookIdList = Array.from(new Set(googleBooksApiAuthorsCacheUpdateModelList.map((e: GoogleBooksApiInfoAuthorUpdateModel) => {
@@ -94,12 +94,12 @@ export class GoogleBooksApiAuthorsCacheService {
         })));
 
         // 更新対象の著者を一度削除する
-        googleBooksApiAuthorsCacheList = googleBooksApiAuthorsCacheList.filter((e: GoogleBooksApiAuthorsCacheModelType) => {
+        googleBooksApiAuthorsCacheList = googleBooksApiAuthorsCacheList.filter((e: GoogleBooksApiAuthorsCacheJsonModelType) => {
             return !filterTargetBookIdList.includes(e.bookId);
         });
 
         // jsonファイル更新用の型に変換する
-        const jsonGoogleBooksApiAuthorsCacheUpdateModelList: GoogleBooksApiAuthorsCacheModelType[] =
+        const jsonGoogleBooksApiAuthorsCacheUpdateModelList: GoogleBooksApiAuthorsCacheJsonModelType[] =
             googleBooksApiAuthorsCacheUpdateModelList.map((e: GoogleBooksApiInfoAuthorUpdateModel) => {
 
                 return {

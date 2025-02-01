@@ -1,5 +1,5 @@
 // jsonファイルのGoogle Books Api の書籍キャッシュ情報
-export type GoogleBooksApiInfoCacheModelType = {
+export type GoogleBooksApiInfoCacheJsonModelType = {
     bookId: string,
     title?: string,
     publishedDate?: string,

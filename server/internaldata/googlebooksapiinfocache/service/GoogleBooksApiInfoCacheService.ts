@@ -1,13 +1,13 @@
 import { JsonFileData } from "../../../util/service/JsonFileData";
 import { KeywordModel } from "../../googlebooksapiaccesshistory/properties/KeywordModel";
-import { GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH } from "../const/GoogleBooksApiInfoCacheConst";
-import { GoogleBooksApiDescriptionModel } from "../model/GoogleBooksApiDescriptionModel";
-import { GoogleBooksApiIdModel } from "../model/GoogleBooksApiIdModel";
+import { GoogleBooksApiDescriptionModel } from "../properties/GoogleBooksApiDescriptionModel";
+import { GoogleBooksApiIdModel } from "../properties/GoogleBooksApiIdModel";
 import { GoogleBooksApiInfoCacheCreateModel } from "../model/GoogleBooksApiInfoCacheCreateModel";
-import { GoogleBooksApiInfoCacheModelType } from "../model/GoogleBooksApiInfoCacheModelType";
+import { GoogleBooksApiInfoCacheJsonModelType } from "../model/GoogleBooksApiInfoCacheJsonModelType";
 import { GoogleBooksApiInfoCacheUpdateModel } from "../model/GoogleBooksApiInfoCacheUpdateModel";
-import { GoogleBooksApiPublishedDateModel } from "../model/GoogleBooksApiPublishedDateModel";
-import { GoogleBooksApiTitleModel } from "../model/GoogleBooksApiTitleModel";
+import { GoogleBooksApiPublishedDateModel } from "../properties/GoogleBooksApiPublishedDateModel";
+import { GoogleBooksApiTitleModel } from "../properties/GoogleBooksApiTitleModel";
+import { GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH } from "../repository/concrete/GoogleBooksApiInfoCacheRepositoryJson";
 
 
 
@@ -21,7 +21,7 @@ export class GoogleBooksApiInfoCacheService {
     public getGoogleBooksApiInfoCache() {
 
         // Google Books Api著者キャッシュ情報ファイルからデータを取得
-        const googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[] = JsonFileData.getFileObj(GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH);
+        const googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheJsonModelType[] = JsonFileData.getFileObj(GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH);
 
         return googleBooksApiInfoCacheList;
     }
@@ -31,11 +31,11 @@ export class GoogleBooksApiInfoCacheService {
      * Google Books Api著者キャッシュ情報ファイルをキーワードでフィルターする
      * @returns 
      */
-    public getGoogleBooksApiInfoCacheByKeyword(googleBooksApiAuthorsCacheList: GoogleBooksApiInfoCacheModelType[],
+    public getGoogleBooksApiInfoCacheByKeyword(googleBooksApiAuthorsCacheList: GoogleBooksApiInfoCacheJsonModelType[],
         keywordModel: KeywordModel) {
 
         // タイトルと説明に対してキーワードでフィルターする
-        googleBooksApiAuthorsCacheList = googleBooksApiAuthorsCacheList.filter((e: GoogleBooksApiInfoCacheModelType) => {
+        googleBooksApiAuthorsCacheList = googleBooksApiAuthorsCacheList.filter((e: GoogleBooksApiInfoCacheJsonModelType) => {
 
             return e.title?.includes(keywordModel.keyword) || e.description?.includes(keywordModel.keyword);
         });
@@ -63,11 +63,11 @@ export class GoogleBooksApiInfoCacheService {
      * @param bookInfoMasterCreateModel 
      */
     public createGoogleBooksApiInfoCacheCreateWriteData(
-        googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[],
-        googleBooksApiInfoCacheCreateModel: GoogleBooksApiInfoCacheCreateModel): GoogleBooksApiInfoCacheModelType[] {
+        googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheJsonModelType[],
+        googleBooksApiInfoCacheCreateModel: GoogleBooksApiInfoCacheCreateModel): GoogleBooksApiInfoCacheJsonModelType[] {
 
         // jsonファイル登録用の型に変換する
-        const createGoogleBooksApiInfoCacheBody: GoogleBooksApiInfoCacheModelType = {
+        const createGoogleBooksApiInfoCacheBody: GoogleBooksApiInfoCacheJsonModelType = {
             bookId: googleBooksApiInfoCacheCreateModel.bookId.bookId,
             title: googleBooksApiInfoCacheCreateModel.title.title,
             publishedDate: googleBooksApiInfoCacheCreateModel.publishedDate.publishedDate,
@@ -87,7 +87,7 @@ export class GoogleBooksApiInfoCacheService {
      * Google Books Api書籍キャッシュ情報ファイルにデータを書き込む
      * @param googleBooksApiAuthorsCacheList 
      */
-    public overWriteGoogleBooksApiInfoCache(googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheModelType[]) {
+    public overWriteGoogleBooksApiInfoCache(googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheJsonModelType[]) {
 
         try {
 
@@ -121,8 +121,8 @@ export class GoogleBooksApiInfoCacheService {
      * @returns 
      */
     public createGoogleBooksApiInfoCacheUpdateWriteData(
-        updateGoogleBooksApiInfoCache: GoogleBooksApiInfoCacheModelType,
-        googleBooksApiInfoCacheCreateModel: GoogleBooksApiInfoCacheUpdateModel): GoogleBooksApiInfoCacheModelType {
+        updateGoogleBooksApiInfoCache: GoogleBooksApiInfoCacheJsonModelType,
+        googleBooksApiInfoCacheCreateModel: GoogleBooksApiInfoCacheUpdateModel): GoogleBooksApiInfoCacheJsonModelType {
 
         updateGoogleBooksApiInfoCache.title = googleBooksApiInfoCacheCreateModel.title.title;
         updateGoogleBooksApiInfoCache.publishedDate = googleBooksApiInfoCacheCreateModel.publishedDate.publishedDate;

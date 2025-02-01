@@ -1,4 +1,0 @@
-import { TRANSACTION_FILE_PATH, GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE } from "../../../util/const/FileInfoConst";
-
-// Google Books Api著者情報キャッシュファイルパス
-export const GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH = `${TRANSACTION_FILE_PATH}${GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE}`;
