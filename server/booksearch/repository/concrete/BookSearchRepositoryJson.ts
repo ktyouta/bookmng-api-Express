@@ -15,7 +15,9 @@ import { GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE_PATH } from "../../../internaldat
 import { JsonFileData } from "../../../util/service/JsonFileData";
 import { BookSearchGoogleBooksApiAccessHistorySelectEntity, } from "../../entity/BookSearchGoogleBooksApiAccessHistorySelectEntity";
 import { GoogleBooksApiCacheSelectEntity } from "../../entity/GoogleBooksApiCacheSelectEntity";
+import { GoogleBooksApiInfoCacheSelectEntity } from "../../entity/GoogleBooksApiInfoCacheSelectEntity";
 import { GoogleBooksApiSmallThumbnailCacheSelectEntity } from "../../entity/GoogleBooksApiSmallThumbnailCacheSelectEntity";
+import { GoogleBooksApiThumbnailCacheSelectEntity } from "../../entity/GoogleBooksApiThumbnailCacheSelectEntity";
 import { BookSearchRepositoryInterface, } from "../interface/BookSearchRepositoryInterface";
 
 
@@ -162,7 +164,48 @@ export class BookSearchRepositoryJson implements BookSearchRepositoryInterface {
         googleBooksApiSmallThumbnailCacheSelectEntity: GoogleBooksApiSmallThumbnailCacheSelectEntity)
         : ReadonlyArray<GoogleBooksApiSmallThumbnailCacheJsonModelType> {
 
-        return [];
+        const googleBooksApiSmallThumbnailCacheList =
+            this._googleBooksApiSmallThumbnailCacheList.filter((e: GoogleBooksApiSmallThumbnailCacheJsonModelType) => {
+
+                return e.bookId === googleBooksApiSmallThumbnailCacheSelectEntity.bookId;
+            });
+
+        return googleBooksApiSmallThumbnailCacheList;
     }
 
+
+    /**
+     * Google Books Apiのサムネイルキャッシュ情報取得
+     * @returns 
+     */
+    public selectGoogleBooksApiThumbnailCacheList(
+        googleBooksApiThumbnailCacheSelectEntity: GoogleBooksApiThumbnailCacheSelectEntity)
+        : ReadonlyArray<GoogleBooksApiThumbnailCacheJsonModelType> {
+
+        const googleBooksApiThumbnailCacheList =
+            this._googleBooksApiThumbnailCacheList.filter((e: GoogleBooksApiThumbnailCacheJsonModelType) => {
+
+                return e.bookId === googleBooksApiThumbnailCacheSelectEntity.bookId;
+            });
+
+        return googleBooksApiThumbnailCacheList;
+    }
+
+
+    /**
+     * Google Books Apiの書籍キャッシュ情報取得
+     * @returns 
+     */
+    public selectGoogleBooksApiInfoCacheList(
+        googleBooksApiInfoCacheSelectEntity: GoogleBooksApiInfoCacheSelectEntity)
+        : ReadonlyArray<GoogleBooksApiInfoCacheJsonModelType> {
+
+        const googleBooksApiInfoCacheList =
+            this._googleBooksApiInfoCacheList.filter((e: GoogleBooksApiInfoCacheJsonModelType) => {
+
+                return e.bookId === googleBooksApiInfoCacheSelectEntity.bookId;
+            });
+
+        return googleBooksApiInfoCacheList;
+    }
 }

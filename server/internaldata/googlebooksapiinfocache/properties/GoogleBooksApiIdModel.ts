@@ -4,6 +4,10 @@ export class GoogleBooksApiIdModel {
 
     constructor(bookId: string) {
 
+        if (!bookId) {
+            throw Error(`Google Books ApiのIDが設定されていません。`);
+        }
+
         this._bookId = bookId;
     }
 

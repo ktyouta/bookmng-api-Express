@@ -32,12 +32,12 @@ export class GoogleBooksApiSmallThumbnailCacheRepositoryJson implements GoogleBo
     insert(googleBooksApiSmallThumbnailCacheInsertEntity: GoogleBooksApiSmallThumbnailCacheInsertEntity) {
 
         // IDの重複チェック
-        const duplicategoogleBooksApiAuthorsCache = this._googleBooksApiSmallThumbnailCacheList.find((e: GoogleBooksApiSmallThumbnailCacheJsonModelType) => {
+        const duplicategoogleBooksSmallThumbnailCache = this._googleBooksApiSmallThumbnailCacheList.find((e: GoogleBooksApiSmallThumbnailCacheJsonModelType) => {
             return e.bookId === googleBooksApiSmallThumbnailCacheInsertEntity.bookId;
         });
 
-        if (duplicategoogleBooksApiAuthorsCache) {
-            throw Error(`Google Books Apiのサムネイル(小)情報が重複してるため登録できません。`);
+        if (duplicategoogleBooksSmallThumbnailCache) {
+            throw Error(`Google Books Apiのサムネイル(小)情報が重複してるため登録できません。(${googleBooksApiSmallThumbnailCacheInsertEntity})`);
         }
 
         // jsonに変換する
@@ -54,6 +54,18 @@ export class GoogleBooksApiSmallThumbnailCacheRepositoryJson implements GoogleBo
      */
     update(googleBooksApiSmallThumbnailCacheUpdateEntity: GoogleBooksApiSmallThumbnailCacheUpdateEntity) {
 
+        // IDチェック
+        const duplicategoogleBooksSmallThumbnailCache =
+            this._googleBooksApiSmallThumbnailCacheList.find((e: GoogleBooksApiSmallThumbnailCacheJsonModelType) => {
+                return e.bookId === googleBooksApiSmallThumbnailCacheUpdateEntity.bookId;
+            });
+
+        if (!duplicategoogleBooksSmallThumbnailCache) {
+            throw Error(`Google Books Apiのサムネイル(小)情報の更新対象が存在しません。(${googleBooksApiSmallThumbnailCacheUpdateEntity})`);
+        }
+
+        duplicategoogleBooksSmallThumbnailCache.smallThumbnail = googleBooksApiSmallThumbnailCacheUpdateEntity.smallThumbnail;
+        duplicategoogleBooksSmallThumbnailCache.updateDate = googleBooksApiSmallThumbnailCacheUpdateEntity.updateDate;
     };
 
 

@@ -1,7 +1,7 @@
 import { KeywordModel } from "../../internaldata/googlebooksapiaccesshistory/properties/KeywordModel";
 import { GoogleBooksApiIdModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiIdModel";
 
-export class GoogleBooksApiSmallThumbnailCacheSelectEntity {
+export class GoogleBooksApiThumbnailCacheSelectEntity {
 
     private _googleBooksApiIdModel: GoogleBooksApiIdModel;
 
