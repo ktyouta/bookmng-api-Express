@@ -1,5 +1,5 @@
 // 書籍、著者、サムネイル(小)、サムネイルのキャッシュ情報をマージした型
-export type GoogleBooksApiCacheMergedModelType = {
+export type GoogleBooksApiCacheModelType = {
     bookId: string,
     title?: string,
     authors?: string[],

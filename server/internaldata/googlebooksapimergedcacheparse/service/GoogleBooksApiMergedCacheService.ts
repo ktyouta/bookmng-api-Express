@@ -7,7 +7,7 @@ import { GoogleBooksApiAuthorsCacheModelType } from "../../googlebooksapiauthors
 import { GoogleBooksApiInfoAuthorCreateModel } from "../../googlebooksapiauthorscache/model/GoogleBooksApiInfoAuthorCreateModel";
 import { GoogleBooksApiInfoAuthorUpdateModel } from "../../googlebooksapiauthorscache/model/GoogleBooksApiInfoAuthorUpdateModel";
 import { GoogleBooksApiAuthorsCacheService } from "../../googlebooksapiauthorscache/service/GoogleBooksApiAuthorsCacheService";
-import { GoogleBooksApiCacheMergedModelType } from "../../googlebooksapicacheoperation/model/GoogleBooksApiCacheMergedModelType";
+import { GoogleBooksApiCacheModelType } from "../../googlebooksapicacheoperation/model/GoogleBooksApiCacheModelType";
 import { GoogleBooksApiDescriptionModel } from "../../googlebooksapiinfocache/model/GoogleBooksApiDescriptionModel";
 import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/model/GoogleBooksApiIdModel";
 import { GoogleBooksApiInfoCacheCreateModel } from "../../googlebooksapiinfocache/model/GoogleBooksApiInfoCacheCreateModel";
@@ -36,9 +36,9 @@ export class GoogleBooksApiMergedCacheService {
      * @param googleBooksApiCacheMergedList 
      * @returns 
      */
-    public parseGoogleBooksAPIsModelItems(googleBooksApiCacheMergedList: GoogleBooksApiCacheMergedModelType[]): GoogleBooksAPIsModelItemsType[] {
+    public parseGoogleBooksAPIsModelItems(googleBooksApiCacheMergedList: GoogleBooksApiCacheModelType[]): GoogleBooksAPIsModelItemsType[] {
 
-        const googleBooksAPIsModelItemsTypeList: GoogleBooksAPIsModelItemsType[] = googleBooksApiCacheMergedList.map((e: GoogleBooksApiCacheMergedModelType) => {
+        const googleBooksAPIsModelItemsTypeList: GoogleBooksAPIsModelItemsType[] = googleBooksApiCacheMergedList.map((e: GoogleBooksApiCacheModelType) => {
 
             const googleBooksAPIsVolumeInfoModelType: GoogleBooksAPIsVolumeInfoModelType = {
                 title: e.title,

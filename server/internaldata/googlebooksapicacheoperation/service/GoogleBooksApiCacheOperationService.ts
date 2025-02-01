@@ -25,7 +25,7 @@ import { GoogleBooksApiThumbnailCacheModelType } from "../../googlebooksapithumb
 import { GoogleBooksApiThumbnailCacheUpdateModel } from "../../googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheUpdateModel";
 import { ThumbnailModel } from "../../googlebooksapithumbnail/model/ThumbnailModel";
 import { GoogleBooksApiThumbnailCacheService } from "../../googlebooksapithumbnail/service/GoogleBooksApiThumbnailCacheService";
-import { GoogleBooksApiCacheMergedModelType } from "../model/GoogleBooksApiCacheMergedModelType";
+import { GoogleBooksApiCacheModelType } from "../model/GoogleBooksApiCacheModelType";
 
 
 export class GoogleBooksApiCacheOperationService {
@@ -42,11 +42,11 @@ export class GoogleBooksApiCacheOperationService {
         googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheModelType[],
         googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheModelType[],
         googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheModelType[]
-    ): GoogleBooksApiCacheMergedModelType[] {
+    ): GoogleBooksApiCacheModelType[] {
 
 
         // キャッシュ情報をマージする
-        const GoogleBooksApiCacheMergedList: GoogleBooksApiCacheMergedModelType[] =
+        const GoogleBooksApiCacheMergedList: GoogleBooksApiCacheModelType[] =
             googleBooksApiInfoCacheList.map((e: GoogleBooksApiInfoCacheModelType) => {
 
                 let authors: string[] = [];
@@ -108,13 +108,13 @@ export class GoogleBooksApiCacheOperationService {
      * @param googleBooksApiCacheMergedList 
      * @param keywordModel 
      */
-    public getGoogleBooksApiInfoCacheByKeyword(googleBooksApiCacheMergedList: GoogleBooksApiCacheMergedModelType[],
+    public getGoogleBooksApiInfoCacheByKeyword(googleBooksApiCacheMergedList: GoogleBooksApiCacheModelType[],
         keywordModel: KeywordModel
-    ): GoogleBooksApiCacheMergedModelType[] {
+    ): GoogleBooksApiCacheModelType[] {
 
         const keyword = keywordModel.keyword;
 
-        const filterGoogleBooksApiCacheMergedList = googleBooksApiCacheMergedList.filter((e: GoogleBooksApiCacheMergedModelType) => {
+        const filterGoogleBooksApiCacheMergedList = googleBooksApiCacheMergedList.filter((e: GoogleBooksApiCacheModelType) => {
 
             // タイトル、説明、著者に対してキーワードでデータを取得する
             const titleRegex = new RegExp(e.title ?? ``, "i");
