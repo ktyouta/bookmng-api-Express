@@ -7,21 +7,14 @@ import { RouteController } from '../../router/controller/RouteController';
 import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
 import { BookSearchQueryParameterSchema } from '../model/BookSearchQueryParameterSchema';
 import { ZodIssue } from 'zod';
-import { CreateDateModel } from '../../internaldata/common/model/CreateDateModel';
 import { AccessDateModel } from '../../internaldata/googlebooksapiaccesshistory/properties/AccessDateModel';
 import { KeywordModel } from '../../internaldata/googlebooksapiaccesshistory/properties/KeywordModel';
-import { GoogleBooksApiInfoCacheJsonModelType } from '../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheJsonModelType';
-import { GoogleBooksApiAuthorsCacheJsonModelType } from '../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheJsonModelType';
-import { GoogleBooksApiSmallThumbnailCacheJsonModelType } from '../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheJsonModelType';
-import { GoogleBooksApiThumbnailCacheJsonModelType } from '../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheJsonModelType';
 import { GoogleBooksApiCacheModelType } from '../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheModelType';
 import { GoogleBooksAPIsModelItemsType } from '../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType';
 import { GOOGLE_BOOKS_API_KIND } from '../const/BookSearchConst';
-import { BookInfoMergedModelType } from '../../internaldata/bookinfomerge/model/BookInfoMergedModelType';
 import { ApiResponse } from '../../util/service/ApiResponse';
-import { GoogleBooksApiAccessHistoryJsonModelType } from '../../internaldata/googlebooksapiaccesshistory/model/GoogleBooksApiAccessHistoryJsonModelType';
-import { GoogleBooksApiAccessHistoryRepositorys } from '../../internaldata/googlebooksapiaccesshistory/repository/GoogleBooksApiAccessHistoryRepositorys';
-import { RepositoryType } from '../../util/const/CommonConst';
+import { BookSearchRepositoryInterface } from '../repository/interface/BookSearchRepositoryInterface';
+import { BookInfoListModelType } from '../model/BookInfoListModelType';
 
 
 export class BookSearchController extends RouteController {
@@ -62,14 +55,7 @@ export class BookSearchController extends RouteController {
         const keywordModel = new KeywordModel(keyword);
 
         // BookSearchの永続ロジックを取得
-        const bookSearchRepository = this.bookSearchService.getBookSearchRepository();
-
-        // レスポンスの書籍情報
-        let retBookInfo: GoogleBooksAPIsModelType = {
-            kind: GOOGLE_BOOKS_API_KIND,
-            totalItems: 0,
-            items: []
-        };
+        const bookSearchRepository: BookSearchRepositoryInterface = this.bookSearchService.getBookSearchRepository();
 
         // Google Books Apiの書籍情報リスト
         let googleBooksApiItems: GoogleBooksAPIsModelItemsType[] = [];
@@ -91,10 +77,10 @@ export class BookSearchController extends RouteController {
         else {
 
             // Google Books Apiから書籍情報を取得する
-            retBookInfo = await this.bookSearchService.callGoogleBookApi(keyword);
+            const googleBookInfo: GoogleBooksAPIsModelType = await this.bookSearchService.callGoogleBookApi(keyword);
 
             // Google Books Apiの書籍情報リスト
-            googleBooksApiItems = retBookInfo.items;
+            googleBooksApiItems = googleBookInfo.items;
 
             // Google Books Api書籍の永続ロジックを取得
             const googleBooksApiInfoCacheRepository =
@@ -140,30 +126,36 @@ export class BookSearchController extends RouteController {
                 googleBooksApiItems,
             );
 
-            // Google Books Apiのアクセス履歴の登録用データを作成する
-            const googleBooksApiAccessHistoryInsertEntity = this.bookSearchService.createGoogleBookApiAccessHistory(keywordModel, accessDateModel);
-
-            // Google Books Apiアクセス情報ファイルにデータを書き込む
+            // Google Books Apiアクセス情報の永続ロジックを取得
             const googleBooksApiAccessHistoryRepository = this.bookSearchService.getGoogleBooksApiAccessHistoryRepository();
-            googleBooksApiAccessHistoryRepository.insert(googleBooksApiAccessHistoryInsertEntity);
+
+            // Google Books Apiアクセス情報を登録
+            this.bookSearchService.insertGoogleBooksApiAccessHistory(
+                googleBooksApiAccessHistoryRepository,
+                keywordModel,
+                accessDateModel,
+            );
         }
 
-        // マージした書籍情報をキーワードでフィルターする
-        const filterdMergedBookInfoMasterList: BookInfoMergedModelType[] =
-            this.bookSearchService.filterdMergedBookInfoMasterByKeyword(keywordModel);
+        // 書籍マスタからデータを取得する
+        const bookInfoMasterList: ReadonlyArray<BookInfoListModelType> =
+            this.bookSearchService.getBookInfoMasterList(bookSearchRepository, keywordModel);
 
         // フィルターした書籍情報をGoogle Books Apiの型に変換する
         const parsedBookInfoMasterList: GoogleBooksAPIsModelItemsType[] =
-            this.bookSearchService.parseGoogleBooksApiBookInfoMaster(filterdMergedBookInfoMasterList);
+            this.bookSearchService.parseGoogleBooksApiBookInfoMaster(bookInfoMasterList);
 
         // 書籍情報マスタとGoogle Books Apiの書籍情報をマージする
         const mergedBookInfoList: GoogleBooksAPIsModelItemsType[] = this.bookSearchService.mergeGoogleBooksApiAndBookInfoMaster(
             googleBooksApiItems, parsedBookInfoMasterList
         );
 
-        // レスポンスにデータをセットする
-        retBookInfo.totalItems = mergedBookInfoList.length;
-        retBookInfo.items = mergedBookInfoList;
+        // レスポンスの書籍情報
+        const retBookInfo: GoogleBooksAPIsModelType = {
+            kind: GOOGLE_BOOKS_API_KIND,
+            totalItems: mergedBookInfoList.length,
+            items: mergedBookInfoList
+        };
 
         return ApiResponse.create(res, HTTP_STATUS_OK, `Book Data found`, retBookInfo);
     }

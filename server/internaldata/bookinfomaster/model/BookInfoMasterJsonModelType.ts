@@ -1,10 +1,10 @@
 // jsonファイルの書籍マスタ情報
 export type BookInfoJsonModelType = {
-    bookId: string,
-    title: string,
-    publishedDate: string,
-    description: string,
-    createDate: string,
-    updateDate: string,
-    deleteFlg: string,
+    readonly bookId: string,
+    readonly title: string,
+    readonly publishedDate: string,
+    readonly description: string,
+    readonly createDate: string,
+    readonly updateDate: string,
+    readonly deleteFlg: string,
 }

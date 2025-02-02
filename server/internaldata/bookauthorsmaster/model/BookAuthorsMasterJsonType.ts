@@ -1,8 +1,8 @@
 // jsonファイルの書籍著者マスタ情報
 export type BookAuthorsMasterJsonType = {
-    bookId: string,
-    authorId: string,
-    createDate: string,
-    updateDate: string,
-    deleteFlg: string,
+    readonly bookId: string,
+    readonly authorId: string,
+    readonly createDate: string,
+    readonly updateDate: string,
+    readonly deleteFlg: string,
 }

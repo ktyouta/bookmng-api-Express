@@ -5,12 +5,14 @@ import { GoogleBooksApiCacheModelType } from "../../../internaldata/googlebooksa
 import { GoogleBooksApiInfoCacheJsonModelType } from "../../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheJsonModelType";
 import { GoogleBooksApiSmallThumbnailCacheJsonModelType } from "../../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheJsonModelType";
 import { GoogleBooksApiThumbnailCacheJsonModelType } from "../../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheJsonModelType";
+import { BookInfoMasterListSelectEntity } from "../../entity/BookInfoMasterListSelectEntity";
 import { BookSearchGoogleBooksApiAccessHistorySelectEntity, } from "../../entity/BookSearchGoogleBooksApiAccessHistorySelectEntity";
 import { GoogleBooksApiAuthorsCacheSelectEntity } from "../../entity/GoogleBooksApiAuthorsCacheSelectEntity";
 import { GoogleBooksApiCacheSelectEntity } from "../../entity/GoogleBooksApiCacheSelectEntity";
 import { GoogleBooksApiInfoCacheSelectEntity } from "../../entity/GoogleBooksApiInfoCacheSelectEntity";
 import { GoogleBooksApiSmallThumbnailCacheSelectEntity } from "../../entity/GoogleBooksApiSmallThumbnailCacheSelectEntity";
 import { GoogleBooksApiThumbnailCacheSelectEntity } from "../../entity/GoogleBooksApiThumbnailCacheSelectEntity";
+import { BookInfoListModelType } from "../../model/BookInfoListModelType";
 
 
 /**
@@ -60,4 +62,12 @@ export interface BookSearchRepositoryInterface {
     selectGoogleBooksApiAuthorsCacheList(
         googleBooksApiAuthorsCacheSelectEntity: GoogleBooksApiAuthorsCacheSelectEntity)
         : ReadonlyArray<GoogleBooksApiAuthorsCacheJsonModelType>;
+
+    /**
+     * 書籍マスタ情報取得
+     * @param googleBooksApiInfoCacheSelectEntity 
+     */
+    selectBookInfoMasterList(
+        bookInfoMasterListSelectEntity: BookInfoMasterListSelectEntity)
+        : ReadonlyArray<BookInfoListModelType>;
 }
