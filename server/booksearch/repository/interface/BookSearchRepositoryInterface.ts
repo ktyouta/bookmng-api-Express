@@ -1,10 +1,12 @@
 import { FrontUserInfoMasterJsonModelType } from "../../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType";
 import { GoogleBooksApiAccessHistoryJsonModelType } from "../../../internaldata/googlebooksapiaccesshistory/model/GoogleBooksApiAccessHistoryJsonModelType";
+import { GoogleBooksApiAuthorsCacheJsonModelType } from "../../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheJsonModelType";
 import { GoogleBooksApiCacheModelType } from "../../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheModelType";
 import { GoogleBooksApiInfoCacheJsonModelType } from "../../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheJsonModelType";
 import { GoogleBooksApiSmallThumbnailCacheJsonModelType } from "../../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheJsonModelType";
 import { GoogleBooksApiThumbnailCacheJsonModelType } from "../../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheJsonModelType";
 import { BookSearchGoogleBooksApiAccessHistorySelectEntity, } from "../../entity/BookSearchGoogleBooksApiAccessHistorySelectEntity";
+import { GoogleBooksApiAuthorsCacheSelectEntity } from "../../entity/GoogleBooksApiAuthorsCacheSelectEntity";
 import { GoogleBooksApiCacheSelectEntity } from "../../entity/GoogleBooksApiCacheSelectEntity";
 import { GoogleBooksApiInfoCacheSelectEntity } from "../../entity/GoogleBooksApiInfoCacheSelectEntity";
 import { GoogleBooksApiSmallThumbnailCacheSelectEntity } from "../../entity/GoogleBooksApiSmallThumbnailCacheSelectEntity";
@@ -26,7 +28,6 @@ export interface BookSearchRepositoryInterface {
      * Google Books Apiのキャッシュ情報取得
      */
     selectGoogleBooksApiCacheList(googleBooksApiCacheSelectEntity: GoogleBooksApiCacheSelectEntity): ReadonlyArray<GoogleBooksApiCacheModelType>;
-
 
     /**
      * Google Books Apiのサムネイル(小)キャッシュ情報取得
@@ -51,4 +52,12 @@ export interface BookSearchRepositoryInterface {
     selectGoogleBooksApiInfoCacheList(
         googleBooksApiInfoCacheSelectEntity: GoogleBooksApiInfoCacheSelectEntity)
         : ReadonlyArray<GoogleBooksApiInfoCacheJsonModelType>;
+
+    /**
+     * Google Books Apiの著者キャッシュ情報取得
+     * @param googleBooksApiInfoCacheSelectEntity 
+     */
+    selectGoogleBooksApiAuthorsCacheList(
+        googleBooksApiAuthorsCacheSelectEntity: GoogleBooksApiAuthorsCacheSelectEntity)
+        : ReadonlyArray<GoogleBooksApiAuthorsCacheJsonModelType>;
 }

@@ -1,5 +1,6 @@
 import { BOOK_AUTHORS_MASTER_FILE, BOOK_INFO_MASTER_FILE, GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE, MASTER_FILE_PATH, TRANSACTION_FILE_PATH } from "../../../../util/const/FileInfoConst";
 import { JsonFileData } from "../../../../util/service/JsonFileData";
+import { GoogleBooksApiAuthorsCacheDeleteEntity } from "../../entity/GoogleBooksApiAuthorsCacheDeleteEntity";
 import { GoogleBooksApiAuthorsCacheInsertEntity } from "../../entity/GoogleBooksApiAuthorsCacheInsertEntity";
 import { GoogleBooksApiAuthorsCacheUpdateEntity } from "../../entity/GoogleBooksApiAuthorsCacheUpdateEntity";
 import { GoogleBooksApiAuthorsCacheJsonModelType } from "../../model/GoogleBooksApiAuthorsCacheJsonModelType";
@@ -52,6 +53,28 @@ export class GoogleBooksApiAuthorsCacheRepositoryJson implements GoogleBooksApiA
      */
     update(googleBooksApiAuthorsCacheUpdateEntity: GoogleBooksApiAuthorsCacheUpdateEntity) {
 
+    };
+
+
+    /**
+     * Google Books Api著者キャッシュ情報削除
+     */
+    delete(googleBooksApiAuthorsCacheDeleteEntity: GoogleBooksApiAuthorsCacheDeleteEntity) {
+
+        // IDチェック
+        const targetGoogleBooksApiAuthorsCache =
+            this._googleBooksApiAuthorsCacheList.filter((e: GoogleBooksApiAuthorsCacheJsonModelType) => {
+                return e.bookId === googleBooksApiAuthorsCacheDeleteEntity.bookId;
+            });
+
+        if (targetGoogleBooksApiAuthorsCache.length === 0) {
+            throw Error(`Google Books Api著者キャッシュ情報の更新対象が存在しません。(${googleBooksApiAuthorsCacheDeleteEntity})`);
+        }
+
+        this._googleBooksApiAuthorsCacheList = this._googleBooksApiAuthorsCacheList.filter((e: GoogleBooksApiAuthorsCacheJsonModelType) => {
+
+            return e.bookId === googleBooksApiAuthorsCacheDeleteEntity.bookId;
+        });
     };
 
 

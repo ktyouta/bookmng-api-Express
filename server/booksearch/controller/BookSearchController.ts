@@ -74,26 +74,14 @@ export class BookSearchController extends RouteController {
         // Google Books Apiの書籍情報リスト
         let googleBooksApiItems: GoogleBooksAPIsModelItemsType[] = [];
 
-        // Google Books Apiの書籍キャッシュ情報を取得する
-        let googleBooksApiInfoCacheList: GoogleBooksApiInfoCacheJsonModelType[] = this.bookSearchService.getGoogleBooksApiInfoCache();
-
-        // Google Books Apiの著者キャッシュ情報を取得する
-        let googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheJsonModelType[] = this.bookSearchService.getGoogleBooksApiAuthorsCache();
-
-        // Google Books Apiのサムネイル(小)キャッシュ情報を取得する
-        let googleBooksApiSmallThumbnailCacheList: GoogleBooksApiSmallThumbnailCacheJsonModelType[] = this.bookSearchService.getGoogleBooksApiSmallThumbnailCache();
-
-        // Google Books Apiのサムネイルキャッシュ情報を取得する
-        let googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheJsonModelType[] = this.bookSearchService.getGoogleBooksApiThumbnailCache();
-
         // 現在日付を取得する
         const accessDateModel = new AccessDateModel();
 
         /** Google Books Apiのアクセス履歴をチェックする */
         if (this.bookSearchService.checkAccessHistoryExist(keywordModel, accessDateModel)) {
 
-            // アクセス履歴が存在する場合は書籍キャッシュ情報をフィルターする
-            const filterdGoogleBooksApiCacheMergedList =
+            // アクセス履歴が存在する場合は書籍キャッシュ情報を取得する
+            const filterdGoogleBooksApiCacheMergedList: ReadonlyArray<GoogleBooksApiCacheModelType> =
                 this.bookSearchService.getGoogleBooksApiCacheList(bookSearchRepository, keywordModel);
 
             // フィルターしたキャッシュ情報をGoogle Books Apiの型に変換する
@@ -112,29 +100,23 @@ export class BookSearchController extends RouteController {
             const googleBooksApiInfoCacheRepository =
                 this.bookSearchService.getGoogleBooksApiInfoCacheRepository();
 
-            // Google Books Apiの書籍キャッシュ情報の追加/更新データを作成する
+            // Google Books Apiの書籍キャッシュ情報の追加/更新
             this.bookSearchService.updateGoogleBooksApiInfoCache(
                 bookSearchRepository,
                 googleBooksApiInfoCacheRepository,
                 googleBooksApiItems,
             );
 
-            // // Google Books Apiの書籍キャッシュ情報の追加/更新データを作成する
-            // googleBooksApiInfoCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiInfoCache(
-            //     googleBooksApiInfoCacheList, googleBooksApiItems);
+            // Google Books Api著者の永続ロジックを取得
+            const googleBooksApiAuthorsCacheRepository =
+                this.bookSearchService.getGoogleBooksApiAuthorsCacheRepository();
 
-            // // Google Books Api書籍キャッシュ情報ファイルにデータを書き込む
-            // this.bookSearchService.overWriteGoogleBooksApiInfoCache(googleBooksApiInfoCacheList);
-
-
-            // Google Books Apiの著者キャッシュ情報の追加/更新データを作成する
-            googleBooksApiAuthorsCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiAuthorsCache(
-                googleBooksApiAuthorsCacheList, googleBooksApiItems);
-
-            // Google Books Api著者キャッシュにデータを書き込む
-            this.bookSearchService.overWriteGoogleBooksApiAuthorsCache(googleBooksApiAuthorsCacheList);
-
-
+            // Google Books Apiの著者キャッシュ情報の追加/更新
+            this.bookSearchService.updateGoogleBooksApiAuthorsCache(
+                bookSearchRepository,
+                googleBooksApiAuthorsCacheRepository,
+                googleBooksApiItems,
+            );
 
             // Google Books Apiのサムネイルの永続ロジックを取得
             const googleBooksApiSmallThumbnailCacheRepository =
@@ -147,14 +129,6 @@ export class BookSearchController extends RouteController {
                 googleBooksApiItems,
             );
 
-            // // Google Books Apiのサムネイル(小)キャッシュ情報の追加/更新データを作成する
-            // googleBooksApiSmallThumbnailCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiSmallThumbnailCache(
-            //     googleBooksApiSmallThumbnailCacheList, googleBooksApiItems);
-
-            // // Google Books Apiのサムネイル(小)キャッシュにデータを書き込む
-            // this.bookSearchService.overWriteGoogleBooksApiSmallThumbnailCache(googleBooksApiSmallThumbnailCacheList);
-
-
             // Google Books Apiのサムネイルの永続ロジックを取得
             const googleBooksApiThumbnailCacheRepository =
                 this.bookSearchService.getGoogleBooksApiThumbnailCacheRepository();
@@ -165,13 +139,6 @@ export class BookSearchController extends RouteController {
                 googleBooksApiThumbnailCacheRepository,
                 googleBooksApiItems,
             );
-
-            // // Google Books Apiのサムネイルキャッシュ情報の追加/更新データを作成する
-            // googleBooksApiThumbnailCacheList = this.bookSearchService.createOrUpdateGoogleBooksApiThumbnailCache(
-            //     googleBooksApiThumbnailCacheList, googleBooksApiItems);
-
-            // // Google Books Apiサムネイルキャッシュにデータを書き込む
-            // this.bookSearchService.overWriteGoogleBooksApiThumbnailCache(googleBooksApiThumbnailCacheList);
 
             // Google Books Apiのアクセス履歴の登録用データを作成する
             const googleBooksApiAccessHistoryInsertEntity = this.bookSearchService.createGoogleBookApiAccessHistory(keywordModel, accessDateModel);
