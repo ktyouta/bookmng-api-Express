@@ -6,7 +6,6 @@ import { BOOK_AUTHROS_MASTER_FILE_PATH } from "../../../internaldata/bookauthors
 import { BookInfoJsonModelType } from "../../../internaldata/bookinfomaster/model/BookInfoMasterJsonModelType";
 import { BookInfoMasterModel } from "../../../internaldata/bookinfomaster/model/BookInfoMasterModel";
 import { BOOK_INFO_MASTER_FILE_PATH } from "../../../internaldata/bookinfomaster/repository/concrete/BookInfoMasterRepositoryJson";
-import { BookInfoMergedModelType } from "../../../internaldata/bookinfomerge/model/BookInfoMergedModelType";
 import { FrontUserInfoMasterInsertEntity } from "../../../internaldata/frontuserinfomaster/entity/FrontUserInfoMasterInsertEntity";
 import { FrontUserInfoMasterJsonModelType } from "../../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType";
 import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../../../internaldata/frontuserinfomaster/repository/concrete/FrontUserInfoMasterRepositoryJson";
@@ -14,13 +13,12 @@ import { GoogleBooksApiAccessHistoryJsonModelType } from "../../../internaldata/
 import { GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE_PATH } from "../../../internaldata/googlebooksapiaccesshistory/repository/concrete/GoogleBooksApiAccessHistoryRepositoryJson";
 import { GoogleBooksApiAuthorsCacheJsonModelType } from "../../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheJsonModelType";
 import { GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapiauthorscache/repository/concrete/GoogleBooksApiAuthorsCacheRepositoryJson";
-import { GoogleBooksApiCacheModelType } from "../../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheModelType";
 import { GoogleBooksApiInfoCacheJsonModelType } from "../../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheJsonModelType";
 import { GOOGLE_BOOKS_API_INFO_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapiinfocache/repository/concrete/GoogleBooksApiInfoCacheRepositoryJson";
 import { GoogleBooksApiSmallThumbnailCacheJsonModelType } from "../../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheJsonModelType";
 import { GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapismallthumbnailcache/repository/concrete/GoogleBooksApiSmallThumbnailCacheRepositoryJson";
-import { GoogleBooksApiThumbnailCacheJsonModelType } from "../../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheJsonModelType";
-import { GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapithumbnail/repository/concrete/GoogleBooksApiThumbnailCacheRepositoryJson";
+import { GoogleBooksApiThumbnailCacheJsonModelType } from "../../../internaldata/googlebooksapithumbnailcache/model/GoogleBooksApiThumbnailCacheJsonModelType";
+import { GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapithumbnailcache/repository/concrete/GoogleBooksApiThumbnailCacheRepositoryJson";
 import { JsonFileData } from "../../../util/service/JsonFileData";
 import { BookInfoMasterListSelectEntity } from "../../entity/BookInfoMasterListSelectEntity";
 import { BookSearchGoogleBooksApiAccessHistorySelectEntity, } from "../../entity/BookSearchGoogleBooksApiAccessHistorySelectEntity";
@@ -30,6 +28,8 @@ import { GoogleBooksApiInfoCacheSelectEntity } from "../../entity/GoogleBooksApi
 import { GoogleBooksApiSmallThumbnailCacheSelectEntity } from "../../entity/GoogleBooksApiSmallThumbnailCacheSelectEntity";
 import { GoogleBooksApiThumbnailCacheSelectEntity } from "../../entity/GoogleBooksApiThumbnailCacheSelectEntity";
 import { BookInfoListModelType } from "../../model/BookInfoListModelType";
+import { BookInfoMergedModelType } from "../../model/BookInfoMergedModelType";
+import { GoogleBooksApiCacheModelType } from "../../model/GoogleBooksApiCacheModelType";
 import { BookSearchRepositoryInterface, } from "../interface/BookSearchRepositoryInterface";
 
 
@@ -174,18 +174,19 @@ export class BookSearchRepositoryJson implements BookSearchRepositoryInterface {
 
         const keyword = googleBooksApiCacheSelectEntity.keyword;
 
-        const filterGoogleBooksApiCacheList = GoogleBooksApiCacheMergedList.filter((e: GoogleBooksApiCacheModelType) => {
+        const filterGoogleBooksApiCacheList: GoogleBooksApiCacheModelType[] =
+            GoogleBooksApiCacheMergedList.filter((e: GoogleBooksApiCacheModelType) => {
 
-            // タイトル、説明、著者に対してキーワードでデータを取得する
-            const titleRegex = new RegExp(e.title ?? ``, "i");
-            const descriptionRegex = new RegExp(e.description ?? ``, "i");
+                // タイトル、説明、著者に対してキーワードでデータを取得する
+                const titleRegex = new RegExp(e.title ?? ``, "i");
+                const descriptionRegex = new RegExp(e.description ?? ``, "i");
 
-            return titleRegex.test(keyword) || descriptionRegex.test(keyword) || e.authors?.some((e1) => {
+                return titleRegex.test(keyword) || descriptionRegex.test(keyword) || e.authors?.some((e1) => {
 
-                const authorNameRegex = new RegExp(e1, "i");
-                return authorNameRegex.test(keyword);
+                    const authorNameRegex = new RegExp(e1, "i");
+                    return authorNameRegex.test(keyword);
+                });
             });
-        });
 
         return filterGoogleBooksApiCacheList;
     }

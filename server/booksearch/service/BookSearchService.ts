@@ -1,13 +1,11 @@
 import ENV from '../../env.json';
 import { KeywordModel } from "../../internaldata/googlebooksapiaccesshistory/properties/KeywordModel";
 import { AccessDateModel } from "../../internaldata/googlebooksapiaccesshistory/properties/AccessDateModel";
-import { GoogleBooksApiCacheModelType } from "../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheModelType";
 import { GoogleBooksAPIsModelItemsType } from "../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType";
 import { GoogleBooksApiIdModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiIdModel";
 import { GoogleBooksApiTitleModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiTitleModel";
 import { GoogleBooksApiPublishedDateModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiPublishedDateModel";
 import { GoogleBooksApiDescriptionModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiDescriptionModel";
-import { BookInfoMergedModelType } from "../../internaldata/bookinfomerge/model/BookInfoMergedModelType";
 import { ArrayUtil } from "../../util/service/ArrayUtil";
 import { BookSearchRepositorys } from "../repository/BookSearchRepositorys";
 import { RepositoryType } from "../../util/const/CommonConst";
@@ -20,8 +18,8 @@ import { BookSearchRepositoryInterface } from '../repository/interface/BookSearc
 import { GoogleBooksApiCacheSelectEntity } from '../entity/GoogleBooksApiCacheSelectEntity';
 import { GoogleBooksApiSmallThumbnailCacheRepositorys } from '../../internaldata/googlebooksapismallthumbnailcache/repository/GoogleBooksApiSmallThumbnailCacheRepositorys';
 import { GoogleBooksApiSmallThumbnailCacheRepositoryInterface } from '../../internaldata/googlebooksapismallthumbnailcache/repository/interface/GoogleBooksApiSmallThumbnailCacheRepositoryInterface';
-import { GoogleBooksApiThumbnailCacheRepositoryInterface } from '../../internaldata/googlebooksapithumbnail/repository/interface/GoogleBooksApiThumbnailCacheRepositoryInterface';
-import { GoogleBooksApiThumbnailCacheRepositorys } from '../../internaldata/googlebooksapithumbnail/repository/GoogleBooksApiThumbnailCacheRepositorys';
+import { GoogleBooksApiThumbnailCacheRepositoryInterface } from '../../internaldata/googlebooksapithumbnailcache/repository/interface/GoogleBooksApiThumbnailCacheRepositoryInterface';
+import { GoogleBooksApiThumbnailCacheRepositorys } from '../../internaldata/googlebooksapithumbnailcache/repository/GoogleBooksApiThumbnailCacheRepositorys';
 import { GoogleBooksApiAuthorsCacheRepositorys } from '../../internaldata/googlebooksapiauthorscache/repository/GoogleBooksApiAuthorsCacheRepositorys';
 import { GoogleBooksApiAuthorsCacheRepositoryInterface } from '../../internaldata/googlebooksapiauthorscache/repository/interface/GoogleBooksApiAuthorsCacheRepositoryInterface';
 import { GoogleBooksApiInfoCacheRepositorys } from '../../internaldata/googlebooksapiinfocache/repository/GoogleBooksApiInfoCacheRepositorys';
@@ -30,9 +28,9 @@ import { GoogleBooksApiSmallThumbnailCacheSelectEntity } from '../entity/GoogleB
 import { GoogleBooksApiSmallThumbnailCacheInsertEntity } from '../../internaldata/googlebooksapismallthumbnailcache/entity/GoogleBooksApiSmallThumbnailCacheInsertEntity';
 import { SmallThumbnailModel } from '../../internaldata/googlebooksapismallthumbnailcache/properties/SmallThumbnailModel';
 import { GoogleBooksApiSmallThumbnailCacheUpdateEntity } from '../../internaldata/googlebooksapismallthumbnailcache/entity/GoogleBooksApiSmallThumbnailCacheUpdateEntity';
-import { ThumbnailModel } from '../../internaldata/googlebooksapithumbnail/properties/ThumbnailModel';
-import { GoogleBooksApiThumbnailCacheUpdateEntity } from '../../internaldata/googlebooksapithumbnail/entity/GoogleBooksApiThumbnailCacheUpdateEntity';
-import { GoogleBooksApiThumbnailCacheInsertEntity } from '../../internaldata/googlebooksapithumbnail/entity/GoogleBooksApiThumbnailCacheInsertEntity';
+import { ThumbnailModel } from '../../internaldata/googlebooksapithumbnailcache/properties/ThumbnailModel';
+import { GoogleBooksApiThumbnailCacheUpdateEntity } from '../../internaldata/googlebooksapithumbnailcache/entity/GoogleBooksApiThumbnailCacheUpdateEntity';
+import { GoogleBooksApiThumbnailCacheInsertEntity } from '../../internaldata/googlebooksapithumbnailcache/entity/GoogleBooksApiThumbnailCacheInsertEntity';
 import { GoogleBooksApiThumbnailCacheSelectEntity } from '../entity/GoogleBooksApiThumbnailCacheSelectEntity';
 import { GoogleBooksApiInfoCacheSelectEntity } from '../entity/GoogleBooksApiInfoCacheSelectEntity';
 import { GoogleBooksApiInfoCacheInsertEntity } from '../../internaldata/googlebooksapiinfocache/entity/GoogleBooksApiInfoCacheInsertEntity';
@@ -46,6 +44,8 @@ import { BookInfoMasterListSelectEntity } from '../entity/BookInfoMasterListSele
 import { GoogleBooksApiAccessHistoryRepositoryInterface } from '../../internaldata/googlebooksapiaccesshistory/repository/interface/GoogleBooksApiAccessHistoryRepositoryInterface';
 import { BookInfoListModelType } from '../model/BookInfoListModelType';
 import { GoogleBooksAPIsVolumeInfoModelType } from '../../externalapi/googlebookinfo/model/GoogleBooksAPIsVolumeInfoModelType';
+import { GoogleBooksApiCacheModelType } from '../model/GoogleBooksApiCacheModelType';
+import { BookInfoMergedModelType } from '../model/BookInfoMergedModelType';
 
 
 export class BookSearchService {

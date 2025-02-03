@@ -9,12 +9,13 @@ import { BookSearchQueryParameterSchema } from '../model/BookSearchQueryParamete
 import { ZodIssue } from 'zod';
 import { AccessDateModel } from '../../internaldata/googlebooksapiaccesshistory/properties/AccessDateModel';
 import { KeywordModel } from '../../internaldata/googlebooksapiaccesshistory/properties/KeywordModel';
-import { GoogleBooksApiCacheModelType } from '../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheModelType';
 import { GoogleBooksAPIsModelItemsType } from '../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType';
 import { GOOGLE_BOOKS_API_KIND, SUCCESS_MESSAGE } from '../const/BookSearchConst';
 import { ApiResponse } from '../../util/service/ApiResponse';
 import { BookSearchRepositoryInterface } from '../repository/interface/BookSearchRepositoryInterface';
 import { BookInfoListModelType } from '../model/BookInfoListModelType';
+import { GoogleBooksApiCacheModelType } from '../model/GoogleBooksApiCacheModelType';
+import { BookSearchResponseModel } from '../model/BookSearchResponseModel';
 
 
 export class BookSearchController extends RouteController {
@@ -160,12 +161,8 @@ export class BookSearchController extends RouteController {
         );
 
         // レスポンスの書籍情報
-        const retBookInfo: GoogleBooksAPIsModelType = {
-            kind: GOOGLE_BOOKS_API_KIND,
-            totalItems: mergedBookInfoList.length,
-            items: mergedBookInfoList
-        };
+        const bookSearchResponseModel = new BookSearchResponseModel(mergedBookInfoList);
 
-        return ApiResponse.create(res, HTTP_STATUS_OK, SUCCESS_MESSAGE, retBookInfo);
+        return ApiResponse.create(res, HTTP_STATUS_OK, SUCCESS_MESSAGE, bookSearchResponseModel);
     }
 }
