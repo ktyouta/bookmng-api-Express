@@ -11,7 +11,7 @@ import { AccessDateModel } from '../../internaldata/googlebooksapiaccesshistory/
 import { KeywordModel } from '../../internaldata/googlebooksapiaccesshistory/properties/KeywordModel';
 import { GoogleBooksApiCacheModelType } from '../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheModelType';
 import { GoogleBooksAPIsModelItemsType } from '../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType';
-import { GOOGLE_BOOKS_API_KIND } from '../const/BookSearchConst';
+import { GOOGLE_BOOKS_API_KIND, SUCCESS_MESSAGE } from '../const/BookSearchConst';
 import { ApiResponse } from '../../util/service/ApiResponse';
 import { BookSearchRepositoryInterface } from '../repository/interface/BookSearchRepositoryInterface';
 import { BookInfoListModelType } from '../model/BookInfoListModelType';
@@ -135,6 +135,15 @@ export class BookSearchController extends RouteController {
                 keywordModel,
                 accessDateModel,
             );
+
+            // コミット
+            this.bookSearchService.commit(
+                googleBooksApiInfoCacheRepository,
+                googleBooksApiAuthorsCacheRepository,
+                googleBooksApiSmallThumbnailCacheRepository,
+                googleBooksApiThumbnailCacheRepository,
+                googleBooksApiAccessHistoryRepository,
+            );
         }
 
         // 書籍マスタからデータを取得する
@@ -157,6 +166,6 @@ export class BookSearchController extends RouteController {
             items: mergedBookInfoList
         };
 
-        return ApiResponse.create(res, HTTP_STATUS_OK, `Book Data found`, retBookInfo);
+        return ApiResponse.create(res, HTTP_STATUS_OK, SUCCESS_MESSAGE, retBookInfo);
     }
 }

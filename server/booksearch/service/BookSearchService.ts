@@ -1,30 +1,14 @@
 import ENV from '../../env.json';
 import { KeywordModel } from "../../internaldata/googlebooksapiaccesshistory/properties/KeywordModel";
 import { AccessDateModel } from "../../internaldata/googlebooksapiaccesshistory/properties/AccessDateModel";
-import { GoogleBooksApiAuthorsCacheService } from "../../internaldata/googlebooksapiauthorscache/service/GoogleBooksApiAuthorsCacheService";
-import { GoogleBooksApiSmallThumbnailCacheService } from "../../internaldata/googlebooksapismallthumbnailcache/service/GoogleBooksApiSmallThumbnailCacheService";
-import { GoogleBooksApiThumbnailCacheService } from "../../internaldata/googlebooksapithumbnail/service/GoogleBooksApiThumbnailCacheService";
-import { GoogleBooksApiInfoCacheJsonModelType } from "../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheJsonModelType";
-import { GoogleBooksApiAuthorsCacheJsonModelType } from "../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheJsonModelType";
-import { GoogleBooksApiSmallThumbnailCacheJsonModelType } from "../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheJsonModelType";
-import { GoogleBooksApiThumbnailCacheJsonModelType } from "../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheJsonModelType";
 import { GoogleBooksApiCacheModelType } from "../../internaldata/googlebooksapicacheoperation/model/GoogleBooksApiCacheModelType";
 import { GoogleBooksAPIsModelItemsType } from "../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType";
 import { GoogleBooksApiIdModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiIdModel";
 import { GoogleBooksApiTitleModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiTitleModel";
 import { GoogleBooksApiPublishedDateModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiPublishedDateModel";
 import { GoogleBooksApiDescriptionModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiDescriptionModel";
-import { GoogleBooksApiInfoAuthorUpdateModel } from "../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiInfoAuthorUpdateModel";
-import { GoogleBooksApiInfoAuthorCreateModel } from "../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiInfoAuthorCreateModel";
-import { GoogleBooksApiSmallThumbnailCacheUpdateModel } from "../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheUpdateModel";
-import { GoogleBooksApiSmallThumbnailCacheCreateModel } from "../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheCreateModel";
-import { GoogleBooksApiThumbnailCacheUpdateModel } from "../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheUpdateModel";
-import { GoogleBooksApiThumbnailCacheCreateModel } from "../../internaldata/googlebooksapithumbnail/model/GoogleBooksApiThumbnailCacheCreateModel";
-import { BookInfoMergeService } from "../../internaldata/bookinfomerge/service/BookInfoMergeService";
 import { BookInfoMergedModelType } from "../../internaldata/bookinfomerge/model/BookInfoMergedModelType";
 import { ArrayUtil } from "../../util/service/ArrayUtil";
-import { BookAuthorsMasterModel } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterModel";
-import { BookInfoMasterModel } from "../../internaldata/bookinfomaster/model/BookInfoMasterModel";
 import { BookSearchRepositorys } from "../repository/BookSearchRepositorys";
 import { RepositoryType } from "../../util/const/CommonConst";
 import { BookSearchGoogleBooksApiAccessHistorySelectEntity } from "../entity/BookSearchGoogleBooksApiAccessHistorySelectEntity";
@@ -99,8 +83,7 @@ export class BookSearchService {
      */
     public checkAccessHistoryExist(keywordModel: KeywordModel, accessDateModel: AccessDateModel,) {
 
-        const bookSearchRepositorys = new BookSearchRepositorys();
-        const bookSearchJsonRepository = bookSearchRepositorys.get(RepositoryType.JSON);
+        const bookSearchJsonRepository = (new BookSearchRepositorys()).get(RepositoryType.JSON);
 
         const bookSearchGoogleBooksApiAccessHistorySelectEntity =
             new BookSearchGoogleBooksApiAccessHistorySelectEntity(keywordModel, accessDateModel);
@@ -563,5 +546,28 @@ export class BookSearchService {
         const bookInfoMasterList = bookSearchRepository.selectBookInfoMasterList(bookInfoMasterListSelectEntity);
 
         return bookInfoMasterList;
+    }
+
+
+    /**
+     * コミット
+     * @param googleBooksApiInfoCacheRepository 
+     * @param googleBooksApiAuthorsCacheRepository 
+     * @param googleBooksApiSmallThumbnailCacheRepository 
+     * @param googleBooksApiThumbnailCacheRepository 
+     * @param googleBooksApiAccessHistoryRepository 
+     */
+    public commit(googleBooksApiInfoCacheRepository: GoogleBooksApiInfoCacheRepositoryInterface,
+        googleBooksApiAuthorsCacheRepository: GoogleBooksApiAuthorsCacheRepositoryInterface,
+        googleBooksApiSmallThumbnailCacheRepository: GoogleBooksApiSmallThumbnailCacheRepositoryInterface,
+        googleBooksApiThumbnailCacheRepository: GoogleBooksApiThumbnailCacheRepositoryInterface,
+        googleBooksApiAccessHistoryRepository: GoogleBooksApiAccessHistoryRepositoryInterface
+    ) {
+
+        googleBooksApiInfoCacheRepository.commit();
+        googleBooksApiAuthorsCacheRepository.commit();
+        googleBooksApiSmallThumbnailCacheRepository.commit();
+        googleBooksApiThumbnailCacheRepository.commit();
+        googleBooksApiAccessHistoryRepository.commit();
     }
 }
