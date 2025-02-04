@@ -10,12 +10,13 @@ import { ZodIssue } from 'zod';
 import { AccessDateModel } from '../../internaldata/googlebooksapiaccesshistory/properties/AccessDateModel';
 import { KeywordModel } from '../../internaldata/googlebooksapiaccesshistory/properties/KeywordModel';
 import { GoogleBooksAPIsModelItemsType } from '../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType';
-import { GOOGLE_BOOKS_API_KIND, SUCCESS_MESSAGE } from '../const/BookSearchConst';
+import { SUCCESS_MESSAGE } from '../const/BookSearchConst';
 import { ApiResponse } from '../../util/service/ApiResponse';
 import { BookSearchRepositoryInterface } from '../repository/interface/BookSearchRepositoryInterface';
 import { BookInfoListModelType } from '../model/BookInfoListModelType';
 import { GoogleBooksApiCacheModelType } from '../model/GoogleBooksApiCacheModelType';
 import { BookSearchResponseModel } from '../model/BookSearchResponseModel';
+import { GoogleBooksApiCacheRepositorys } from '../model/GoogleBooksApiCacheRepositorys';
 
 
 export class BookSearchController extends RouteController {
@@ -68,11 +69,11 @@ export class BookSearchController extends RouteController {
         if (this.bookSearchService.checkAccessHistoryExist(keywordModel, accessDateModel)) {
 
             // アクセス履歴が存在する場合は書籍キャッシュ情報を取得する
-            const filterdGoogleBooksApiCacheMergedList: ReadonlyArray<GoogleBooksApiCacheModelType> =
+            const googleBooksApiCacheList: ReadonlyArray<GoogleBooksApiCacheModelType> =
                 this.bookSearchService.getGoogleBooksApiCacheList(bookSearchRepository, keywordModel);
 
             // フィルターしたキャッシュ情報をGoogle Books Apiの型に変換する
-            googleBooksApiItems = this.bookSearchService.parseGoogleBooksAPIsModelItems(filterdGoogleBooksApiCacheMergedList);
+            googleBooksApiItems = this.bookSearchService.parseGoogleBooksAPIsModelItems(googleBooksApiCacheList);
         }
         // アクセス履歴が存在しない
         else {
@@ -83,82 +84,56 @@ export class BookSearchController extends RouteController {
             // Google Books Apiの書籍情報リスト
             googleBooksApiItems = googleBookInfo.items;
 
-            // Google Books Api書籍の永続ロジックを取得
-            const googleBooksApiInfoCacheRepository =
-                this.bookSearchService.getGoogleBooksApiInfoCacheRepository();
+            // Google Books Apiの永続ロジックを取得
+            const booksApiCacheRepositorys: GoogleBooksApiCacheRepositorys =
+                this.bookSearchService.getGoogleBooksApiCacheRepositorys();
 
             // Google Books Apiの書籍キャッシュ情報の追加/更新
             this.bookSearchService.updateGoogleBooksApiInfoCache(
                 bookSearchRepository,
-                googleBooksApiInfoCacheRepository,
+                booksApiCacheRepositorys.googleBooksApiInfoCacheRepository,
                 googleBooksApiItems,
             );
-
-            // Google Books Api著者の永続ロジックを取得
-            const googleBooksApiAuthorsCacheRepository =
-                this.bookSearchService.getGoogleBooksApiAuthorsCacheRepository();
 
             // Google Books Apiの著者キャッシュ情報の追加/更新
             this.bookSearchService.updateGoogleBooksApiAuthorsCache(
                 bookSearchRepository,
-                googleBooksApiAuthorsCacheRepository,
+                booksApiCacheRepositorys.googleBooksApiAuthorsCacheRepository,
                 googleBooksApiItems,
             );
-
-            // Google Books Apiのサムネイルの永続ロジックを取得
-            const googleBooksApiSmallThumbnailCacheRepository =
-                this.bookSearchService.getGoogleBooksApiSmallThumbnailCacheRepository();
 
             // Google Books Apiのサムネイル(小)キャッシュ情報の追加/更新
             this.bookSearchService.updateGoogleBooksApiSmallThumbnailCache(
                 bookSearchRepository,
-                googleBooksApiSmallThumbnailCacheRepository,
+                booksApiCacheRepositorys.googleBooksApiSmallThumbnailCacheRepository,
                 googleBooksApiItems,
             );
-
-            // Google Books Apiのサムネイルの永続ロジックを取得
-            const googleBooksApiThumbnailCacheRepository =
-                this.bookSearchService.getGoogleBooksApiThumbnailCacheRepository();
 
             // Google Books Apiのサムネイルキャッシュ情報の追加/更新
             this.bookSearchService.updateGoogleBooksApiThumbnailCache(
                 bookSearchRepository,
-                googleBooksApiThumbnailCacheRepository,
+                booksApiCacheRepositorys.googleBooksApiThumbnailCacheRepository,
                 googleBooksApiItems,
             );
 
-            // Google Books Apiアクセス情報の永続ロジックを取得
-            const googleBooksApiAccessHistoryRepository = this.bookSearchService.getGoogleBooksApiAccessHistoryRepository();
-
             // Google Books Apiアクセス情報を登録
             this.bookSearchService.insertGoogleBooksApiAccessHistory(
-                googleBooksApiAccessHistoryRepository,
+                booksApiCacheRepositorys.googleBooksApiAccessHistoryRepository,
                 keywordModel,
                 accessDateModel,
             );
 
             // コミット
-            this.bookSearchService.commit(
-                googleBooksApiInfoCacheRepository,
-                googleBooksApiAuthorsCacheRepository,
-                googleBooksApiSmallThumbnailCacheRepository,
-                googleBooksApiThumbnailCacheRepository,
-                googleBooksApiAccessHistoryRepository,
-            );
+            this.bookSearchService.commit(booksApiCacheRepositorys);
         }
 
         // 書籍マスタからデータを取得する
-        const bookInfoMasterList: ReadonlyArray<BookInfoListModelType> =
-            this.bookSearchService.getBookInfoMasterList(bookSearchRepository, keywordModel);
-
-        // フィルターした書籍情報をGoogle Books Apiの型に変換する
-        const parsedBookInfoMasterList: GoogleBooksAPIsModelItemsType[] =
-            this.bookSearchService.parseGoogleBooksApiBookInfoMaster(bookInfoMasterList);
+        const bookInfoMasterList: GoogleBooksAPIsModelItemsType[] =
+            this.bookSearchService.getGoogleBooksApiBookInfoMaster(bookSearchRepository, keywordModel);
 
         // 書籍情報マスタとGoogle Books Apiの書籍情報をマージする
-        const mergedBookInfoList: GoogleBooksAPIsModelItemsType[] = this.bookSearchService.mergeGoogleBooksApiAndBookInfoMaster(
-            googleBooksApiItems, parsedBookInfoMasterList
-        );
+        const mergedBookInfoList: GoogleBooksAPIsModelItemsType[] =
+            this.bookSearchService.mergeGoogleBooksApiAndBookInfoMaster(googleBooksApiItems, bookInfoMasterList);
 
         // レスポンスの書籍情報
         const bookSearchResponseModel = new BookSearchResponseModel(mergedBookInfoList);

@@ -61,19 +61,9 @@ export class GoogleBooksApiAuthorsCacheRepositoryJson implements GoogleBooksApiA
      */
     delete(googleBooksApiAuthorsCacheDeleteEntity: GoogleBooksApiAuthorsCacheDeleteEntity) {
 
-        // IDチェック
-        const targetGoogleBooksApiAuthorsCache =
-            this._googleBooksApiAuthorsCacheList.filter((e: GoogleBooksApiAuthorsCacheJsonModelType) => {
-                return e.bookId === googleBooksApiAuthorsCacheDeleteEntity.bookId;
-            });
-
-        if (targetGoogleBooksApiAuthorsCache.length === 0) {
-            throw Error(`Google Books Api著者キャッシュ情報の更新対象が存在しません。(${googleBooksApiAuthorsCacheDeleteEntity})`);
-        }
-
         this._googleBooksApiAuthorsCacheList = this._googleBooksApiAuthorsCacheList.filter((e: GoogleBooksApiAuthorsCacheJsonModelType) => {
 
-            return e.bookId === googleBooksApiAuthorsCacheDeleteEntity.bookId;
+            return e.bookId !== googleBooksApiAuthorsCacheDeleteEntity.bookId;
         });
     };
 

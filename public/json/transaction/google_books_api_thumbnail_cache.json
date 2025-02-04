@@ -58,5 +58,11 @@
 		"thumbnail": "http://books.google.com/books/content?id=1lz8USHf-PUC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
 		"createDate": "20250203",
 		"updateDate": "20250203"
+	},
+	{
+		"bookId": "pumlAQAACAAJ",
+		"thumbnail": "http://books.google.com/books/content?id=pumlAQAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+		"createDate": "20250204",
+		"updateDate": "20250204"
 	}
 ]
