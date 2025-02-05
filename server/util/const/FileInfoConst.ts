@@ -44,5 +44,8 @@ export const GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE = "google_books_api_sima
 // Google Books Apiサムネイルキャッシュファイル名
 export const GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE = "google_books_api_thumbnail_cache.json";
 
+// 本棚情報
+export const BOOKSHELF_FILE = "bookshelf_transaction.json";
+
 // フロントのユーザーマスタファイル名
 export const FRONT_USER_INFO_MASTER_FILE = "front_user_info_master.json";
