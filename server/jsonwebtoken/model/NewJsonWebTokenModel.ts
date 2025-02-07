@@ -1,5 +1,6 @@
 import ENV from '../../env.json';
 import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/properties/FrontUserIdModel';
+import { FrontUserPasswordModel } from '../../internaldata/frontuserinfomaster/properties/FrontUserPasswordModel';
 
 
 export class NewJsonWebTokenModel {
@@ -7,7 +8,7 @@ export class NewJsonWebTokenModel {
     private readonly jwt = require("jsonwebtoken");
     private readonly token: string;
 
-    constructor(frontUserIdModel: FrontUserIdModel) {
+    constructor(frontUserIdModel: FrontUserIdModel, frontUserPasswordModel: FrontUserPasswordModel) {
 
         const jwtSecretKey = ENV.JSON_WEB_TOKEN_KEY;
 
@@ -21,7 +22,13 @@ export class NewJsonWebTokenModel {
             throw Error(`jwtの作成にはユーザーIDが必要です。`);
         }
 
-        const jwtStr = `${frontUserId}`;
+        const frontUserPassword = frontUserPasswordModel.frontUserPassword;
+
+        if (!frontUserPassword) {
+            throw Error(`jwtの作成にはパスワードが必要です。`);
+        }
+
+        const jwtStr = `${frontUserId},${frontUserPassword}`;
         this.token = this.jwt.sign({ ID: jwtStr }, jwtSecretKey);
     }
 

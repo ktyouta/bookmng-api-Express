@@ -1,6 +1,12 @@
 import ENV from '../../env.json';
+import { FrontUserInfoMasterJsonModelType } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType';
 import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/properties/FrontUserIdModel';
 import { FrontUserPasswordModel } from '../../internaldata/frontuserinfomaster/properties/FrontUserPasswordModel';
+import { FRONT_USER_INFO_MASTER_FILE_PATH } from '../../internaldata/frontuserinfomaster/repository/concrete/FrontUserInfoMasterRepositoryJson';
+import { RepositoryType } from '../../util/const/CommonConst';
+import { JsonFileData } from '../../util/service/JsonFileData';
+import { JsonWebTokenUserInfoSelectEntity } from '../entity/JsonWebTokenUserInfoSelectEntity';
+import { JsonWebTokenUserInfoRepositorys } from '../repository/JsonWebTokenUserInfoRepositorys';
 
 
 export class JsonWebTokenVerifyModel {
@@ -29,22 +35,33 @@ export class JsonWebTokenVerifyModel {
             const decoded = this.jwt.verify(token, jwtSecretKey);
 
             if (!decoded) {
-                throw Error(`認証情報の取得に失敗しました。`);
+                throw Error(`jwtから認証情報の取得に失敗しました。`);
             }
 
             const id: string = decoded.ID;
             const verifyArray: string[] = id.split(',');
 
             if (!verifyArray || verifyArray.length !== 2) {
-                throw Error(`認証情報が不正です。`);
+                throw Error(`jwtの認証情報が不正です。`);
             }
 
-            this._frontUserIdModel = FrontUserIdModel.reConstruct(verifyArray[0]);
-            this._frontUserPasswordModel = new FrontUserPasswordModel(verifyArray[1]);
-        } catch (err) {
-            throw Error(`jwt認証エラーが発生しました。ERROR:${err}`);
-        }
+            const frontUserIdModel: FrontUserIdModel = FrontUserIdModel.reConstruct(verifyArray[0]);
+            const frontUserPassword: FrontUserPasswordModel = new FrontUserPasswordModel(verifyArray[1]);
 
+            // ユーザーマスタファイルからデータを取得
+            const jsonUserInfoMasterList: ReadonlyArray<FrontUserInfoMasterJsonModelType> =
+                this.getFrontUser(frontUserIdModel, frontUserPassword);
+
+            // jwtのユーザー情報がユーザーマスタに存在しない
+            if (jsonUserInfoMasterList.length === 0) {
+                throw Error(`jwtのユーザー情報がユーザーマスタに存在しません。`);
+            }
+
+            this._frontUserIdModel = frontUserIdModel;
+            this._frontUserPasswordModel = frontUserPassword;
+        } catch (err) {
+            throw Error(`jwt認証中にエラーが発生しました。ERROR:${err}`);
+        }
     }
 
 
@@ -54,6 +71,30 @@ export class JsonWebTokenVerifyModel {
 
     get frontUserPasswordModel() {
         return this._frontUserPasswordModel;
+    }
+
+
+    /**
+     * jwt認証用のユーザー情報を取得
+     * @param frontUserIdModel 
+     * @param frontUserPassword 
+     * @returns 
+     */
+    private getFrontUser(frontUserIdModel: FrontUserIdModel,
+        frontUserPassword: FrontUserPasswordModel
+    ): ReadonlyArray<FrontUserInfoMasterJsonModelType> {
+
+        // 永続ロジック用オブジェクトを取得
+        const frontUserInfoCreateRepository = (new JsonWebTokenUserInfoRepositorys()).get(RepositoryType.JSON);
+
+        // ユーザー情報取得用Entity
+        const frontUserInfoCreateSelectEntity = new JsonWebTokenUserInfoSelectEntity(frontUserIdModel, frontUserPassword);
+
+        // ユーザー情報を取得
+        const userInfoMasterList: ReadonlyArray<FrontUserInfoMasterJsonModelType> =
+            frontUserInfoCreateRepository.select(frontUserInfoCreateSelectEntity);
+
+        return userInfoMasterList;
     }
 
 }
