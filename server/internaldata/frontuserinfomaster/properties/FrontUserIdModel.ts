@@ -9,7 +9,17 @@ export class FrontUserIdModel {
 
     private _frontUserId: string;
 
-    constructor() {
+    private constructor(userId: string) {
+
+        if (!FrontUserIdModel.checkUserIdValidate(userId)) {
+            throw Error(`ユーザーIDのフォーマットが不正です。userId:${userId}`);
+        }
+
+        this._frontUserId = userId;
+    }
+
+
+    public static create() {
 
         // ユーザーID採番用にユーザー情報マスタからデータを取得する
         const jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[] = JsonFileData.getFileObj(FRONT_USER_INFO_MASTER_FILE_PATH);
@@ -19,17 +29,17 @@ export class FrontUserIdModel {
         }
 
         // ユーザーIDを採番する
-        const latestUserId: string = this.createLatestUserId(jsonUserInfoMasterList);
+        const latestUserId: string = FrontUserIdModel.createLatestUserId(jsonUserInfoMasterList);
 
         if (!latestUserId) {
             throw Error("ユーザーIDの採番に失敗しました。");
         }
 
-        if (!latestUserId.includes(PRE_USER_ID)) {
+        if (!FrontUserIdModel.checkUserIdValidate(latestUserId)) {
             throw Error(`ユーザーIDのフォーマットが不正です。userId:${latestUserId}`);
         }
 
-        this._frontUserId = latestUserId;
+        return new FrontUserIdModel(latestUserId);
     }
 
 
@@ -39,11 +49,21 @@ export class FrontUserIdModel {
 
 
     /**
+     * userIdをセット
+     * @param userId 
+     * @returns 
+     */
+    public static reConstruct(userId: string) {
+        return new FrontUserIdModel(userId);
+    }
+
+
+    /**
      * ユーザーIDを採番する
      * @param userInfoList 
      * @returns 
      */
-    private createLatestUserId(jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[]): string {
+    private static createLatestUserId(jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[]): string {
 
         //IDが最大のNOを取得
         const maxNo = jsonUserInfoMasterList.reduce<number>((prev: number, current: FrontUserInfoMasterJsonModelType) => {
@@ -53,6 +73,16 @@ export class FrontUserIdModel {
         }, 0);
 
         return `${PRE_USER_ID}${maxNo + 1}`;
+    }
+
+
+    /**
+     * userIdのバリデーションチェック
+     * @param userId 
+     * @returns 
+     */
+    private static checkUserIdValidate(userId: string) {
+        return userId.includes(PRE_USER_ID);
     }
 
 }
