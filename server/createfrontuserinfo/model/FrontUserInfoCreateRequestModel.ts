@@ -1,22 +1,29 @@
 import { FrontUserBirthdayModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserBirthdayModel";
 import { FrontUserNameModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserNameModel";
+import { FrontUserPasswordModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserPasswordModel";
 import { FrontUserInfoCreateRequestType } from "./FrontUserInfoCreateRequestType";
 
 export class FrontUserInfoCreateRequestModel {
 
-    private _frontUserNameModel: FrontUserNameModel;
-    private _frontUserBidthdayModel: FrontUserBirthdayModel;
+    private readonly _frontUserNameModel: FrontUserNameModel;
+    private readonly _frontUserPasswordModel: FrontUserPasswordModel;
+    private readonly _frontUserBidthdayModel: FrontUserBirthdayModel;
 
 
     constructor(userInfoCreateBody: FrontUserInfoCreateRequestType) {
 
         this._frontUserNameModel = new FrontUserNameModel(userInfoCreateBody.userName);
+        this._frontUserPasswordModel = new FrontUserPasswordModel(userInfoCreateBody.password);
         this._frontUserBidthdayModel = new FrontUserBirthdayModel(userInfoCreateBody.userBirthday);
     }
 
 
     public get frontUserNameModel() {
         return this._frontUserNameModel;
+    }
+
+    public get frontUserPasswordModel() {
+        return this._frontUserPasswordModel;
     }
 
     public get frontUserBirthdayModel() {

@@ -1,6 +1,7 @@
 [
 	{
 		"userId": "userId-1",
+		"password": "f",
 		"userName": "testuser",
 		"userBirthDay": "20250101",
 		"createDate": "20250123",

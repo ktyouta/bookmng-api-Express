@@ -220,3 +220,6 @@
 [2025-02-03 22:52:45] [INFO] GET /booksearch/v1/volumes?q=%E5%A4%8F%E9%9B%85%E6%BC%B1%E7%9F%B3 | User-Agent: PostmanRuntime/7.43.0 | Query: {"q":"夏雅漱石"} | Request Body: {} | ip: ::1
 [2025-02-04 22:23:33] [INFO] GET /booksearch/v1/volumes?q=%E5%A4%8F%E9%9B%85%E6%BC%B1%E7%9F%B3 | User-Agent: PostmanRuntime/7.43.0 | Query: {"q":"夏雅漱石"} | Request Body: {} | ip: ::1
 [2025-02-04 22:29:59] [INFO] GET /booksearch/v1/volumes?q=%E5%A4%8F%E9%9B%85%E6%BC%B1%E7%9F%B3 | User-Agent: PostmanRuntime/7.43.0 | Query: {"q":"夏雅漱石"} | Request Body: {} | ip: ::1
+[2025-02-07 23:13:12] [INFO] POST /createfrontuserinfo/v1/volumes | User-Agent: PostmanRuntime/7.43.0 | Query: {} | Request Body: {"userName":"testuser","userBirthday":"20250101"} | ip: ::1
+[2025-02-07 23:13:56] [INFO] POST /createfrontuserinfo/v1/volumes | User-Agent: PostmanRuntime/7.43.0 | Query: {} | Request Body: {"userName":"testuser","password":"f","userBirthday":"20250101"} | ip: ::1
+[2025-02-07 23:14:09] [INFO] POST /createfrontuserinfo/v1/volumes | User-Agent: PostmanRuntime/7.43.0 | Query: {} | Request Body: {"userName":"testuser1","password":"f","userBirthday":"20250101"} | ip: ::1

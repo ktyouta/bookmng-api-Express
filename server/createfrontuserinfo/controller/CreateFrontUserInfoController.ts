@@ -61,7 +61,7 @@ export class CreateFrontUserInfoController extends RouteController {
         }
 
         // ユーザーIDを採番する
-        const userIdModel = FrontUserIdModel.create();
+        const userIdModel = new FrontUserIdModel();
 
         // ユーザーマスタ登録用データの作成
         const frontUserInfoMasterInsertEntity: FrontUserInfoMasterInsertEntity =

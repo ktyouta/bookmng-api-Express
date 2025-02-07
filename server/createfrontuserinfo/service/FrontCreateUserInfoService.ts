@@ -74,6 +74,7 @@ export class CreateFrontUserInfoService {
 
         return new FrontUserInfoMasterInsertEntity(
             userId,
+            parsedRequestBody.frontUserPasswordModel,
             parsedRequestBody.frontUserNameModel,
             parsedRequestBody.frontUserBirthdayModel,
         );
