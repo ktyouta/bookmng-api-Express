@@ -6,17 +6,18 @@ import { BookInfoMasterRepositoryInterface } from "./interface/BookInfoMasterRep
 
 /**
  * 永続ロジック用クラスの管理用
- * ロジックを追加する場合はコンストラクタ内でrepositoryに追加(push)する
+ * ロジックを追加する場合はコンストラクタ内でrepositorysに追加する
  */
 export class BookInfoMasterRepositorys {
 
 
-    private readonly repositorys: ReadonlyArray<BookInfoMasterRepositoryInterface>;
+    private readonly repositorys: Record<RepositoryType, BookInfoMasterRepositoryInterface>;
 
     constructor() {
 
-        const repositorys: BookInfoMasterRepositoryInterface[] = [];
-        repositorys.push(new BookInfoMasterRepositoryJson());
+        const repositorys: Record<RepositoryType, BookInfoMasterRepositoryInterface> = {
+            [RepositoryType.JSON]: (new BookInfoMasterRepositoryJson())
+        }
 
         this.repositorys = repositorys;
     }

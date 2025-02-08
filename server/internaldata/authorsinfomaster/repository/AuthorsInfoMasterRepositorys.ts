@@ -5,12 +5,13 @@ import { AuthorsInfoMasterRepositoryInterface } from "./interface/AuthorsInfoMas
 export class AuthorsInfoMasterRepositorys {
 
 
-    private readonly repositorys: ReadonlyArray<AuthorsInfoMasterRepositoryInterface>;
+    private readonly repositorys: Record<RepositoryType, AuthorsInfoMasterRepositoryInterface>;
 
     constructor() {
 
-        const repositorys: AuthorsInfoMasterRepositoryInterface[] = [];
-        repositorys.push(new AuthorsInfoMasterRepositoryJson());
+        const repositorys: Record<RepositoryType, AuthorsInfoMasterRepositoryInterface> = {
+            [RepositoryType.JSON]: (new AuthorsInfoMasterRepositoryJson())
+        }
 
         this.repositorys = repositorys;
     }

@@ -4,12 +4,13 @@ import { CreateBookInfoRepositoryInterface } from "./interface/CreateBookInfoRep
 
 export class CreateBookInfoRepositorys {
 
-    private readonly repositorys: ReadonlyArray<CreateBookInfoRepositoryInterface>;
+    private readonly repositorys: Record<RepositoryType, CreateBookInfoRepositoryInterface>;
 
     constructor() {
 
-        const repositorys: CreateBookInfoRepositoryInterface[] = [];
-        repositorys.push(new CreateBookInfoRepositoryJson());
+        const repositorys: Record<RepositoryType, CreateBookInfoRepositoryInterface> = {
+            [RepositoryType.JSON]: (new CreateBookInfoRepositoryJson())
+        }
 
         this.repositorys = repositorys;
     }

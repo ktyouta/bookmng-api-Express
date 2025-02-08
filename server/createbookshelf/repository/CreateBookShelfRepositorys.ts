@@ -11,12 +11,13 @@ import { CreateBookShelfRepositoryInterface } from "./interface/CreateBookShelfR
 export class CreateBookShelfRepositorys {
 
 
-    private readonly repositorys: ReadonlyArray<CreateBookShelfRepositoryInterface>;
+    private readonly repositorys: Record<RepositoryType, CreateBookShelfRepositoryInterface>;
 
     constructor() {
 
-        const repositorys: CreateBookShelfRepositoryInterface[] = [];
-        repositorys.push(new CreateBookShelfRepositoryJson());
+        const repositorys: Record<RepositoryType, CreateBookShelfRepositoryInterface> = {
+            [RepositoryType.JSON]: (new CreateBookShelfRepositoryJson())
+        }
 
         this.repositorys = repositorys;
     }

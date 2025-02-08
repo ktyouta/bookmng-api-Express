@@ -6,17 +6,18 @@ import { GoogleBooksApiAuthorsCacheRepositoryInterface } from "./interface/Googl
 
 /**
  * 永続ロジック用クラスの管理用
- * ロジックを追加する場合はコンストラクタ内でrepositoryに追加(push)する
+ * ロジックを追加する場合はコンストラクタ内でrepositorysに追加する
  */
 export class GoogleBooksApiAuthorsCacheRepositorys {
 
 
-    private readonly repositorys: ReadonlyArray<GoogleBooksApiAuthorsCacheRepositoryInterface>;
+    private readonly repositorys: Record<RepositoryType, GoogleBooksApiAuthorsCacheRepositoryInterface>;
 
     constructor() {
 
-        const repositorys: GoogleBooksApiAuthorsCacheRepositoryInterface[] = [];
-        repositorys.push(new GoogleBooksApiAuthorsCacheRepositoryJson());
+        const repositorys: Record<RepositoryType, GoogleBooksApiAuthorsCacheRepositoryInterface> = {
+            [RepositoryType.JSON]: (new GoogleBooksApiAuthorsCacheRepositoryJson())
+        }
 
         this.repositorys = repositorys;
     }

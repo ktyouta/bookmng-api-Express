@@ -1,22 +1,24 @@
 import { RepositoryType } from "../../../util/const/CommonConst";
 import { GoogleBooksApiSmallThumbnailCacheRepositoryInterface } from "../../googlebooksapismallthumbnailcache/repository/interface/GoogleBooksApiSmallThumbnailCacheRepositoryInterface";
 import { GoogleBooksApiThumbnailCacheRepositoryJson } from "./concrete/GoogleBooksApiThumbnailCacheRepositoryJson";
+import { GoogleBooksApiThumbnailCacheRepositoryInterface } from "./interface/GoogleBooksApiThumbnailCacheRepositoryInterface";
 
 
 
 /**
  * 永続ロジック用クラスの管理用
- * ロジックを追加する場合はコンストラクタ内でrepositoryに追加(push)する
+ * ロジックを追加する場合はコンストラクタ内でrepositorysに追加する
  */
 export class GoogleBooksApiThumbnailCacheRepositorys {
 
 
-    private readonly repositorys: ReadonlyArray<GoogleBooksApiThumbnailCacheRepositoryJson>;
+    private readonly repositorys: Record<RepositoryType, GoogleBooksApiThumbnailCacheRepositoryInterface>;
 
     constructor() {
 
-        const repositorys: GoogleBooksApiThumbnailCacheRepositoryJson[] = [];
-        repositorys.push(new GoogleBooksApiThumbnailCacheRepositoryJson());
+        const repositorys: Record<RepositoryType, GoogleBooksApiThumbnailCacheRepositoryInterface> = {
+            [RepositoryType.JSON]: (new GoogleBooksApiThumbnailCacheRepositoryJson())
+        }
 
         this.repositorys = repositorys;
     }
@@ -27,7 +29,7 @@ export class GoogleBooksApiThumbnailCacheRepositorys {
      * @param repositoryType 
      * @returns 
      */
-    public get(repositoryType: RepositoryType): GoogleBooksApiThumbnailCacheRepositoryJson {
+    public get(repositoryType: RepositoryType): GoogleBooksApiThumbnailCacheRepositoryInterface {
         return this.repositorys[repositoryType];
     }
 }

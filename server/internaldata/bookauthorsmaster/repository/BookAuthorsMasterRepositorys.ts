@@ -11,12 +11,13 @@ import { BookAuthorsMasterRepositoryJson } from "./concrete/BookAuthorsMasterRep
 export class BookAuthorsMasterRepositorys {
 
 
-    private readonly repositorys: ReadonlyArray<BookAuthorsMasterRepositoryInterface>;
+    private readonly repositorys: Record<RepositoryType, BookAuthorsMasterRepositoryInterface>;
 
     constructor() {
 
-        const repositorys: BookAuthorsMasterRepositoryInterface[] = [];
-        repositorys.push(new BookAuthorsMasterRepositoryJson());
+        const repositorys: Record<RepositoryType, BookAuthorsMasterRepositoryInterface> = {
+            [RepositoryType.JSON]: (new BookAuthorsMasterRepositoryJson())
+        }
 
         this.repositorys = repositorys;
     }

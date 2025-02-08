@@ -6,17 +6,18 @@ import { GoogleBooksApiSmallThumbnailCacheRepositoryInterface } from "./interfac
 
 /**
  * 永続ロジック用クラスの管理用
- * ロジックを追加する場合はコンストラクタ内でrepositoryに追加(push)する
+ * ロジックを追加する場合はコンストラクタ内でrepositorysに追加する
  */
 export class GoogleBooksApiSmallThumbnailCacheRepositorys {
 
 
-    private readonly repositorys: ReadonlyArray<GoogleBooksApiSmallThumbnailCacheRepositoryInterface>;
+    private readonly repositorys: Record<RepositoryType, GoogleBooksApiSmallThumbnailCacheRepositoryInterface>;
 
     constructor() {
 
-        const repositorys: GoogleBooksApiSmallThumbnailCacheRepositoryInterface[] = [];
-        repositorys.push(new GoogleBooksApiSmallThumbnailCacheRepositoryJson());
+        const repositorys: Record<RepositoryType, GoogleBooksApiSmallThumbnailCacheRepositoryInterface> = {
+            [RepositoryType.JSON]: (new GoogleBooksApiSmallThumbnailCacheRepositoryJson())
+        }
 
         this.repositorys = repositorys;
     }

@@ -6,17 +6,18 @@ import { BookShelfRepositoryInterface } from "./interface/BookShelfRepositoryInt
 
 /**
  * 永続ロジック用クラスの管理用
- * ロジックを追加する場合はコンストラクタ内でrepositoryに追加(push)する
+ * ロジックを追加する場合はコンストラクタ内でrepositorysに追加する
  */
 export class BookShelfRepositorys {
 
 
-    private readonly repositorys: ReadonlyArray<BookShelfRepositoryInterface>;
+    private readonly repositorys: Record<RepositoryType, BookShelfRepositoryInterface>;
 
     constructor() {
 
-        const repositorys: BookShelfRepositoryInterface[] = [];
-        repositorys.push(new BookShelfRepositoryJson());
+        const repositorys: Record<RepositoryType, BookShelfRepositoryInterface> = {
+            [RepositoryType.JSON]: (new BookShelfRepositoryJson())
+        }
 
         this.repositorys = repositorys;
     }

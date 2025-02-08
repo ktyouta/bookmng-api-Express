@@ -6,17 +6,18 @@ import { BookSearchRepositoryInterface } from "./interface/BookSearchRepositoryI
 
 /**
  * 永続ロジック用クラスの管理用
- * ロジックを追加する場合はコンストラクタ内でrepositoryに追加(push)する
+ * ロジックを追加する場合はコンストラクタ内でrepositorysに追加する
  */
 export class BookSearchRepositorys {
 
 
-    private readonly repositorys: ReadonlyArray<BookSearchRepositoryInterface>;
+    private readonly repositorys: Record<RepositoryType, BookSearchRepositoryInterface>;
 
     constructor() {
 
-        const repositorys: BookSearchRepositoryInterface[] = [];
-        repositorys.push(new BookSearchRepositoryJson());
+        const repositorys: Record<RepositoryType, BookSearchRepositoryInterface> = {
+            [RepositoryType.JSON]: (new BookSearchRepositoryJson())
+        }
 
         this.repositorys = repositorys;
     }

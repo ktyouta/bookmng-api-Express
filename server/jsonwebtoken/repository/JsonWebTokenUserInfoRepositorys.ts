@@ -6,17 +6,18 @@ import { JsonWebTokenUserInfoRepositoryInterface } from "./interface/JsonWebToke
 
 /**
  * 永続ロジック用クラスの管理用
- * ロジックを追加する場合はコンストラクタ内でrepositoryに追加(push)する
+ * ロジックを追加する場合はコンストラクタ内でrepositorysに追加する
  */
 export class JsonWebTokenUserInfoRepositorys {
 
 
-    private readonly repositorys: ReadonlyArray<JsonWebTokenUserInfoRepositoryInterface>;
+    private readonly repositorys: Record<RepositoryType, JsonWebTokenUserInfoRepositoryInterface>;
 
     constructor() {
 
-        const repositorys: JsonWebTokenUserInfoRepositoryInterface[] = [];
-        repositorys.push(new JsonWebTokenUserInfoRepositoryJson());
+        const repositorys: Record<RepositoryType, JsonWebTokenUserInfoRepositoryInterface> = {
+            [RepositoryType.JSON]: (new JsonWebTokenUserInfoRepositoryJson())
+        }
 
         this.repositorys = repositorys;
     }

@@ -6,17 +6,18 @@ import { FrontUserInfoMasterRepositoryInterface } from "./interface/FrontUserInf
 
 /**
  * 永続ロジック用クラスの管理用
- * ロジックを追加する場合はコンストラクタ内でrepositoryに追加(push)する
+ * ロジックを追加する場合はコンストラクタ内でrepositorysに追加する
  */
 export class FrontUserInfoMasterRepositorys {
 
 
-    private readonly repositorys: ReadonlyArray<FrontUserInfoMasterRepositoryInterface>;
+    private readonly repositorys: Record<RepositoryType, FrontUserInfoMasterRepositoryInterface>;
 
     constructor() {
 
-        const repositorys: FrontUserInfoMasterRepositoryInterface[] = [];
-        repositorys.push(new FrontUserInfoMasterRepositoryJson());
+        const repositorys: Record<RepositoryType, FrontUserInfoMasterRepositoryInterface> = {
+            [RepositoryType.JSON]: (new FrontUserInfoMasterRepositoryJson())
+        }
 
         this.repositorys = repositorys;
     }
