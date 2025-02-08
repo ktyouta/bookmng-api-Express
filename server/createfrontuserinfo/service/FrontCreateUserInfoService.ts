@@ -13,6 +13,8 @@ import { FrontUserInfoMasterRepositoryInterface } from "../../internaldata/front
 import { FrontUserInfoMasterInsertEntity } from "../../internaldata/frontuserinfomaster/entity/FrontUserInfoMasterInsertEntity";
 import { FrontUserInfoCreateRepositorys } from "../repository/FrontUserInfoCreateRepositorys";
 import { FrontUserInfoCreateSelectEntity } from "../entity/FrontUserInfoCreateSelectEntity";
+import { NewJsonWebTokenModel } from "../../jsonwebtoken/model/NewJsonWebTokenModel";
+import { FrontUserInfoCreateResponseModel } from "../model/FrontUserInfoCreateResponseModel";
 
 
 export class CreateFrontUserInfoService {
@@ -43,9 +45,9 @@ export class CreateFrontUserInfoService {
      * ユーザー重複チェック
      * @param userNameModel 
      */
-    public checkUserNameExists(parsedRequestBody: FrontUserInfoCreateRequestModel): boolean {
+    public checkUserNameExists(frontUserInfoCreateRequestBody: FrontUserInfoCreateRequestModel): boolean {
 
-        const userNameModel: FrontUserNameModel = parsedRequestBody.frontUserNameModel;
+        const userNameModel: FrontUserNameModel = frontUserInfoCreateRequestBody.frontUserNameModel;
 
         // 永続ロジック用オブジェクトを取得
         const frontUserInfoCreateRepositorys = new FrontUserInfoCreateRepositorys();
@@ -95,4 +97,39 @@ export class CreateFrontUserInfoService {
         }
     }
 
+
+    /**
+     * jwtを作成する
+     * @param userIdModel 
+     * @param frontUserInfoCreateRequestBody 
+     */
+    public createJsonWebToken(userIdModel: FrontUserIdModel,
+        frontUserInfoCreateRequestBody: FrontUserInfoCreateRequestModel
+    ) {
+
+        const frontUserPassword = frontUserInfoCreateRequestBody.frontUserPasswordModel;
+
+        try {
+            const newJsonWebTokenModel = new NewJsonWebTokenModel(userIdModel, frontUserPassword);
+
+            return newJsonWebTokenModel;
+        } catch (err) {
+            throw Error(`${err} endpoint:${ENV.CREATE_FRONT_USER_INFO}`);
+        }
+    }
+
+
+    /**
+     * レスポンスを作成
+     * @param frontUserInfoCreateRequestBody 
+     * @param newJsonWebTokenModel 
+     */
+    public createResponse(frontUserInfoCreateRequestBody: FrontUserInfoCreateRequestModel,
+        newJsonWebTokenModel: NewJsonWebTokenModel
+    ): FrontUserInfoCreateResponseModel {
+
+        const userNameModel = frontUserInfoCreateRequestBody.frontUserNameModel;
+
+        return new FrontUserInfoCreateResponseModel(userNameModel, newJsonWebTokenModel);
+    }
 }

@@ -6,7 +6,7 @@ import { FrontUserPasswordModel } from '../../internaldata/frontuserinfomaster/p
 export class NewJsonWebTokenModel {
 
     private readonly jwt = require("jsonwebtoken");
-    private readonly token: string;
+    private readonly _token: string;
 
     constructor(frontUserIdModel: FrontUserIdModel, frontUserPasswordModel: FrontUserPasswordModel) {
 
@@ -29,11 +29,11 @@ export class NewJsonWebTokenModel {
         }
 
         const jwtStr = `${frontUserId},${frontUserPassword}`;
-        this.token = this.jwt.sign({ ID: jwtStr }, jwtSecretKey);
+        this._token = this.jwt.sign({ ID: jwtStr }, jwtSecretKey);
     }
 
-    get getToken() {
-        return this.token;
+    get token() {
+        return this._token;
     }
 
 }
