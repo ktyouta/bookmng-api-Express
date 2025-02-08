@@ -8,13 +8,13 @@ import { BookShelfUpdateEntity } from "../../entity/BookShelfUpdateEntity";
 export interface BookShelfRepositoryInterface {
 
     /**
-     * ユーザー追加
+     * 本棚情報追加
      * @param bookShelfInsertEntity 
      */
     insert(bookShelfInsertEntity: BookShelfInsertEntity): void;
 
     /**
-     * ユーザー更新
+     * 本棚情報更新
      */
     update(brontUserInfoMasterUpdateEntity: BookShelfUpdateEntity): void;
 
