@@ -1,11 +1,10 @@
 [
 	{
 		"userId": "userId-1",
-		"password": "f",
 		"userName": "testuser",
 		"userBirthDay": "20250101",
-		"createDate": "20250123",
-		"updateDate": "20250123",
+		"createDate": "20250209",
+		"updateDate": "20250209",
 		"deleteFlg": "0"
 	}
 ]

@@ -6,15 +6,12 @@ import { FrontUserInfoMasterJsonModelType } from "../model/FrontUserInfoMasterJs
 import { FrontUserBirthdayModel } from "../properties/FrontUserBirthdayModel";
 import { FrontUserIdModel } from "../properties/FrontUserIdModel";
 import { FrontUserNameModel } from "../properties/FrontUserNameModel";
-import { FrontUserPasswordModel } from "../properties/FrontUserPasswordModel";
 
 
 export class FrontUserInfoMasterInsertEntity {
 
     // ユーザーID
     private readonly _frontUserIdModel: FrontUserIdModel;
-    // パスワード
-    private readonly _frontUserPasswordModel: FrontUserPasswordModel;
     // ユーザー名
     private readonly _frontUserNameModel: FrontUserNameModel;
     // ユーザー生年月日
@@ -28,23 +25,17 @@ export class FrontUserInfoMasterInsertEntity {
 
 
     constructor(userId: FrontUserIdModel,
-        frontUserPasswordModel: FrontUserPasswordModel,
         userName: FrontUserNameModel,
         userBirthDay: FrontUserBirthdayModel,
     ) {
 
         this._frontUserIdModel = userId;
-        this._frontUserPasswordModel = frontUserPasswordModel
         this._frontUserNameModel = userName;
         this._frontUserBirthDayModel = userBirthDay;
     }
 
     public get frontUserIdModel() {
         return this._frontUserIdModel;
-    }
-
-    public get frontUserPasswordModelModel() {
-        return this._frontUserPasswordModel;
     }
 
     public get frontUserNameModel() {
@@ -69,10 +60,6 @@ export class FrontUserInfoMasterInsertEntity {
 
     public get frontUserId() {
         return this._frontUserIdModel.frontUserId;
-    }
-
-    public get frontUserPassword() {
-        return this._frontUserPasswordModel.frontUserPassword;
     }
 
     public get frontUserName() {

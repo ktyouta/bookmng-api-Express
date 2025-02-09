@@ -15,6 +15,9 @@ import { FrontUserInfoCreateRepositorys } from "../repository/FrontUserInfoCreat
 import { FrontUserInfoCreateSelectEntity } from "../entity/FrontUserInfoCreateSelectEntity";
 import { NewJsonWebTokenModel } from "../../jsonwebtoken/model/NewJsonWebTokenModel";
 import { FrontUserInfoCreateResponseModel } from "../model/FrontUserInfoCreateResponseModel";
+import { FrontUserLoginMasterInsertEntity } from "../../internaldata/frontuserloginmaster/entity/FrontUserLoginMasterInsertEntity";
+import { FrontUserLoginMasterRepositoryInterface } from "../../internaldata/frontuserloginmaster/repository/interface/FrontUserLoginMasterRepositoryInterface";
+import { FrontUserLoginMasterRepositorys } from "../../internaldata/frontuserloginmaster/repository/FrontUserLoginMasterRepositorys";
 
 
 export class CreateFrontUserInfoService {
@@ -33,11 +36,9 @@ export class CreateFrontUserInfoService {
     /**
      * 永続ロジック用オブジェクトを取得
      */
-    public getRepository(): FrontUserInfoMasterRepositoryInterface {
+    public getFrontUserInfoMasterRepository(): FrontUserInfoMasterRepositoryInterface {
 
-        const frontUserInfoMasterRepositorys = new FrontUserInfoMasterRepositorys();
-
-        return frontUserInfoMasterRepositorys.get(RepositoryType.JSON);
+        return (new FrontUserInfoMasterRepositorys()).get(RepositoryType.JSON);
     }
 
 
@@ -76,7 +77,6 @@ export class CreateFrontUserInfoService {
 
         return new FrontUserInfoMasterInsertEntity(
             userId,
-            parsedRequestBody.frontUserPasswordModel,
             parsedRequestBody.frontUserNameModel,
             parsedRequestBody.frontUserBirthdayModel,
         );
@@ -84,14 +84,16 @@ export class CreateFrontUserInfoService {
 
 
     /**
-     * ユーザーマスタファイルにデータを書き込む
+     * コミット
      * @param userInfoMasterList 
      */
-    public commit(frontUserInfoMasterRepository: FrontUserInfoMasterRepositoryInterface) {
+    public commit(frontUserInfoMasterRepository: FrontUserInfoMasterRepositoryInterface,
+        frontUserLoginMasterRepository: FrontUserLoginMasterRepositoryInterface
+    ) {
 
         try {
-            // ユーザーマスタファイルにデータを書き込む
             frontUserInfoMasterRepository.commit();
+            frontUserLoginMasterRepository.commit();
         } catch (err) {
             throw Error(`${err} endpoint:${ENV.CREATE_FRONT_USER_INFO}`);
         }
@@ -131,5 +133,32 @@ export class CreateFrontUserInfoService {
         const userNameModel = frontUserInfoCreateRequestBody.frontUserNameModel;
 
         return new FrontUserInfoCreateResponseModel(userNameModel, newJsonWebTokenModel);
+    }
+
+
+    /**
+     * ユーザーログインマスタ永続ロジック用オブジェクトを取得
+     * @returns 
+     */
+    public getFrontUserLoginMasterRepository(): FrontUserLoginMasterRepositoryInterface {
+
+        return (new FrontUserLoginMasterRepositorys()).get(RepositoryType.JSON);
+    }
+
+
+    /**
+     * ユーザーログイン情報登録用データの作成
+     * @param title 
+     * @param publishedDate 
+     * @param description 
+     * @returns 
+     */
+    public createUserLoginMasterCreateBody(userId: FrontUserIdModel,
+        parsedRequestBody: FrontUserInfoCreateRequestModel): FrontUserLoginMasterInsertEntity {
+
+        return new FrontUserLoginMasterInsertEntity(
+            userId,
+            parsedRequestBody.frontUserPasswordModel,
+        );
     }
 }

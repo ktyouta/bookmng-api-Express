@@ -1,4 +1,4 @@
-import { FrontUserInfoMasterJsonModelType } from "../../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType";
+import { FrontUserLoginMasterJsonModelType } from "../../../internaldata/frontuserloginmaster/model/FrontUserLoginMasterJsonModelType";
 import { JsonWebTokenUserInfoSelectEntity } from "../../entity/JsonWebTokenUserInfoSelectEntity";
 
 
@@ -11,6 +11,6 @@ export interface JsonWebTokenUserInfoRepositoryInterface {
      * ユーザー取得
      */
     select(JsonWebTokenUserInfoSelectEntity: JsonWebTokenUserInfoSelectEntity):
-        ReadonlyArray<FrontUserInfoMasterJsonModelType>;
+        ReadonlyArray<FrontUserLoginMasterJsonModelType>;
 
 }

@@ -95,7 +95,6 @@ export class FrontUserInfoMasterRepositoryJson implements FrontUserInfoMasterRep
         // jsonファイル登録用の型に変換する
         const jsonUserInfoMaster: FrontUserInfoMasterJsonModelType = {
             userId: frontUserInfoMasterInsertEntity.frontUserId,
-            password: frontUserInfoMasterInsertEntity.frontUserPassword,
             userName: frontUserInfoMasterInsertEntity.frontUserName,
             userBirthDay: frontUserInfoMasterInsertEntity.frontUserBirthDay,
             createDate: frontUserInfoMasterInsertEntity.createDate,

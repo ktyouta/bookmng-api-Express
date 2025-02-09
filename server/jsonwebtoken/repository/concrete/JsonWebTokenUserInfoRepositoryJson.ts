@@ -1,6 +1,7 @@
 import { FrontUserInfoMasterInsertEntity } from "../../../internaldata/frontuserinfomaster/entity/FrontUserInfoMasterInsertEntity";
-import { FrontUserInfoMasterJsonModelType } from "../../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType";
 import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../../../internaldata/frontuserinfomaster/repository/concrete/FrontUserInfoMasterRepositoryJson";
+import { FrontUserLoginMasterJsonModelType } from "../../../internaldata/frontuserloginmaster/model/FrontUserLoginMasterJsonModelType";
+import { FRONT_USER_LOGIN_MASTER_FILE_PATH } from "../../../internaldata/frontuserloginmaster/repository/concrete/FrontUserLoginMasterRepositoryJson";
 import { JsonFileData } from "../../../util/service/JsonFileData";
 import { JsonWebTokenUserInfoSelectEntity } from "../../entity/JsonWebTokenUserInfoSelectEntity";
 import { JsonWebTokenUserInfoRepositoryInterface } from "../interface/JsonWebTokenUserInfoRepositoryInterface";
@@ -12,12 +13,12 @@ import { JsonWebTokenUserInfoRepositoryInterface } from "../interface/JsonWebTok
  */
 export class JsonWebTokenUserInfoRepositoryJson implements JsonWebTokenUserInfoRepositoryInterface {
 
-    private _frontUserInfoMasterJsonList: ReadonlyArray<FrontUserInfoMasterJsonModelType>;
+    private _frontUserInfoMasterJsonList: ReadonlyArray<FrontUserLoginMasterJsonModelType>;
 
     constructor() {
 
         // ユーザーマスタファイルからデータを取得
-        const jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[] = JsonFileData.getFileObj(FRONT_USER_INFO_MASTER_FILE_PATH);
+        const jsonUserInfoMasterList: FrontUserLoginMasterJsonModelType[] = JsonFileData.getFileObj(FRONT_USER_LOGIN_MASTER_FILE_PATH);
 
         this._frontUserInfoMasterJsonList = jsonUserInfoMasterList;
     }
@@ -28,9 +29,9 @@ export class JsonWebTokenUserInfoRepositoryJson implements JsonWebTokenUserInfoR
      * @returns 
      */
     public select(JsonWebTokenUserInfoSelectEntity: JsonWebTokenUserInfoSelectEntity):
-        ReadonlyArray<FrontUserInfoMasterJsonModelType> {
+        ReadonlyArray<FrontUserLoginMasterJsonModelType> {
 
-        const selectedFrontUserInfoMasterJsonList = this._frontUserInfoMasterJsonList.filter((e: FrontUserInfoMasterJsonModelType) => {
+        const selectedFrontUserInfoMasterJsonList = this._frontUserInfoMasterJsonList.filter((e: FrontUserLoginMasterJsonModelType) => {
             return e.userId === JsonWebTokenUserInfoSelectEntity.frontUserId &&
                 e.password === JsonWebTokenUserInfoSelectEntity.frontUserPassword;
         });

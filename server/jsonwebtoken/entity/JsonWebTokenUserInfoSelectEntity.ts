@@ -3,7 +3,7 @@ import { UpdateDateModel } from "../../internaldata/common/model/UpdateDateModel
 import { FrontUserBirthdayModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserBirthdayModel";
 import { FrontUserIdModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserIdModel";
 import { FrontUserNameModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserNameModel";
-import { FrontUserPasswordModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserPasswordModel";
+import { FrontUserPasswordModel } from "../../internaldata/frontuserloginmaster/properties/FrontUserPasswordModel";
 import { FLG } from "../../util/const/CommonConst";
 
 

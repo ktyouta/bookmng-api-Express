@@ -1,6 +1,6 @@
 import ENV from '../../env.json';
 import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/properties/FrontUserIdModel';
-import { FrontUserPasswordModel } from '../../internaldata/frontuserinfomaster/properties/FrontUserPasswordModel';
+import { FrontUserPasswordModel } from '../../internaldata/frontuserloginmaster/properties/FrontUserPasswordModel';
 
 
 export class NewJsonWebTokenModel {

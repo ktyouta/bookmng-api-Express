@@ -1,8 +1,8 @@
 import ENV from '../../env.json';
-import { FrontUserInfoMasterJsonModelType } from '../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType';
 import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/properties/FrontUserIdModel';
-import { FrontUserPasswordModel } from '../../internaldata/frontuserinfomaster/properties/FrontUserPasswordModel';
 import { FRONT_USER_INFO_MASTER_FILE_PATH } from '../../internaldata/frontuserinfomaster/repository/concrete/FrontUserInfoMasterRepositoryJson';
+import { FrontUserLoginMasterJsonModelType } from '../../internaldata/frontuserloginmaster/model/FrontUserLoginMasterJsonModelType';
+import { FrontUserPasswordModel } from '../../internaldata/frontuserloginmaster/properties/FrontUserPasswordModel';
 import { RepositoryType } from '../../util/const/CommonConst';
 import { JsonFileData } from '../../util/service/JsonFileData';
 import { JsonWebTokenUserInfoSelectEntity } from '../entity/JsonWebTokenUserInfoSelectEntity';
@@ -49,12 +49,12 @@ export class JsonWebTokenVerifyModel {
             const frontUserPassword: FrontUserPasswordModel = new FrontUserPasswordModel(verifyArray[1]);
 
             // ユーザーマスタファイルからデータを取得
-            const jsonUserInfoMasterList: ReadonlyArray<FrontUserInfoMasterJsonModelType> =
+            const jsonUserInfoMasterList: ReadonlyArray<FrontUserLoginMasterJsonModelType> =
                 this.getFrontUser(frontUserIdModel, frontUserPassword);
 
             // jwtのユーザー情報がユーザーマスタに存在しない
             if (jsonUserInfoMasterList.length === 0) {
-                throw Error(`jwtのユーザー情報がユーザーマスタに存在しません。`);
+                throw Error(`jwtのユーザー情報がユーザーログインマスタに存在しません。`);
             }
 
             this._frontUserIdModel = frontUserIdModel;
@@ -82,16 +82,16 @@ export class JsonWebTokenVerifyModel {
      */
     private getFrontUser(frontUserIdModel: FrontUserIdModel,
         frontUserPassword: FrontUserPasswordModel
-    ): ReadonlyArray<FrontUserInfoMasterJsonModelType> {
+    ): ReadonlyArray<FrontUserLoginMasterJsonModelType> {
 
         // 永続ロジック用オブジェクトを取得
         const frontUserInfoCreateRepository = (new JsonWebTokenUserInfoRepositorys()).get(RepositoryType.JSON);
 
-        // ユーザー情報取得用Entity
+        // ユーザログイン情報取得用Entity
         const frontUserInfoCreateSelectEntity = new JsonWebTokenUserInfoSelectEntity(frontUserIdModel, frontUserPassword);
 
-        // ユーザー情報を取得
-        const userInfoMasterList: ReadonlyArray<FrontUserInfoMasterJsonModelType> =
+        // ユーザーログイン情報を取得
+        const userInfoMasterList: ReadonlyArray<FrontUserLoginMasterJsonModelType> =
             frontUserInfoCreateRepository.select(frontUserInfoCreateSelectEntity);
 
         return userInfoMasterList;

@@ -49,3 +49,5 @@ export const BOOKSHELF_FILE = "bookshelf_transaction.json";
 
 // フロントのユーザーマスタファイル名
 export const FRONT_USER_INFO_MASTER_FILE = "front_user_info_master.json";
+// フロントのユーザーログインマスタファイル名
+export const FRONT_USER_LOGIN_MASTER_FILE = "front_user_login_master.json";
