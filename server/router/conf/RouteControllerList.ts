@@ -3,9 +3,10 @@ import { BookSearchController } from "../../booksearch/controller/BookSearchCont
 import { CreateFrontUserInfoController } from "../../createfrontuserinfo/controller/CreateFrontUserInfoController";
 import { RouteController } from "../controller/RouteController";
 import { CreateBookShelfController } from "../../createbookshelf/controller/CreateBookShelfController";
+import { FrontUserLoginController } from "../../frontuserlogin/controller/FrontUserLoginController";
 
 
-export const ROUTE_CONTROLLER_LIST: RouteController[] = [
+export const ROUTE_CONTROLLER_LIST: ReadonlyArray<RouteController> = [
     // 書籍検索
     new BookSearchController(),
     // 書籍情報登録
@@ -14,4 +15,6 @@ export const ROUTE_CONTROLLER_LIST: RouteController[] = [
     new CreateFrontUserInfoController(),
     // 本棚登録処理
     new CreateBookShelfController(),
+    // ログイン
+    new FrontUserLoginController(),
 ]
