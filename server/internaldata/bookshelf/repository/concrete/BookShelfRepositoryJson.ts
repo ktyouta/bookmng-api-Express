@@ -66,6 +66,8 @@ export class BookShelfRepositoryJson implements BookShelfRepositoryInterface {
         if (!updateBookShelf) {
             throw Error(`更新対象の本棚情報が存在しません。`);
         }
+
+        updateBookShelf.thoughts = bookShelfUpdateEntity.thoughts;
     }
 
 
@@ -96,6 +98,7 @@ export class BookShelfRepositoryJson implements BookShelfRepositoryInterface {
             deleteFlg: bookShelfInsertEntity.deleteFlg,
             userId: bookShelfInsertEntity.frontUserId,
             bookId: bookShelfInsertEntity.bookId,
+            thoughts: bookShelfInsertEntity.thoughts,
         };
 
         return jsonBookShelfInfoMaster;

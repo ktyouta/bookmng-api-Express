@@ -5,15 +5,16 @@ import { BookShelfRepositoryInterface } from "../../internaldata/bookshelf/repos
 import { FrontUserIdModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserIdModel";
 import { JsonWebTokenVerifyModel } from "../../jsonwebtoken/model/JsonWebTokenVerifyModel";
 import { RepositoryType } from "../../util/const/CommonConst";
-import { CreateBookShelfSelectEntity } from "../entity/CreateBookShelfSelectEntity";
-import { CreateBookShelfRequestModel } from "../model/CreateBookShelfRequestModel";
-import { CreateBookShelfRepositorys } from "../repository/CreateBookShelfRepositorys";
-import { CreateBookShelfRepositoryInterface } from "../repository/interface/CreateBookShelfRepositoryInterface";
+import { UpdateBookShelfSelectEntity } from "../entity/UpdateBookShelfSelectEntity";
+import { UpdateBookShelfRequestModel } from "../model/UpdateBookShelfRequestModel";
+import { UpdateBookShelfRepositorys } from "../repository/UpdateBookShelfRepositorys";
+import { UpdateBookShelfRepositoryInterface } from "../repository/interface/UpdateBookShelfRepositoryInterface";
 import ENV from '../../env.json';
+import { BookShelfUpdateEntity } from "../../internaldata/bookshelf/entity/BookShelfUpdateEntity";
 import { ThoughtsModel } from "../../internaldata/bookshelf/properties/ThoughtsModel";
 
 
-export class CreateBookShelfService {
+export class UpdateBookShelfService {
 
     public checkJwtVerify(jwt: string) {
 
@@ -22,31 +23,31 @@ export class CreateBookShelfService {
 
             return jsonWebTokenVerifyModel;
         } catch (err) {
-            throw Error(`本棚情報登録時の認証エラー ERROR:${err}`);
+            throw Error(`本棚情報更新時の認証エラー ERROR:${err}`);
         }
     }
 
 
     /**
-     * 本棚情報の重複チェック
-     * @param createBookShelfRequestModel 
+     * 本棚情報の存在チェック
+     * @param UpdateBookShelfRequestModel 
      * @param frontUserIdModel 
      * @returns 
      */
-    public checkDupulicateBookShelf(createBookShelfRequestModel: CreateBookShelfRequestModel,
+    public checkExistBookShelf(UpdateBookShelfRequestModel: UpdateBookShelfRequestModel,
         frontUserIdModel: FrontUserIdModel
     ) {
 
         // 永続ロジックを取得
-        const createBookShelfRepository: CreateBookShelfRepositoryInterface =
-            (new CreateBookShelfRepositorys()).get(RepositoryType.JSON);
+        const UpdateBookShelfRepository: UpdateBookShelfRepositoryInterface =
+            (new UpdateBookShelfRepositorys()).get(RepositoryType.JSON);
 
         // 本棚情報取得Entity
-        const createBookShelfSelectEntity = new CreateBookShelfSelectEntity(
-            frontUserIdModel, createBookShelfRequestModel.bookIdModel);
+        const updateBookShelfSelectEntity = new UpdateBookShelfSelectEntity(
+            frontUserIdModel, UpdateBookShelfRequestModel.bookIdModel);
 
         // 本棚情報を取得
-        const bookShelfList = createBookShelfRepository.select(createBookShelfSelectEntity);
+        const bookShelfList = UpdateBookShelfRepository.select(updateBookShelfSelectEntity);
 
         return bookShelfList.length > 0
     }
@@ -63,21 +64,21 @@ export class CreateBookShelfService {
 
 
     /**
-     * 本棚に書籍情報を追加する
+     * 本棚の書籍情報を更新する
      * @param bookShelfRepository 
-     * @param createBookShelfRequestModel 
+     * @param UpdateBookShelfRequestModel 
      * @param frontUserIdModel 
      */
-    public insert(bookShelfRepository: BookShelfRepositoryInterface,
-        createBookShelfRequestModel: CreateBookShelfRequestModel,
+    public update(bookShelfRepository: BookShelfRepositoryInterface,
+        UpdateBookShelfRequestModel: UpdateBookShelfRequestModel,
         frontUserIdModel: FrontUserIdModel) {
 
-        const bookShelfInsertEntity = new BookShelfInsertEntity(
+        const bookShelfUpdateEntity = new BookShelfUpdateEntity(
             frontUserIdModel,
-            createBookShelfRequestModel.bookIdModel,
-            new ThoughtsModel(``));
+            UpdateBookShelfRequestModel.bookIdModel,
+            UpdateBookShelfRequestModel.thoughtsModel);
 
-        bookShelfRepository.insert(bookShelfInsertEntity);
+        bookShelfRepository.update(bookShelfUpdateEntity);
     }
 
 
@@ -90,7 +91,7 @@ export class CreateBookShelfService {
         try {
             bookShelfRepository.commit();
         } catch (err) {
-            throw Error(`${err} endpoint:${ENV.CREATE_BOOKSHELF_INFO}`);
+            throw Error(`${err} endpoint:${ENV.UPDATE_BOOKSHELF_INFO}`);
         }
     }
 }

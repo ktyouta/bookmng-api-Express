@@ -4,6 +4,7 @@ import { CreateFrontUserInfoController } from "../../createfrontuserinfo/control
 import { RouteController } from "../controller/RouteController";
 import { CreateBookShelfController } from "../../createbookshelf/controller/CreateBookShelfController";
 import { FrontUserLoginController } from "../../frontuserlogin/controller/FrontUserLoginController";
+import { UpdateBookShelfController } from "../../updatebookshelf/controller/UpdateBookShelfController";
 
 
 export const ROUTE_CONTROLLER_LIST: ReadonlyArray<RouteController> = [
@@ -17,4 +18,6 @@ export const ROUTE_CONTROLLER_LIST: ReadonlyArray<RouteController> = [
     new CreateBookShelfController(),
     // ログイン
     new FrontUserLoginController(),
+    // 本棚更新処理
+    new UpdateBookShelfController(),
 ]

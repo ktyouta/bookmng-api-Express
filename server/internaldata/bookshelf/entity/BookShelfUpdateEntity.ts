@@ -4,6 +4,7 @@ import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
 import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { FrontUserIdModel } from "../../frontuserinfomaster/properties/FrontUserIdModel";
+import { ThoughtsModel } from "../properties/ThoughtsModel";
 
 
 export class BookShelfUpdateEntity {
@@ -12,6 +13,8 @@ export class BookShelfUpdateEntity {
     private readonly _frontUserIdModel: FrontUserIdModel;
     // 書籍ID
     private readonly _bookIdModel: BookIdModel;
+    // 感想
+    private readonly _thoughtsModel: ThoughtsModel;
     // データ更新日
     private readonly _updateDateModel: UpdateDateModel = UpdateDateModel.create(`本棚情報`);
     // 削除フラグ
@@ -20,10 +23,12 @@ export class BookShelfUpdateEntity {
 
     constructor(userId: FrontUserIdModel,
         bookIdModel: BookIdModel,
+        thoughtsModel: ThoughtsModel,
     ) {
 
         this._frontUserIdModel = userId;
         this._bookIdModel = bookIdModel;
+        this._thoughtsModel = thoughtsModel;
     }
 
     public get frontUserIdModel() {
@@ -48,6 +53,10 @@ export class BookShelfUpdateEntity {
 
     public get bookId() {
         return this._bookIdModel.bookId;
+    }
+
+    public get thoughts() {
+        return this._thoughtsModel.thoughts;
     }
 
     public get updateDate() {
