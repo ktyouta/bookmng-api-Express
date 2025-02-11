@@ -173,7 +173,7 @@ export class CreateBookInfoService {
             bookInfoMasterRepository.commit();
             bookAuthorsMasterRepository.commit();
         } catch (err) {
-            throw Error(`${err} endpoint:${ENV.CREATE_BOOK_INFO}`);
+            throw Error(`${err} endpoint:${ENV.BOOK_INFO}`);
         }
     }
 }

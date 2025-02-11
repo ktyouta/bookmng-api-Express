@@ -26,7 +26,7 @@ export class CreateBookInfoController extends RouteController {
     private addBookInfoService = new CreateBookInfoService();
 
     public routes() {
-        this.router.post(`${ENV.CREATE_BOOK_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+        this.router.post(`${ENV.BOOK_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
     }
 
     /**

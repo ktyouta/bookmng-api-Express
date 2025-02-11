@@ -95,7 +95,7 @@ export class CreateFrontUserInfoService {
             frontUserInfoMasterRepository.commit();
             frontUserLoginMasterRepository.commit();
         } catch (err) {
-            throw Error(`${err} endpoint:${ENV.CREATE_FRONT_USER_INFO}`);
+            throw Error(`${err} endpoint:${ENV.FRONT_USER_INFO}`);
         }
     }
 
@@ -116,7 +116,7 @@ export class CreateFrontUserInfoService {
 
             return newJsonWebTokenModel;
         } catch (err) {
-            throw Error(`${err} endpoint:${ENV.CREATE_FRONT_USER_INFO}`);
+            throw Error(`${err} endpoint:${ENV.FRONT_USER_INFO}`);
         }
     }
 

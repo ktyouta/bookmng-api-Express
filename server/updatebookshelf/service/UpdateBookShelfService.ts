@@ -91,7 +91,7 @@ export class UpdateBookShelfService {
         try {
             bookShelfRepository.commit();
         } catch (err) {
-            throw Error(`${err} endpoint:${ENV.UPDATE_BOOKSHELF_INFO}`);
+            throw Error(`${err} endpoint:${ENV.BOOKSHELF_INFO}`);
         }
     }
 }

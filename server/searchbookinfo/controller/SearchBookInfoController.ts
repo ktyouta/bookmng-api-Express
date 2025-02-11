@@ -23,7 +23,7 @@ export class SearchBookInfoController extends RouteController {
     private searchBookInfoService = new SearchBookInfoService();
 
     public routes() {
-        this.router.get(`${ENV.SEARCH_BOOK_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+        this.router.get(`${ENV.BOOK_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
     }
 
     /**

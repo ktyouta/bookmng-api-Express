@@ -19,7 +19,7 @@ export class UpdateBookShelfController extends RouteController {
     private updateBookShelfService = new UpdateBookShelfService();
 
     public routes() {
-        this.router.post(`${ENV.UPDATE_BOOKSHELF_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+        this.router.put(`${ENV.BOOKSHELF_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
     }
 
     /**

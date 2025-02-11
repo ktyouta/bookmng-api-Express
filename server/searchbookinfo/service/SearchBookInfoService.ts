@@ -70,7 +70,7 @@ export class SearchBookInfoService {
             return googleBookInfoList;
 
         } catch (err) {
-            throw Error(`ERROR:${err} endpoint:${ENV.SEARCH_BOOK_INFO} keyword:${keyword}`);
+            throw Error(`ERROR:${err} endpoint:${ENV.BOOK_INFO} keyword:${keyword}`);
         }
     }
 

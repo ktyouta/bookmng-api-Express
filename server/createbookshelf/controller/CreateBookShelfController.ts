@@ -19,7 +19,7 @@ export class CreateBookShelfController extends RouteController {
     private createBookShelfService = new CreateBookShelfService();
 
     public routes() {
-        this.router.post(`${ENV.CREATE_BOOKSHELF_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+        this.router.post(`${ENV.BOOKSHELF_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
     }
 
     /**

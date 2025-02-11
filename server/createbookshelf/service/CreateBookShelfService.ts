@@ -90,7 +90,7 @@ export class CreateBookShelfService {
         try {
             bookShelfRepository.commit();
         } catch (err) {
-            throw Error(`${err} endpoint:${ENV.CREATE_BOOKSHELF_INFO}`);
+            throw Error(`${err} endpoint:${ENV.BOOKSHELF_INFO}`);
         }
     }
 }

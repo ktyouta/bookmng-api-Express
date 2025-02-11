@@ -22,7 +22,7 @@ export class CreateFrontUserInfoController extends RouteController {
     private createFrontUserInfoService = new CreateFrontUserInfoService();
 
     public routes() {
-        this.router.post(`${ENV.CREATE_FRONT_USER_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+        this.router.post(`${ENV.FRONT_USER_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
     }
 
     /**
