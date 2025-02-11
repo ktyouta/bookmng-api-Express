@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import ENV from '../../env.json';
 import { RouteController } from '../../router/controller/RouteController';
 import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
-import { HTTP_STATUS_CREATED, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
+import { HTTP_STATUS_CREATED, HTTP_STATUS_OK, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
 import { ApiResponse } from '../../util/service/ApiResponse';
 import { ZodIssue } from 'zod';
 import { JsonWebTokenVerifyModel } from '../../jsonwebtoken/model/JsonWebTokenVerifyModel';
@@ -67,5 +67,7 @@ export class UpdateBookShelfController extends RouteController {
 
         // コミット
         this.updateBookShelfService.commit(bookShelfRepository);
+
+        return ApiResponse.create(res, HTTP_STATUS_OK, `書籍情報の更新が完了しました。`);
     }
 }
