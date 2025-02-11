@@ -7,14 +7,14 @@ import { GoogleBooksApiTitleModel } from "../../internaldata/googlebooksapiinfoc
 import { GoogleBooksApiPublishedDateModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiPublishedDateModel";
 import { GoogleBooksApiDescriptionModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiDescriptionModel";
 import { ArrayUtil } from "../../util/service/ArrayUtil";
-import { BookSearchRepositorys } from "../repository/BookSearchRepositorys";
+import { SearchBookInfoRepositorys } from "../repository/SearchBookInfoRepositorys";
 import { RepositoryType } from "../../util/const/CommonConst";
-import { BookSearchGoogleBooksApiAccessHistorySelectEntity } from "../entity/BookSearchGoogleBooksApiAccessHistorySelectEntity";
+import { SearchBookInfoGoogleBooksApiAccessHistorySelectEntity } from "../entity/SearchBookInfoGoogleBooksApiAccessHistorySelectEntity";
 import { GoogleBooksApiAccessHistoryRepositorys } from "../../internaldata/googlebooksapiaccesshistory/repository/GoogleBooksApiAccessHistoryRepositorys";
 import { GoogleBooksApiAccessHistoryInsertEntity } from "../../internaldata/googlebooksapiaccesshistory/entity/GoogleBooksApiAccessHistoryInsertEntity";
 import { GoogleBookInfoApis } from '../../externalapi/googlebookinfo/service/GoogleBookInfoApis';
 import { GoogleBookInfoApisKeyword } from '../../externalapi/properties/GoogleBookInfoApisKeyword';
-import { BookSearchRepositoryInterface } from '../repository/interface/BookSearchRepositoryInterface';
+import { SearchBookInfoRepositoryInterface } from '../repository/interface/SearchBookInfoRepositoryInterface';
 import { GoogleBooksApiCacheSelectEntity } from '../entity/GoogleBooksApiCacheSelectEntity';
 import { GoogleBooksApiSmallThumbnailCacheRepositorys } from '../../internaldata/googlebooksapismallthumbnailcache/repository/GoogleBooksApiSmallThumbnailCacheRepositorys';
 import { GoogleBooksApiSmallThumbnailCacheRepositoryInterface } from '../../internaldata/googlebooksapismallthumbnailcache/repository/interface/GoogleBooksApiSmallThumbnailCacheRepositoryInterface';
@@ -48,7 +48,7 @@ import { BookInfoMergedModelType } from '../model/BookInfoMergedModelType';
 import { GoogleBooksApiCacheRepositorys } from '../model/GoogleBooksApiCacheRepositorys';
 
 
-export class BookSearchService {
+export class SearchBookInfoService {
 
 
     /**
@@ -70,7 +70,7 @@ export class BookSearchService {
             return googleBookInfoList;
 
         } catch (err) {
-            throw Error(`ERROR:${err} endpoint:${ENV.BOOK_SEARCH} keyword:${keyword}`);
+            throw Error(`ERROR:${err} endpoint:${ENV.SEARCH_BOOK_INFO} keyword:${keyword}`);
         }
     }
 
@@ -83,13 +83,13 @@ export class BookSearchService {
      */
     public checkAccessHistoryExist(keywordModel: KeywordModel, accessDateModel: AccessDateModel,) {
 
-        const bookSearchJsonRepository = (new BookSearchRepositorys()).get(RepositoryType.JSON);
+        const searchBookInfoJsonRepository = (new SearchBookInfoRepositorys()).get(RepositoryType.JSON);
 
-        const bookSearchGoogleBooksApiAccessHistorySelectEntity =
-            new BookSearchGoogleBooksApiAccessHistorySelectEntity(keywordModel, accessDateModel);
+        const searchBookInfoGoogleBooksApiAccessHistorySelectEntity =
+            new SearchBookInfoGoogleBooksApiAccessHistorySelectEntity(keywordModel, accessDateModel);
 
         const GoogleBooksApiAccessHistory =
-            bookSearchJsonRepository.selectGoogleBooksApiAccessHistory(bookSearchGoogleBooksApiAccessHistorySelectEntity);
+            searchBookInfoJsonRepository.selectGoogleBooksApiAccessHistory(searchBookInfoGoogleBooksApiAccessHistorySelectEntity);
 
         // キーワードと日付に一致するデータが存在する
         return GoogleBooksApiAccessHistory.length > 0
@@ -146,11 +146,11 @@ export class BookSearchService {
      * @returns 
      */
     public getGoogleBooksApiBookInfoMaster(
-        bookSearchRepository: BookSearchRepositoryInterface,
+        searchBookInfoRepository: SearchBookInfoRepositoryInterface,
         keywordModel: KeywordModel): GoogleBooksAPIsModelItemsType[] {
 
         const bookInfoMasterListSelectEntity = new BookInfoMasterListSelectEntity(keywordModel);
-        const bookInfoMasterList = bookSearchRepository.selectBookInfoMasterList(bookInfoMasterListSelectEntity);
+        const bookInfoMasterList = searchBookInfoRepository.selectBookInfoMasterList(bookInfoMasterListSelectEntity);
 
         const googleBooksAPIsModelItems: GoogleBooksAPIsModelItemsType[] =
             bookInfoMasterList.map((e: BookInfoMergedModelType) => {
@@ -209,20 +209,20 @@ export class BookSearchService {
 
 
     /**
-     * BookSearchの永続ロジックを取得
+     * SearchBookInfoの永続ロジックを取得
      */
-    public getBookSearchRepository(): BookSearchRepositoryInterface {
+    public getSearchBookInfoRepository(): SearchBookInfoRepositoryInterface {
 
-        return (new BookSearchRepositorys()).get(RepositoryType.JSON);
+        return (new SearchBookInfoRepositorys()).get(RepositoryType.JSON);
     }
 
     /**
      * Google Books Apiのキャッシュ情報取得
      */
-    public getGoogleBooksApiCacheList(BookSearchRepository: BookSearchRepositoryInterface, keywordModel: KeywordModel) {
+    public getGoogleBooksApiCacheList(SearchBookInfoRepository: SearchBookInfoRepositoryInterface, keywordModel: KeywordModel) {
 
         const googleBooksApiCacheSelectEntity = new GoogleBooksApiCacheSelectEntity(keywordModel);
-        const googleBooksApiCacheList = BookSearchRepository.selectGoogleBooksApiCacheList(googleBooksApiCacheSelectEntity);
+        const googleBooksApiCacheList = SearchBookInfoRepository.selectGoogleBooksApiCacheList(googleBooksApiCacheSelectEntity);
 
         return googleBooksApiCacheList;
     }
@@ -252,7 +252,7 @@ export class BookSearchService {
      * @param googleBooksApiItems 
      */
     public updateGoogleBooksApiSmallThumbnailCache(
-        bookSearchRepository: BookSearchRepositoryInterface,
+        searchBookInfoRepository: SearchBookInfoRepositoryInterface,
         googleBooksApiSmallThumbnailCacheRepository: GoogleBooksApiSmallThumbnailCacheRepositoryInterface,
         googleBooksApiItems: GoogleBooksAPIsModelItemsType[]) {
 
@@ -264,7 +264,7 @@ export class BookSearchService {
 
             // Google Books Apiのサムネイル(小)キャッシュ情報を取得
             const googleBooksApiSmallThumbnailCacheList =
-                bookSearchRepository.selectGoogleBooksApiSmallThumbnailCacheList(googleBooksApiSmallThumbnailCacheSelectEntity);
+                searchBookInfoRepository.selectGoogleBooksApiSmallThumbnailCacheList(googleBooksApiSmallThumbnailCacheSelectEntity);
 
             const smallThumbnail = e.volumeInfo.imageLinks?.smallThumbnail ?? ``;
 
@@ -304,7 +304,7 @@ export class BookSearchService {
      * @param googleBooksApiItems 
      */
     public updateGoogleBooksApiThumbnailCache(
-        bookSearchRepository: BookSearchRepositoryInterface,
+        searchBookInfoRepository: SearchBookInfoRepositoryInterface,
         googleBooksApiThumbnailCacheRepository: GoogleBooksApiThumbnailCacheRepositoryInterface,
         googleBooksApiItems: GoogleBooksAPIsModelItemsType[]) {
 
@@ -316,7 +316,7 @@ export class BookSearchService {
 
             // Google Books Apiのサムネイルキャッシュ情報を取得
             const googleBooksApiThumbnailCacheList =
-                bookSearchRepository.selectGoogleBooksApiThumbnailCacheList(googleBooksApiThumbnailCacheSelectEntity);
+                searchBookInfoRepository.selectGoogleBooksApiThumbnailCacheList(googleBooksApiThumbnailCacheSelectEntity);
 
             const thumbnail = e.volumeInfo.imageLinks?.thumbnail ?? ``;
 
@@ -356,7 +356,7 @@ export class BookSearchService {
      * @param googleBooksApiItems 
      */
     public updateGoogleBooksApiInfoCache(
-        bookSearchRepository: BookSearchRepositoryInterface,
+        searchBookInfoRepository: SearchBookInfoRepositoryInterface,
         googleBooksApiInfoCacheRepository: GoogleBooksApiInfoCacheRepositoryInterface,
         googleBooksApiItems: GoogleBooksAPIsModelItemsType[]) {
 
@@ -370,7 +370,7 @@ export class BookSearchService {
 
             // Google Books Apiの書籍キャッシュ情報を取得
             const googleBooksApiInfoCacheList =
-                bookSearchRepository.selectGoogleBooksApiInfoCacheList(googleBooksApiInfoCacheSelectEntity);
+                searchBookInfoRepository.selectGoogleBooksApiInfoCacheList(googleBooksApiInfoCacheSelectEntity);
 
             const title = e.volumeInfo.title ?? ``;
             const publishedDate = e.volumeInfo.publishedDate ?? ``;
@@ -416,7 +416,7 @@ export class BookSearchService {
      * @param googleBooksApiItems 
      */
     public updateGoogleBooksApiAuthorsCache(
-        bookSearchRepository: BookSearchRepositoryInterface,
+        searchBookInfoRepository: SearchBookInfoRepositoryInterface,
         googleBooksApiAuthorsCacheRepository: GoogleBooksApiAuthorsCacheRepositoryInterface,
         googleBooksApiItems: GoogleBooksAPIsModelItemsType[]) {
 
@@ -430,7 +430,7 @@ export class BookSearchService {
 
             // Google Books Apiの書籍キャッシュ情報を取得
             const googleBooksApiAuthorsCacheList =
-                bookSearchRepository.selectGoogleBooksApiAuthorsCacheList(googleBooksApiAuthorsCacheSelectEntity);
+                searchBookInfoRepository.selectGoogleBooksApiAuthorsCacheList(googleBooksApiAuthorsCacheSelectEntity);
 
             const authroList = e.volumeInfo.authors ?? [];
 

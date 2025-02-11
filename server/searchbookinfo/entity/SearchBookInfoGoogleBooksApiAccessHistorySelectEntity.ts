@@ -9,7 +9,7 @@ import { FLG } from "../../util/const/CommonConst";
 
 
 
-export class BookSearchGoogleBooksApiAccessHistorySelectEntity {
+export class SearchBookInfoGoogleBooksApiAccessHistorySelectEntity {
 
     // Google Books Api検索キーワード
     private readonly _keywordModel: KeywordModel;

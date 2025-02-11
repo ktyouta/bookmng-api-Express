@@ -5,7 +5,7 @@ import { GoogleBooksApiInfoCacheJsonModelType } from "../../../internaldata/goog
 import { GoogleBooksApiSmallThumbnailCacheJsonModelType } from "../../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheJsonModelType";
 import { GoogleBooksApiThumbnailCacheJsonModelType } from "../../../internaldata/googlebooksapithumbnailcache/model/GoogleBooksApiThumbnailCacheJsonModelType";
 import { BookInfoMasterListSelectEntity } from "../../entity/BookInfoMasterListSelectEntity";
-import { BookSearchGoogleBooksApiAccessHistorySelectEntity, } from "../../entity/BookSearchGoogleBooksApiAccessHistorySelectEntity";
+import { SearchBookInfoGoogleBooksApiAccessHistorySelectEntity, } from "../../entity/SearchBookInfoGoogleBooksApiAccessHistorySelectEntity";
 import { GoogleBooksApiAuthorsCacheSelectEntity } from "../../entity/GoogleBooksApiAuthorsCacheSelectEntity";
 import { GoogleBooksApiCacheSelectEntity } from "../../entity/GoogleBooksApiCacheSelectEntity";
 import { GoogleBooksApiInfoCacheSelectEntity } from "../../entity/GoogleBooksApiInfoCacheSelectEntity";
@@ -18,12 +18,12 @@ import { GoogleBooksApiCacheModelType } from "../../model/GoogleBooksApiCacheMod
 /**
  * 永続ロジック用インターフェース
  */
-export interface BookSearchRepositoryInterface {
+export interface SearchBookInfoRepositoryInterface {
 
     /**
      * Google Books Apiのアクセス履歴取得
      */
-    selectGoogleBooksApiAccessHistory(bookSearchGoogleBooksApiAccessHistorySelectEntity: BookSearchGoogleBooksApiAccessHistorySelectEntity)
+    selectGoogleBooksApiAccessHistory(searchBookInfoGoogleBooksApiAccessHistorySelectEntity: SearchBookInfoGoogleBooksApiAccessHistorySelectEntity)
         : ReadonlyArray<GoogleBooksApiAccessHistoryJsonModelType>;
 
     /**

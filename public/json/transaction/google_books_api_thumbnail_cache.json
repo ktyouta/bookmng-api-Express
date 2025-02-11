@@ -64,5 +64,11 @@
 		"thumbnail": "http://books.google.com/books/content?id=pumlAQAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
 		"createDate": "20250204",
 		"updateDate": "20250204"
+	},
+	{
+		"bookId": "9CyozQEACAAJ",
+		"thumbnail": "http://books.google.com/books/content?id=9CyozQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+		"createDate": "20250211",
+		"updateDate": "20250211"
 	}
 ]

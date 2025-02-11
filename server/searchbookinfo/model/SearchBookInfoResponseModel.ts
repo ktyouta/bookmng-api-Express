@@ -1,6 +1,6 @@
 import { GoogleBooksAPIsModelItemsType } from "../../externalapi/googlebookinfo/model/GoogleBooksAPIsModelItemsType";
 
-export class BookSearchResponseModel {
+export class SearchBookInfoResponseModel {
 
     private readonly kind: string = `books#volumes`;
     private readonly totalItems: number;

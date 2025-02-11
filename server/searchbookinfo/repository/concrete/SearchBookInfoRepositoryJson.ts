@@ -21,7 +21,7 @@ import { GoogleBooksApiThumbnailCacheJsonModelType } from "../../../internaldata
 import { GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapithumbnailcache/repository/concrete/GoogleBooksApiThumbnailCacheRepositoryJson";
 import { JsonFileData } from "../../../util/service/JsonFileData";
 import { BookInfoMasterListSelectEntity } from "../../entity/BookInfoMasterListSelectEntity";
-import { BookSearchGoogleBooksApiAccessHistorySelectEntity, } from "../../entity/BookSearchGoogleBooksApiAccessHistorySelectEntity";
+import { SearchBookInfoGoogleBooksApiAccessHistorySelectEntity, } from "../../entity/SearchBookInfoGoogleBooksApiAccessHistorySelectEntity";
 import { GoogleBooksApiAuthorsCacheSelectEntity } from "../../entity/GoogleBooksApiAuthorsCacheSelectEntity";
 import { GoogleBooksApiCacheSelectEntity } from "../../entity/GoogleBooksApiCacheSelectEntity";
 import { GoogleBooksApiInfoCacheSelectEntity } from "../../entity/GoogleBooksApiInfoCacheSelectEntity";
@@ -30,14 +30,14 @@ import { GoogleBooksApiThumbnailCacheSelectEntity } from "../../entity/GoogleBoo
 import { BookInfoListModelType } from "../../model/BookInfoListModelType";
 import { BookInfoMergedModelType } from "../../model/BookInfoMergedModelType";
 import { GoogleBooksApiCacheModelType } from "../../model/GoogleBooksApiCacheModelType";
-import { BookSearchRepositoryInterface, } from "../interface/BookSearchRepositoryInterface";
+import { SearchBookInfoRepositoryInterface } from "../interface/SearchBookInfoRepositoryInterface";
 
 
 
 /**
  * json形式の永続ロジック用クラス
  */
-export class BookSearchRepositoryJson implements BookSearchRepositoryInterface {
+export class SearchBookInfoRepositoryJson implements SearchBookInfoRepositoryInterface {
 
     // Google Books Apiアクセス情報
     private _googleBooksApiAccessHistoryJsonList: ReadonlyArray<GoogleBooksApiAccessHistoryJsonModelType>;
@@ -101,13 +101,13 @@ export class BookSearchRepositoryJson implements BookSearchRepositoryInterface {
      * Google Books Apiのアクセス履歴取得
      * @returns 
      */
-    public selectGoogleBooksApiAccessHistory(bookSearchGoogleBooksApiAccessHistorySelectEntity: BookSearchGoogleBooksApiAccessHistorySelectEntity)
+    public selectGoogleBooksApiAccessHistory(searchBookInfoGoogleBooksApiAccessHistorySelectEntity: SearchBookInfoGoogleBooksApiAccessHistorySelectEntity)
         : ReadonlyArray<GoogleBooksApiAccessHistoryJsonModelType> {
 
         // FrontUserInfoCreateSelectEntityでselectする
         const selectedFrontUserInfoMasterJsonList = this._googleBooksApiAccessHistoryJsonList.filter((e: GoogleBooksApiAccessHistoryJsonModelType) => {
-            return e.keyword === bookSearchGoogleBooksApiAccessHistorySelectEntity.keyword &&
-                e.accessDate === bookSearchGoogleBooksApiAccessHistorySelectEntity.accessDate;
+            return e.keyword === searchBookInfoGoogleBooksApiAccessHistorySelectEntity.keyword &&
+                e.accessDate === searchBookInfoGoogleBooksApiAccessHistorySelectEntity.accessDate;
         });
 
         return selectedFrontUserInfoMasterJsonList;

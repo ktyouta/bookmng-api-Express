@@ -1,5 +1,5 @@
 import { CreateBookInfoController } from "../../createbookinfo/conrtoller/CreateBookInfoController";
-import { BookSearchController } from "../../booksearch/controller/BookSearchController";
+import { SearchBookInfoController } from "../../searchbookinfo/controller/SearchBookInfoController";
 import { CreateFrontUserInfoController } from "../../createfrontuserinfo/controller/CreateFrontUserInfoController";
 import { RouteController } from "../controller/RouteController";
 import { CreateBookShelfController } from "../../createbookshelf/controller/CreateBookShelfController";
@@ -9,7 +9,7 @@ import { UpdateBookShelfController } from "../../updatebookshelf/controller/Upda
 
 export const ROUTE_CONTROLLER_LIST: ReadonlyArray<RouteController> = [
     // 書籍検索
-    new BookSearchController(),
+    new SearchBookInfoController(),
     // 書籍情報登録
     new CreateBookInfoController(),
     // フロントユーザー情報登録
