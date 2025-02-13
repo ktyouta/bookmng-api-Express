@@ -19,14 +19,20 @@ import { BookInfoMasterInsertEntity } from '../../internaldata/bookinfomaster/en
 import { BookInfoMasterRepositoryInterface } from '../../internaldata/bookinfomaster/repository/interface/BookInfoMasterRepositoryInterface';
 import { BookAuthorsMasterRepositoryInterface } from '../../internaldata/bookauthorsmaster/repository/interface/BookAuthorsMasterRepositoryInterface';
 import { BookAuthorsMasterInsertEntity } from '../../internaldata/bookauthorsmaster/entity/BookAuthorsMasterInsertEntity';
+import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
 
 
 export class CreateBookInfoController extends RouteController {
 
     private addBookInfoService = new CreateBookInfoService();
 
-    public routes() {
-        this.router.post(`${ENV.BOOK_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+    protected getRouteSettingModel(): RouteSettingModel {
+
+        return new RouteSettingModel(
+            HttpMethodType.POST,
+            this.doExecute,
+            `${ENV.BOOK_INFO}`
+        );
     }
 
     /**

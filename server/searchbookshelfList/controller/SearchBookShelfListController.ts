@@ -9,6 +9,7 @@ import { JsonWebTokenVerifyModel } from '../../jsonwebtoken/model/JsonWebTokenVe
 import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/properties/FrontUserIdModel';
 import { BookShelfRepositoryInterface } from '../../internaldata/bookshelf/repository/interface/BookShelfRepositoryInterface';
 import { SearchBookShelfListService } from '../service/SearchBookShelfListService';
+import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
 
 
 
@@ -18,6 +19,15 @@ export class SearchBookShelfListController extends RouteController {
 
     public routes() {
         this.router.get(`${ENV.BOOKSHELF_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+    }
+
+    protected getRouteSettingModel(): RouteSettingModel {
+
+        return new RouteSettingModel(
+            HttpMethodType.GET,
+            this.doExecute,
+            `${ENV.BOOKSHELF_INFO}`
+        );
     }
 
     /**
@@ -32,5 +42,6 @@ export class SearchBookShelfListController extends RouteController {
         const jsonWebTokenVerifyModel = this.searchBookShelfListService.checkJwtVerify(req.cookies.jwt);
         const frontUserIdModel: FrontUserIdModel = jsonWebTokenVerifyModel.frontUserIdModel;
 
+        return ApiResponse.create(res, HTTP_STATUS_CREATED, ``);
     }
 }

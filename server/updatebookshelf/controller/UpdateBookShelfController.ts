@@ -12,15 +12,22 @@ import { UpdateBookShelfService } from '../service/UpdateBookShelfService';
 import { UpdateBookShelfRequestType } from '../model/UpdateBookShelfRequestType';
 import { UpdateBookShelfRequestModelSchema } from '../model/UpdateBookShelfRequestModelSchema';
 import { UpdateBookShelfRequestModel } from '../model/UpdateBookShelfRequestModel';
+import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
 
 
 export class UpdateBookShelfController extends RouteController {
 
     private updateBookShelfService = new UpdateBookShelfService();
 
-    public routes() {
-        this.router.put(`${ENV.BOOKSHELF_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+    protected getRouteSettingModel(): RouteSettingModel {
+
+        return new RouteSettingModel(
+            HttpMethodType.PUT,
+            this.doExecute,
+            `${ENV.BOOKSHELF_INFO}`
+        );
     }
+
 
     /**
      * 本棚情報を登録する

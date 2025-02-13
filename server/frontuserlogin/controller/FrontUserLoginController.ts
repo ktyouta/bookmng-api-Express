@@ -11,14 +11,20 @@ import { FrontUserLoginRequestType } from '../model/FrontUserLoginRequestType';
 import { FrontUserLoginRequestModel } from '../model/FrontUserLoginRequestModel';
 import { FrontUserLoginMasterRepositoryInterface } from '../../internaldata/frontuserloginmaster/repository/interface/FrontUserLoginMasterRepositoryInterface';
 import { FrontUserLoginRepositoryInterface } from '../repository/interface/FrontUserLoginRepositoryInterface';
+import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
 
 
 export class FrontUserLoginController extends RouteController {
 
     private FrontUserLoginService = new FrontUserLoginService();
 
-    public routes() {
-        this.router.post(`${ENV.FRONT_USER_LOGIN}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+    protected getRouteSettingModel(): RouteSettingModel {
+
+        return new RouteSettingModel(
+            HttpMethodType.POST,
+            this.doExecute,
+            `${ENV.FRONT_USER_LOGIN}`
+        );
     }
 
     /**

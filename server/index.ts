@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Logger } from './util/service/Logger';
 import bodyParser from 'body-parser';
 import { ROUTE_CONTROLLER_LIST } from './router/conf/RouteControllerList';
+import { RouteController } from './router/controller/RouteController';
 
 
 const express = require('express');
@@ -55,7 +56,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 
 // コントローラーのルートを設定
-ROUTE_CONTROLLER_LIST.forEach((e) => {
+ROUTE_CONTROLLER_LIST.forEach((e: RouteController) => {
     app.use('/', e.router);
 });
 
@@ -64,7 +65,7 @@ ROUTE_CONTROLLER_LIST.forEach((e) => {
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
     // コンソールログ出力
-    console.error(`error occurred in bookmng-api : ${err.message}`);
+    console.error(`Error occurred in bookmng-api : ${err.message}`);
 
     // エラーログ出力
     errorLogMiddleware(err, req);

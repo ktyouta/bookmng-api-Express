@@ -15,14 +15,20 @@ import { ApiResponse } from '../../util/service/ApiResponse';
 import { NewJsonWebTokenModel } from '../../jsonwebtoken/model/NewJsonWebTokenModel';
 import { FrontUserInfoCreateResponseModel } from '../model/FrontUserInfoCreateResponseModel';
 import { FrontUserLoginMasterRepositoryInterface } from '../../internaldata/frontuserloginmaster/repository/interface/FrontUserLoginMasterRepositoryInterface';
+import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
 
 
 export class CreateFrontUserInfoController extends RouteController {
 
     private createFrontUserInfoService = new CreateFrontUserInfoService();
 
-    public routes() {
-        this.router.post(`${ENV.FRONT_USER_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+    protected getRouteSettingModel(): RouteSettingModel {
+
+        return new RouteSettingModel(
+            HttpMethodType.POST,
+            this.doExecute,
+            `${ENV.FRONT_USER_INFO}`
+        );
     }
 
     /**

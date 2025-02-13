@@ -16,15 +16,22 @@ import { SearchBookInfoService } from '../service/SearchBookInfoService';
 import { SearchBookInfoRepositoryInterface } from '../repository/interface/SearchBookInfoRepositoryInterface';
 import { SearchBookInfoResponseModel } from '../model/SearchBookInfoResponseModel';
 import { SUCCESS_MESSAGE } from '../const/SearchBookInfoConst';
+import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
 
 
 export class SearchBookInfoController extends RouteController {
 
     private searchBookInfoService = new SearchBookInfoService();
 
-    public routes() {
-        this.router.get(`${ENV.BOOK_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+    protected getRouteSettingModel(): RouteSettingModel {
+
+        return new RouteSettingModel(
+            HttpMethodType.GET,
+            this.doExecute,
+            `${ENV.BOOK_INFO}`
+        );
     }
+
 
     /**
      * 書籍情報を取得する

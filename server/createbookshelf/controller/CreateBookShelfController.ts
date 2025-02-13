@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import ENV from '../../env.json';
 import { RouteController } from '../../router/controller/RouteController';
 import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
-import { HTTP_STATUS_CREATED, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
+import { HTTP_STATUS_CREATED, HTTP_STATUS_OK, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
 import { CreateBookShelfService } from '../service/CreateBookShelfService';
 import { CreateBookShelfRequestType } from '../model/CreateBookShelfRequestType';
 import { CreateBookShelfRequestModelSchema } from '../model/CreateBookShelfRequestModelSchema';
@@ -12,14 +12,20 @@ import { JsonWebTokenVerifyModel } from '../../jsonwebtoken/model/JsonWebTokenVe
 import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/properties/FrontUserIdModel';
 import { CreateBookShelfRequestModel } from '../model/CreateBookShelfRequestModel';
 import { BookShelfRepositoryInterface } from '../../internaldata/bookshelf/repository/interface/BookShelfRepositoryInterface';
+import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
 
 
 export class CreateBookShelfController extends RouteController {
 
     private createBookShelfService = new CreateBookShelfService();
 
-    public routes() {
-        this.router.post(`${ENV.BOOKSHELF_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
+    protected getRouteSettingModel(): RouteSettingModel {
+
+        return new RouteSettingModel(
+            HttpMethodType.POST,
+            this.doExecute,
+            `${ENV.BOOKSHELF_INFO}`
+        );
     }
 
     /**
@@ -67,5 +73,7 @@ export class CreateBookShelfController extends RouteController {
 
         // コミット
         this.createBookShelfService.commit(bookShelfRepository);
+
+        return ApiResponse.create(res, HTTP_STATUS_OK, `本棚に登録しました。`);
     }
 }
