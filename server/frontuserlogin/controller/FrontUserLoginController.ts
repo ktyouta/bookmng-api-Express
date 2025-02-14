@@ -12,6 +12,7 @@ import { FrontUserLoginRequestModel } from '../model/FrontUserLoginRequestModel'
 import { FrontUserLoginMasterRepositoryInterface } from '../../internaldata/frontuserloginmaster/repository/interface/FrontUserLoginMasterRepositoryInterface';
 import { FrontUserLoginRepositoryInterface } from '../repository/interface/FrontUserLoginRepositoryInterface';
 import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
+import { ApiEndopoint } from '../../router/conf/ApiEndpoint';
 
 
 export class FrontUserLoginController extends RouteController {
@@ -23,7 +24,7 @@ export class FrontUserLoginController extends RouteController {
         return new RouteSettingModel(
             HttpMethodType.POST,
             this.doExecute,
-            `${ENV.FRONT_USER_LOGIN}`
+            ApiEndopoint.FRONT_USER_LOGIN
         );
     }
 

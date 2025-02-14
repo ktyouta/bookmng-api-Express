@@ -1,4 +1,5 @@
 import { IRouterMatcher, Router, Request, Response } from "express";
+import { ApiEndopoint } from "../conf/ApiEndpoint";
 
 /**
  * httpメソッド
@@ -19,13 +20,13 @@ export class RouteSettingModel {
     private readonly _executeFunction: ((req: Request, res: Response) => Response<any, Record<string, any>>) | (
         (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>);
     // エンドポイント
-    private readonly _endPoint: string;
+    private readonly _endPoint: ApiEndopoint;
 
 
     constructor(httpMthodType: HttpMethodType,
         executeFunction: ((req: Request, res: Response) => Response<any, Record<string, any>>) | (
             (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>),
-        endPoint: string,
+        endPoint: ApiEndopoint,
     ) {
 
         if (!endPoint) {

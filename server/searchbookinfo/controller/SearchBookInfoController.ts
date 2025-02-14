@@ -17,6 +17,7 @@ import { SearchBookInfoRepositoryInterface } from '../repository/interface/Searc
 import { SearchBookInfoResponseModel } from '../model/SearchBookInfoResponseModel';
 import { SUCCESS_MESSAGE } from '../const/SearchBookInfoConst';
 import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
+import { ApiEndopoint } from '../../router/conf/ApiEndpoint';
 
 
 export class SearchBookInfoController extends RouteController {
@@ -28,7 +29,7 @@ export class SearchBookInfoController extends RouteController {
         return new RouteSettingModel(
             HttpMethodType.GET,
             this.doExecute,
-            `${ENV.BOOK_INFO}`
+            ApiEndopoint.BOOK_INFO
         );
     }
 

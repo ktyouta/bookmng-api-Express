@@ -16,6 +16,7 @@ import { NewJsonWebTokenModel } from '../../jsonwebtoken/model/NewJsonWebTokenMo
 import { FrontUserInfoCreateResponseModel } from '../model/FrontUserInfoCreateResponseModel';
 import { FrontUserLoginMasterRepositoryInterface } from '../../internaldata/frontuserloginmaster/repository/interface/FrontUserLoginMasterRepositoryInterface';
 import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
+import { ApiEndopoint } from '../../router/conf/ApiEndpoint';
 
 
 export class CreateFrontUserInfoController extends RouteController {
@@ -27,7 +28,7 @@ export class CreateFrontUserInfoController extends RouteController {
         return new RouteSettingModel(
             HttpMethodType.POST,
             this.doExecute,
-            `${ENV.FRONT_USER_INFO}`
+            ApiEndopoint.FRONT_USER_INFO
         );
     }
 

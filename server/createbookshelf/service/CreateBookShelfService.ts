@@ -11,6 +11,7 @@ import { CreateBookShelfRepositorys } from "../repository/CreateBookShelfReposit
 import { CreateBookShelfRepositoryInterface } from "../repository/interface/CreateBookShelfRepositoryInterface";
 import ENV from '../../env.json';
 import { ThoughtsModel } from "../../internaldata/bookshelf/properties/ThoughtsModel";
+import { ApiEndopoint } from "../../router/conf/ApiEndpoint";
 
 
 export class CreateBookShelfService {
@@ -90,7 +91,7 @@ export class CreateBookShelfService {
         try {
             bookShelfRepository.commit();
         } catch (err) {
-            throw Error(`${err} endpoint:${ENV.BOOKSHELF_INFO}`);
+            throw Error(`${err} endpoint:${ApiEndopoint.BOOKSHELF_INFO}`);
         }
     }
 }

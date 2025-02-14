@@ -13,6 +13,7 @@ import { UpdateBookShelfRequestType } from '../model/UpdateBookShelfRequestType'
 import { UpdateBookShelfRequestModelSchema } from '../model/UpdateBookShelfRequestModelSchema';
 import { UpdateBookShelfRequestModel } from '../model/UpdateBookShelfRequestModel';
 import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
+import { ApiEndopoint } from '../../router/conf/ApiEndpoint';
 
 
 export class UpdateBookShelfController extends RouteController {
@@ -24,7 +25,7 @@ export class UpdateBookShelfController extends RouteController {
         return new RouteSettingModel(
             HttpMethodType.PUT,
             this.doExecute,
-            `${ENV.BOOKSHELF_INFO}`
+            ApiEndopoint.BOOKSHELF_INFO
         );
     }
 

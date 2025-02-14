@@ -12,6 +12,7 @@ import { UpdateBookShelfRepositoryInterface } from "../repository/interface/Upda
 import ENV from '../../env.json';
 import { BookShelfUpdateEntity } from "../../internaldata/bookshelf/entity/BookShelfUpdateEntity";
 import { ThoughtsModel } from "../../internaldata/bookshelf/properties/ThoughtsModel";
+import { ApiEndopoint } from "../../router/conf/ApiEndpoint";
 
 
 export class UpdateBookShelfService {
@@ -91,7 +92,7 @@ export class UpdateBookShelfService {
         try {
             bookShelfRepository.commit();
         } catch (err) {
-            throw Error(`${err} endpoint:${ENV.BOOKSHELF_INFO}`);
+            throw Error(`${err} endpoint:${ApiEndopoint.BOOKSHELF_INFO}`);
         }
     }
 }

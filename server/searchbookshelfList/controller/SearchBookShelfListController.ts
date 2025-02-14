@@ -10,6 +10,7 @@ import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/propert
 import { BookShelfRepositoryInterface } from '../../internaldata/bookshelf/repository/interface/BookShelfRepositoryInterface';
 import { SearchBookShelfListService } from '../service/SearchBookShelfListService';
 import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
+import { ApiEndopoint } from '../../router/conf/ApiEndpoint';
 
 
 
@@ -17,16 +18,12 @@ export class SearchBookShelfListController extends RouteController {
 
     private searchBookShelfListService = new SearchBookShelfListService();
 
-    public routes() {
-        this.router.get(`${ENV.BOOKSHELF_INFO}`, AsyncErrorHandler.asyncHandler(this.doExecute.bind(this)));
-    }
-
     protected getRouteSettingModel(): RouteSettingModel {
 
         return new RouteSettingModel(
             HttpMethodType.GET,
             this.doExecute,
-            `${ENV.BOOKSHELF_INFO}`
+            ApiEndopoint.BOOKSHELF_INFO
         );
     }
 

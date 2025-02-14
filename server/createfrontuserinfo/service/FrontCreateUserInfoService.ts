@@ -18,6 +18,7 @@ import { FrontUserInfoCreateResponseModel } from "../model/FrontUserInfoCreateRe
 import { FrontUserLoginMasterInsertEntity } from "../../internaldata/frontuserloginmaster/entity/FrontUserLoginMasterInsertEntity";
 import { FrontUserLoginMasterRepositoryInterface } from "../../internaldata/frontuserloginmaster/repository/interface/FrontUserLoginMasterRepositoryInterface";
 import { FrontUserLoginMasterRepositorys } from "../../internaldata/frontuserloginmaster/repository/FrontUserLoginMasterRepositorys";
+import { ApiEndopoint } from "../../router/conf/ApiEndpoint";
 
 
 export class CreateFrontUserInfoService {
@@ -95,7 +96,7 @@ export class CreateFrontUserInfoService {
             frontUserInfoMasterRepository.commit();
             frontUserLoginMasterRepository.commit();
         } catch (err) {
-            throw Error(`${err} endpoint:${ENV.FRONT_USER_INFO}`);
+            throw Error(`${err} endpoint:${ApiEndopoint.FRONT_USER_INFO}`);
         }
     }
 
@@ -116,7 +117,7 @@ export class CreateFrontUserInfoService {
 
             return newJsonWebTokenModel;
         } catch (err) {
-            throw Error(`${err} endpoint:${ENV.FRONT_USER_INFO}`);
+            throw Error(`${err} endpoint:${ApiEndopoint.FRONT_USER_INFO}`);
         }
     }
 

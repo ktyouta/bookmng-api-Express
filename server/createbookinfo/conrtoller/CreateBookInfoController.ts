@@ -20,6 +20,7 @@ import { BookInfoMasterRepositoryInterface } from '../../internaldata/bookinfoma
 import { BookAuthorsMasterRepositoryInterface } from '../../internaldata/bookauthorsmaster/repository/interface/BookAuthorsMasterRepositoryInterface';
 import { BookAuthorsMasterInsertEntity } from '../../internaldata/bookauthorsmaster/entity/BookAuthorsMasterInsertEntity';
 import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
+import { ApiEndopoint } from '../../router/conf/ApiEndpoint';
 
 
 export class CreateBookInfoController extends RouteController {
@@ -31,7 +32,7 @@ export class CreateBookInfoController extends RouteController {
         return new RouteSettingModel(
             HttpMethodType.POST,
             this.doExecute,
-            `${ENV.BOOK_INFO}`
+            ApiEndopoint.BOOK_INFO
         );
     }
 

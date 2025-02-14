@@ -13,6 +13,7 @@ import { FrontUserIdModel } from '../../internaldata/frontuserinfomaster/propert
 import { CreateBookShelfRequestModel } from '../model/CreateBookShelfRequestModel';
 import { BookShelfRepositoryInterface } from '../../internaldata/bookshelf/repository/interface/BookShelfRepositoryInterface';
 import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
+import { ApiEndopoint } from '../../router/conf/ApiEndpoint';
 
 
 export class CreateBookShelfController extends RouteController {
@@ -24,7 +25,7 @@ export class CreateBookShelfController extends RouteController {
         return new RouteSettingModel(
             HttpMethodType.POST,
             this.doExecute,
-            `${ENV.BOOKSHELF_INFO}`
+            ApiEndopoint.BOOKSHELF_INFO
         );
     }
 

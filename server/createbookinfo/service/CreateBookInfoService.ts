@@ -23,6 +23,7 @@ import { BookAuthorsMasterRepositorys } from "../../internaldata/bookauthorsmast
 import { BookAuthorsMasterRepositoryInterface } from "../../internaldata/bookauthorsmaster/repository/interface/BookAuthorsMasterRepositoryInterface";
 import { BookAuthorsMasterInsertEntity } from "../../internaldata/bookauthorsmaster/entity/BookAuthorsMasterInsertEntity";
 import { DeleteFlgModel } from "../../internaldata/common/model/DeleteFlgModel";
+import { ApiEndopoint } from "../../router/conf/ApiEndpoint";
 
 
 export class CreateBookInfoService {
@@ -173,7 +174,7 @@ export class CreateBookInfoService {
             bookInfoMasterRepository.commit();
             bookAuthorsMasterRepository.commit();
         } catch (err) {
-            throw Error(`${err} endpoint:${ENV.BOOK_INFO}`);
+            throw Error(`${err} endpoint:${ApiEndopoint.BOOK_INFO}`);
         }
     }
 }

@@ -46,6 +46,7 @@ import { GoogleBooksAPIsVolumeInfoModelType } from '../../externalapi/googlebook
 import { GoogleBooksApiCacheModelType } from '../model/GoogleBooksApiCacheModelType';
 import { BookInfoMergedModelType } from '../model/BookInfoMergedModelType';
 import { GoogleBooksApiCacheRepositorys } from '../model/GoogleBooksApiCacheRepositorys';
+import { ApiEndopoint } from '../../router/conf/ApiEndpoint';
 
 
 export class SearchBookInfoService {
@@ -70,7 +71,7 @@ export class SearchBookInfoService {
             return googleBookInfoList;
 
         } catch (err) {
-            throw Error(`ERROR:${err} endpoint:${ENV.BOOK_INFO} keyword:${keyword}`);
+            throw Error(`ERROR:${err} endpoint:${ApiEndopoint.BOOK_INFO} keyword:${keyword}`);
         }
     }
 
