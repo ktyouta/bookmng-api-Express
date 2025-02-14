@@ -9,6 +9,10 @@ import { SearchBookShelfListRepositoryInterface } from "../repository/interface/
 import ENV from '../../env.json';
 import { BookShelfUpdateEntity } from "../../internaldata/bookshelf/entity/BookShelfUpdateEntity";
 import { ThoughtsModel } from "../../internaldata/bookshelf/properties/ThoughtsModel";
+import { SearchBookShelfListSelectEntity } from "../entity/SearchBookShelfListSelectEntity";
+import { SearchBookShelfListRepositorys } from "../repository/SearchBookShelfListRepositorys";
+import { BookShelfJsonModelType } from "../../internaldata/bookshelf/model/BookShelfJsonModelType";
+import { SearchBookShelfListType } from "../model/SearchBookShelfListType";
 
 
 export class SearchBookShelfListService {
@@ -25,4 +29,28 @@ export class SearchBookShelfListService {
     }
 
 
+    /**
+     * 本棚情報の検索条件を取得する
+     * @param frontUserIdModel 
+     * @returns 
+     */
+    public getBookShelfListSelectEntity(frontUserIdModel: FrontUserIdModel): SearchBookShelfListSelectEntity {
+
+        return new SearchBookShelfListSelectEntity(
+            frontUserIdModel,
+        );
+    }
+
+
+    /**
+     * 本棚情報を取得する
+     * @param searchBookShelfListSelectEntity 
+     */
+    public getBookShelfList(searchBookShelfListSelectEntity: SearchBookShelfListSelectEntity): ReadonlyArray<SearchBookShelfListType> {
+
+        const searchBookShelfListRepositoryInterface: SearchBookShelfListRepositoryInterface =
+            (new SearchBookShelfListRepositorys()).get(RepositoryType.JSON);
+
+        return searchBookShelfListRepositoryInterface.select(searchBookShelfListSelectEntity);
+    }
 }

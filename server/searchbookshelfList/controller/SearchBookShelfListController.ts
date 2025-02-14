@@ -11,6 +11,9 @@ import { BookShelfRepositoryInterface } from '../../internaldata/bookshelf/repos
 import { SearchBookShelfListService } from '../service/SearchBookShelfListService';
 import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
 import { ApiEndopoint } from '../../router/conf/ApiEndpoint';
+import { SearchBookShelfListSelectEntity } from '../entity/SearchBookShelfListSelectEntity';
+import { SUCCESS_MESSAGE } from '../const/SearchBookShelfListConst';
+import { SearchBookShelfListType } from '../model/SearchBookShelfListType';
 
 
 
@@ -39,6 +42,14 @@ export class SearchBookShelfListController extends RouteController {
         const jsonWebTokenVerifyModel = this.searchBookShelfListService.checkJwtVerify(req.cookies.jwt);
         const frontUserIdModel: FrontUserIdModel = jsonWebTokenVerifyModel.frontUserIdModel;
 
-        return ApiResponse.create(res, HTTP_STATUS_CREATED, ``);
+        // 本棚情報の検索条件
+        const searchBookShelfListSelectEntity: SearchBookShelfListSelectEntity =
+            this.searchBookShelfListService.getBookShelfListSelectEntity(frontUserIdModel);
+
+        // 本棚情報の取得
+        const bookShelfList: ReadonlyArray<SearchBookShelfListType> =
+            this.searchBookShelfListService.getBookShelfList(searchBookShelfListSelectEntity);
+
+        return ApiResponse.create(res, HTTP_STATUS_CREATED, SUCCESS_MESSAGE, bookShelfList);
     }
 }

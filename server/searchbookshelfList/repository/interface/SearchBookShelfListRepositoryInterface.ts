@@ -1,5 +1,6 @@
 import { BookShelfJsonModelType } from "../../../internaldata/bookshelf/model/BookShelfJsonModelType";
 import { SearchBookShelfListSelectEntity } from "../../entity/SearchBookShelfListSelectEntity";
+import { SearchBookShelfListType } from "../../model/SearchBookShelfListType";
 
 
 /**
@@ -11,5 +12,5 @@ export interface SearchBookShelfListRepositoryInterface {
      * 書籍情報取得
      * @param bookShelfInsertEntity 
      */
-    select(SearchBookShelfListSelectEntity: SearchBookShelfListSelectEntity): ReadonlyArray<BookShelfJsonModelType>;
+    select(SearchBookShelfListSelectEntity: SearchBookShelfListSelectEntity): ReadonlyArray<SearchBookShelfListType>;
 }

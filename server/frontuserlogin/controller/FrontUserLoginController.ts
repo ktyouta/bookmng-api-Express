@@ -61,7 +61,6 @@ export class FrontUserLoginController extends RouteController {
         const frontUserLoginMasterRepository: FrontUserLoginRepositoryInterface =
             this.FrontUserLoginService.getFrontUserLoginMasterRepository();
 
-
         // ログインユーザーを取得
         const frontUserList = this.FrontUserLoginService.getLoginUser(frontUserLoginMasterRepository, frontUserLoginRequestBody);
 
