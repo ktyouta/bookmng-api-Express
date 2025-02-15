@@ -1,0 +1,36 @@
+■master
+
+・authors_master
+　・PK
+　　・authorId
+
+
+・book_authors_master
+　・PK
+　　・bookId
+　　・authorId
+
+
+・book_info_master
+　・PK
+　　・bookId
+
+
+・bookshelf_searchcondition_master
+　・PK
+　　・bookShelfSearchConditionId
+
+
+・front_user_info_master
+　・PK
+　　・userId
+
+
+・front_user_login_master
+　・PK
+　　・userId
+
+
+
+
+

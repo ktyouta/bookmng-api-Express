@@ -1,0 +1,40 @@
+■transaction
+
+・bookshelf_transaction
+　・PK
+　　・userId
+　　・bookId
+
+
+・google_books_api_access_history_transaction
+　・PK
+　　・keyword
+　　・accessDate
+
+
+・google_books_api_authors_cache
+　・PK
+　　・bookId
+　　・authorNo
+
+
+・google_books_api_info_cache
+　・PK
+　　・bookId
+
+
+・google_books_api_simallthumbnail_cache
+　・PK
+　　・bookId
+
+
+・google_books_api_thumbnail_cache
+　・PK
+　　・bookId
+
+
+
+
+
+
+
