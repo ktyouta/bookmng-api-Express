@@ -1,4 +1,5 @@
 import { BookIdModel } from "../../internaldata/bookinfomaster/properties/BookIdModel";
+import { ReadStatusModel } from "../../internaldata/bookshelf/properties/ReadStatusModel";
 import { ThoughtsModel } from "../../internaldata/bookshelf/properties/ThoughtsModel";
 import { UpdateBookShelfRequestType } from "./UpdateBookShelfRequestType";
 
@@ -8,12 +9,15 @@ export class UpdateBookShelfRequestModel {
     private readonly _bookIdModel: BookIdModel;
     // 感想
     private readonly _thoughtsModel: ThoughtsModel;
+    // 読書状況
+    private readonly _readStatusModel: ReadStatusModel;
 
 
     constructor(UpdateBookShelfBody: UpdateBookShelfRequestType) {
 
         this._bookIdModel = BookIdModel.reConstruct(UpdateBookShelfBody.bookId);
         this._thoughtsModel = new ThoughtsModel(UpdateBookShelfBody.thoughts);
+        this._readStatusModel = new ReadStatusModel(UpdateBookShelfBody.readStatus);
     }
 
     public get bookIdModel() {
@@ -24,4 +28,7 @@ export class UpdateBookShelfRequestModel {
         return this._thoughtsModel;
     }
 
+    public get readStatusModel() {
+        return this._readStatusModel;
+    }
 }

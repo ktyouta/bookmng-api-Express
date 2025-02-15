@@ -13,10 +13,19 @@ import { SearchBookShelfListSelectEntity } from "../entity/SearchBookShelfListSe
 import { SearchBookShelfListRepositorys } from "../repository/SearchBookShelfListRepositorys";
 import { BookShelfJsonModelType } from "../../internaldata/bookshelf/model/BookShelfJsonModelType";
 import { SearchBookShelfListType } from "../model/SearchBookShelfListType";
+import { SearchBookShelfQueryParamModel } from "../model/SearchBookShelfQueryParamModel";
+import { SearchBookShelfRequestQueryType } from "../model/SearchBookShelfRequestQueryType";
+import { ReadStatusModel } from "../../internaldata/bookshelf/properties/ReadStatusModel";
+import { TitleModel } from "../../internaldata/bookinfomaster/properties/TitleModel";
 
 
 export class SearchBookShelfListService {
 
+    /**
+     * jwtの認証を実行する
+     * @param jwt 
+     * @returns 
+     */
     public checkJwtVerify(jwt: string) {
 
         try {
@@ -30,14 +39,33 @@ export class SearchBookShelfListService {
 
 
     /**
+     * クエリパラメータの型を変換する
+     */
+    public getQueryParamModel(queryParam: SearchBookShelfRequestQueryType) {
+
+        const readStatudModel = new ReadStatusModel(queryParam.read_status ?? ``);
+        const titleModel = new TitleModel(queryParam.title ?? ``);
+
+        return new SearchBookShelfQueryParamModel(readStatudModel, titleModel);
+    }
+
+
+    /**
      * 本棚情報の検索条件を取得する
      * @param frontUserIdModel 
      * @returns 
      */
-    public getBookShelfListSelectEntity(frontUserIdModel: FrontUserIdModel): SearchBookShelfListSelectEntity {
+    public getBookShelfListSelectEntity(frontUserIdModel: FrontUserIdModel,
+        queryParamModel: SearchBookShelfQueryParamModel
+    ): SearchBookShelfListSelectEntity {
+
+        const readStatudModel = queryParamModel.readStatusModel;
+        const titleModel = queryParamModel.titleModel;
 
         return new SearchBookShelfListSelectEntity(
             frontUserIdModel,
+            readStatudModel,
+            titleModel,
         );
     }
 

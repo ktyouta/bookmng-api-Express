@@ -4,6 +4,7 @@ import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { DeleteFlgModel } from "../../common/model/DeleteFlgModel";
 import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { FrontUserIdModel } from "../../frontuserinfomaster/properties/FrontUserIdModel";
+import { ReadStatusModel } from "../properties/ReadStatusModel";
 import { ThoughtsModel } from "../properties/ThoughtsModel";
 
 
@@ -15,6 +16,8 @@ export class BookShelfUpdateEntity {
     private readonly _bookIdModel: BookIdModel;
     // 感想
     private readonly _thoughtsModel: ThoughtsModel;
+    // 読書状況
+    private readonly _readStatusModel: ReadStatusModel;
     // データ更新日
     private readonly _updateDateModel: UpdateDateModel = UpdateDateModel.create(`本棚情報`);
     // 削除フラグ
@@ -24,11 +27,13 @@ export class BookShelfUpdateEntity {
     constructor(userId: FrontUserIdModel,
         bookIdModel: BookIdModel,
         thoughtsModel: ThoughtsModel,
+        readStatusModel: ReadStatusModel,
     ) {
 
         this._frontUserIdModel = userId;
         this._bookIdModel = bookIdModel;
         this._thoughtsModel = thoughtsModel;
+        this._readStatusModel = readStatusModel;
     }
 
     public get frontUserIdModel() {
@@ -37,6 +42,10 @@ export class BookShelfUpdateEntity {
 
     public get bookIdModel() {
         return this._bookIdModel;
+    }
+
+    public get readStatusModel() {
+        return this._readStatusModel;
     }
 
     public get updateDateModel() {
@@ -57,6 +66,10 @@ export class BookShelfUpdateEntity {
 
     public get thoughts() {
         return this._thoughtsModel.thoughts;
+    }
+
+    get readStatus() {
+        return this._readStatusModel.readStatus;
     }
 
     public get updateDate() {

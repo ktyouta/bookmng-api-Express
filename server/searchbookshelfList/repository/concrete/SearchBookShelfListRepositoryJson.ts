@@ -7,6 +7,7 @@ import { BOOK_INFO_MASTER_FILE_PATH } from "../../../internaldata/bookinfomaster
 import { BookShelfJsonModelType } from "../../../internaldata/bookshelf/model/BookShelfJsonModelType";
 import { BOOKSHELF_FILE_PATH } from "../../../internaldata/bookshelf/repository/concrete/BookShelfRepositoryJson";
 import { BookShelfRepositoryInterface } from "../../../internaldata/bookshelf/repository/interface/BookShelfRepositoryInterface";
+import { FLG } from "../../../util/const/CommonConst";
 import { JsonFileData } from "../../../util/service/JsonFileData";
 import { SearchBookShelfListSelectEntity } from "../../entity/SearchBookShelfListSelectEntity";
 import { SearchBookShelfListType } from "../../model/SearchBookShelfListType";
@@ -55,18 +56,23 @@ export class SearchBookShelfListRepositoryJson implements SearchBookShelfListRep
     public select(searchBookShelfListSelectEntity: SearchBookShelfListSelectEntity): ReadonlyArray<SearchBookShelfListType> {
 
         const frontUserId = searchBookShelfListSelectEntity.frontUserId;
+        const readStatusCondition = searchBookShelfListSelectEntity.readStatus;
+        const titleCondition = searchBookShelfListSelectEntity.title;
 
         const bookShelfList: ReadonlyArray<BookShelfJsonModelType> =
             this._bookShelfJsonList.filter((e: BookShelfJsonModelType) => {
-                return e.userId === frontUserId;
+                return e.userId === frontUserId &&
+                    e.deleteFlg === FLG.OFF &&
+                    (!readStatusCondition || e.readStatus === readStatusCondition);
             });
 
         const retBookShelf: SearchBookShelfListType[] = bookShelfList.map((e: BookShelfJsonModelType) => {
 
             const bookId = e.bookId;
 
+            // 書籍情報を取得
             const bookInfoMaster = this._bookInfoMasterJsonList.find((e1: BookInfoJsonModelType) => {
-                return e1.bookId === bookId;
+                return e1.bookId === bookId && (!titleCondition || e1.title.includes(titleCondition));
             });
 
             // 書籍マスタにデータがない場合
@@ -74,13 +80,14 @@ export class SearchBookShelfListRepositoryJson implements SearchBookShelfListRep
                 return;
             }
 
-            const title = bookInfoMaster.title;
+            const bookTitle = bookInfoMaster.title;
 
             // 書籍著者情報を取得
             const bookAuhtorList = this._bookAuthorsMasterJsonList.filter((e1: BookAuthorsMasterJsonType) => {
                 return e1.bookId === bookId;
             });
 
+            // 著者名のリストを取得する
             const authorsList: string[] = bookAuhtorList.map((e1: BookAuthorsMasterJsonType) => {
 
                 const authorId = e1.authorId;
@@ -99,8 +106,9 @@ export class SearchBookShelfListRepositoryJson implements SearchBookShelfListRep
             return {
                 userId: frontUserId,
                 bookId: bookId,
-                title: title,
+                title: bookTitle,
                 authors: authorsList,
+                readStatus: e.readStatus,
             }
         }).flatMap(e => e ? [e] : []);
 

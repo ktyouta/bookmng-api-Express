@@ -13,6 +13,7 @@ import ENV from '../../env.json';
 import { BookShelfUpdateEntity } from "../../internaldata/bookshelf/entity/BookShelfUpdateEntity";
 import { ThoughtsModel } from "../../internaldata/bookshelf/properties/ThoughtsModel";
 import { ApiEndopoint } from "../../router/conf/ApiEndpoint";
+import { ReadStatusModel } from "../../internaldata/bookshelf/properties/ReadStatusModel";
 
 
 export class UpdateBookShelfService {
@@ -77,7 +78,8 @@ export class UpdateBookShelfService {
         const bookShelfUpdateEntity = new BookShelfUpdateEntity(
             frontUserIdModel,
             UpdateBookShelfRequestModel.bookIdModel,
-            UpdateBookShelfRequestModel.thoughtsModel);
+            UpdateBookShelfRequestModel.thoughtsModel,
+            UpdateBookShelfRequestModel.readStatusModel);
 
         bookShelfRepository.update(bookShelfUpdateEntity);
     }

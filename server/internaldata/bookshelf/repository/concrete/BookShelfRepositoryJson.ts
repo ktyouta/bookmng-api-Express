@@ -99,6 +99,7 @@ export class BookShelfRepositoryJson implements BookShelfRepositoryInterface {
             userId: bookShelfInsertEntity.frontUserId,
             bookId: bookShelfInsertEntity.bookId,
             thoughts: bookShelfInsertEntity.thoughts,
+            readStatus: bookShelfInsertEntity.readStatus,
         };
 
         return jsonBookShelfInfoMaster;

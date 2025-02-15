@@ -2,4 +2,5 @@
 export type UpdateBookShelfRequestType = {
     readonly bookId: string,
     readonly thoughts: string,
+    readonly readStatus: string,
 }

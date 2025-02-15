@@ -12,6 +12,7 @@ import { CreateBookShelfRepositoryInterface } from "../repository/interface/Crea
 import ENV from '../../env.json';
 import { ThoughtsModel } from "../../internaldata/bookshelf/properties/ThoughtsModel";
 import { ApiEndopoint } from "../../router/conf/ApiEndpoint";
+import { ReadStatusModel } from "../../internaldata/bookshelf/properties/ReadStatusModel";
 
 
 export class CreateBookShelfService {
@@ -73,10 +74,14 @@ export class CreateBookShelfService {
         createBookShelfRequestModel: CreateBookShelfRequestModel,
         frontUserIdModel: FrontUserIdModel) {
 
+        const thoughtsModel = new ThoughtsModel(``);
+        const readStatus = new ReadStatusModel(``);
+
         const bookShelfInsertEntity = new BookShelfInsertEntity(
             frontUserIdModel,
             createBookShelfRequestModel.bookIdModel,
-            new ThoughtsModel(``));
+            thoughtsModel,
+            readStatus);
 
         bookShelfRepository.insert(bookShelfInsertEntity);
     }

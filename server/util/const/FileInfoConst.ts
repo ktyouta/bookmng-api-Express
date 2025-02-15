@@ -46,6 +46,9 @@ export const GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE = "google_books_api_thumbnail
 
 // 本棚情報
 export const BOOKSHELF_FILE = "bookshelf_transaction.json";
+// 本棚検索条件
+export const BOOKSHELF_SEARCHCONDITION_FILE = "bookshelf_searchcondition_master.json";
+
 
 // フロントのユーザーマスタファイル名
 export const FRONT_USER_INFO_MASTER_FILE = "front_user_info_master.json";

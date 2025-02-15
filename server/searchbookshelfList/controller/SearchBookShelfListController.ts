@@ -14,6 +14,8 @@ import { ApiEndopoint } from '../../router/conf/ApiEndpoint';
 import { SearchBookShelfListSelectEntity } from '../entity/SearchBookShelfListSelectEntity';
 import { SUCCESS_MESSAGE } from '../const/SearchBookShelfListConst';
 import { SearchBookShelfListType } from '../model/SearchBookShelfListType';
+import { SearchBookShelfRequestQueryType } from '../model/SearchBookShelfRequestQueryType';
+import { SearchBookShelfQueryParamModel } from '../model/SearchBookShelfQueryParamModel';
 
 
 
@@ -42,9 +44,16 @@ export class SearchBookShelfListController extends RouteController {
         const jsonWebTokenVerifyModel = this.searchBookShelfListService.checkJwtVerify(req.cookies.jwt);
         const frontUserIdModel: FrontUserIdModel = jsonWebTokenVerifyModel.frontUserIdModel;
 
-        // 本棚情報の検索条件
+        // クエリパラメータ
+        const queryParam: SearchBookShelfRequestQueryType = req.query;
+
+        // クエリパラメータの型を変換する
+        const queryParamModel: SearchBookShelfQueryParamModel =
+            this.searchBookShelfListService.getQueryParamModel(queryParam);
+
+        // 本棚情報の検索条件を作成
         const searchBookShelfListSelectEntity: SearchBookShelfListSelectEntity =
-            this.searchBookShelfListService.getBookShelfListSelectEntity(frontUserIdModel);
+            this.searchBookShelfListService.getBookShelfListSelectEntity(frontUserIdModel, queryParamModel);
 
         // 本棚情報の取得
         const bookShelfList: ReadonlyArray<SearchBookShelfListType> =
