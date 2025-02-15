@@ -17,15 +17,15 @@ export class RouteSettingModel {
     // httpメソッド
     private readonly _httpMethodType: HttpMethodType;
     // 実行関数
-    private readonly _executeFunction: ((req: Request, res: Response) => Response<any, Record<string, any>>) | (
-        (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>);
+    private readonly _executeFunction: ((req: Request, res: Response, id: string) => Response<any, Record<string, any>>) | (
+        (req: Request, res: Response, id: string) => Promise<Response<any, Record<string, any>>>);
     // エンドポイント
     private readonly _endPoint: ApiEndopoint;
 
 
     constructor(httpMthodType: HttpMethodType,
-        executeFunction: ((req: Request, res: Response) => Response<any, Record<string, any>>) | (
-            (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>),
+        executeFunction: ((req: Request, res: Response, id: string) => Response<any, Record<string, any>>) | (
+            (req: Request, res: Response, id?: string) => Promise<Response<any, Record<string, any>>>),
         endPoint: ApiEndopoint,
     ) {
 

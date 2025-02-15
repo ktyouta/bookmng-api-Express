@@ -13,9 +13,10 @@ export class UpdateBookShelfRequestModel {
     private readonly _readStatusModel: ReadStatusModel;
 
 
-    constructor(UpdateBookShelfBody: UpdateBookShelfRequestType) {
+    constructor(bookIdModel: BookIdModel,
+        UpdateBookShelfBody: UpdateBookShelfRequestType) {
 
-        this._bookIdModel = BookIdModel.reConstruct(UpdateBookShelfBody.bookId);
+        this._bookIdModel = bookIdModel;
         this._thoughtsModel = new ThoughtsModel(UpdateBookShelfBody.thoughts);
         this._readStatusModel = new ReadStatusModel(UpdateBookShelfBody.readStatus);
     }

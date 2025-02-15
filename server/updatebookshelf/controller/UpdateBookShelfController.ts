@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import ENV from '../../env.json';
 import { RouteController } from '../../router/controller/RouteController';
 import { AsyncErrorHandler } from '../../router/service/AsyncErrorHandler';
-import { HTTP_STATUS_CREATED, HTTP_STATUS_OK, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
+import { HTTP_STATUS_CREATED, HTTP_STATUS_METHOD_NOT_ALLOWED, HTTP_STATUS_OK, HTTP_STATUS_UNPROCESSABLE_ENTITY } from '../../util/const/HttpStatusConst';
 import { ApiResponse } from '../../util/service/ApiResponse';
 import { ZodIssue } from 'zod';
 import { JsonWebTokenVerifyModel } from '../../jsonwebtoken/model/JsonWebTokenVerifyModel';
@@ -14,6 +14,7 @@ import { UpdateBookShelfRequestModelSchema } from '../model/UpdateBookShelfReque
 import { UpdateBookShelfRequestModel } from '../model/UpdateBookShelfRequestModel';
 import { HttpMethodType, RouteSettingModel } from '../../router/model/RouteSettingModel';
 import { ApiEndopoint } from '../../router/conf/ApiEndpoint';
+import { BookIdModel } from '../../internaldata/bookinfomaster/properties/BookIdModel';
 
 
 export class UpdateBookShelfController extends RouteController {
@@ -25,18 +26,24 @@ export class UpdateBookShelfController extends RouteController {
         return new RouteSettingModel(
             HttpMethodType.PUT,
             this.doExecute,
-            ApiEndopoint.BOOKSHELF_INFO
+            ApiEndopoint.BOOKSHELF_INFO_ID
         );
     }
 
 
     /**
-     * 本棚情報を登録する
+     * 本棚情報を更新する
      * @param req 
      * @param res 
      * @returns 
      */
-    public doExecute(req: Request, res: Response) {
+    public doExecute(req: Request, res: Response, id: string) {
+
+        if (!id) {
+            return ApiResponse.create(res, HTTP_STATUS_METHOD_NOT_ALLOWED, `書籍IDが指定されていません。`);
+        }
+
+        const bookIdModel = BookIdModel.reConstruct(id);
 
         // リクエストボディ
         const requestBody: UpdateBookShelfRequestType = req.body;
@@ -56,7 +63,8 @@ export class UpdateBookShelfController extends RouteController {
         }
 
         // リクエストボディの型変換
-        const updateBookShelfRequestModel: UpdateBookShelfRequestModel = new UpdateBookShelfRequestModel(requestBody);
+        const updateBookShelfRequestModel: UpdateBookShelfRequestModel =
+            new UpdateBookShelfRequestModel(bookIdModel, requestBody);
 
         // jwtの認証を実行する
         const jsonWebTokenVerifyModel = this.updateBookShelfService.checkJwtVerify(req.cookies.jwt);
@@ -76,6 +84,6 @@ export class UpdateBookShelfController extends RouteController {
         // コミット
         this.updateBookShelfService.commit(bookShelfRepository);
 
-        return ApiResponse.create(res, HTTP_STATUS_OK, `書籍情報の更新が完了しました。`);
+        return ApiResponse.create(res, HTTP_STATUS_OK, `本棚の更新が完了しました。`);
     }
 }
