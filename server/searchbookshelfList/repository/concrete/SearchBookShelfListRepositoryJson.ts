@@ -18,6 +18,8 @@ import { JsonFileData } from "../../../util/service/JsonFileData";
 import { SearchBookShelfListAuthorsSelectEntity } from "../../entity/SearchBookShelfListAuthorsSelectEntity";
 import { SearchBookShelfListBookAuthorsSelectEntity } from "../../entity/SearchBookShelfListBookAuthorsSelectEntity";
 import { SearchBookShelfListSelectEntity } from "../../entity/SearchBookShelfListSelectEntity";
+import { SearchBooksShelfListGoogleAuthorsCacheSelectEntity } from "../../entity/SearchBooksShelfListGoogleAuthorsCacheSelectEntity";
+import { SearchBooksShelfListGoogleThumbnailCacheSelectModel } from "../../entity/SearchBooksShelfListGoogleThumbnailCacheSelectModel";
 import { SearchBookShelfListType } from "../../model/SearchBookShelfListType";
 import { SearchBookShelfListRepositoryInterface } from "../interface/SearchBookShelfListRepositoryInterface";
 
@@ -89,7 +91,7 @@ export class SearchBookShelfListRepositoryJson implements SearchBookShelfListRep
                     (!readStatusCondition || e.readStatus === readStatusCondition);
             });
 
-        const retBookShelf: SearchBookShelfListType[] = bookShelfList.map((e: BookShelfJsonModelType) => {
+        const retBookShelf: ReadonlyArray<SearchBookShelfListType> = bookShelfList.map((e: BookShelfJsonModelType) => {
 
             const bookId = e.bookId;
 
@@ -105,6 +107,8 @@ export class SearchBookShelfListRepositoryJson implements SearchBookShelfListRep
                     bookId: bookId,
                     title: bookInfoMaster.title,
                     readStatus: e.readStatus,
+                    thumbnail: ``,
+                    smallThumbnail: ``,
                 }
             }
 
@@ -117,11 +121,15 @@ export class SearchBookShelfListRepositoryJson implements SearchBookShelfListRep
                 return;
             }
 
+            // Google Books Apiのサムネイル情報を取得する
+
             return {
                 userId: frontUserId,
                 bookId: bookId,
                 title: googleBooksApiInfo.title ?? ``,
                 readStatus: e.readStatus,
+                thumbnail: ``,
+                smallThumbnail: ``,
             }
         }).flatMap(e => e ? [e] : []);
 
@@ -160,10 +168,44 @@ export class SearchBookShelfListRepositoryJson implements SearchBookShelfListRep
 
         const authorsList: ReadonlyArray<AuthorsMasterJsonType> =
             this._authorsMasterJsonList.filter((e: AuthorsMasterJsonType) => {
-                return e.authorId === authorId &&
-                    e.deleteFlg === FLG.OFF;
+                return e.authorId === authorId && e.deleteFlg === FLG.OFF;
             });
 
         return authorsList;
+    }
+
+
+    /**
+     * Google Books Api著者キャッシュ情報を取得
+     * @param searchBooksShelfListGoogleAuthorsCacheSelectEntity 
+     */
+    public selectGoogleBooksApiAuthorsCacheList(searchBooksShelfListGoogleAuthorsCacheSelectEntity: SearchBooksShelfListGoogleAuthorsCacheSelectEntity)
+        : GoogleBooksApiAuthorsCacheJsonModelType[] {
+
+        const bookId = searchBooksShelfListGoogleAuthorsCacheSelectEntity.bookId;
+
+        const googleBooksApiAuthorsCacheList = this._googleBooksApiAuthorsCacheList.filter((e: GoogleBooksApiAuthorsCacheJsonModelType) => {
+            return e.bookId === bookId;
+        });
+
+        return googleBooksApiAuthorsCacheList;
+    }
+
+
+    /**
+     * Google Books Api著者キャッシュ情報を取得
+     * @param searchBooksShelfListGoogleAuthorsCacheSelectEntity 
+     */
+    public selectGoogleBooksApiThumbnailCacheList(searchBooksShelfListGoogleThumbnailCacheSelectModel: SearchBooksShelfListGoogleThumbnailCacheSelectModel)
+        : ReadonlyArray<GoogleBooksApiThumbnailCacheJsonModelType> {
+
+        const bookId = searchBooksShelfListGoogleThumbnailCacheSelectModel.bookId;
+
+        const googleBooksApiThumbnailCacheList: ReadonlyArray<GoogleBooksApiThumbnailCacheJsonModelType> =
+            this._googleBooksApiThumbnailCacheList.filter((e: GoogleBooksApiThumbnailCacheJsonModelType) => {
+                return e.bookId === bookId;
+            });
+
+        return googleBooksApiThumbnailCacheList;
     }
 }

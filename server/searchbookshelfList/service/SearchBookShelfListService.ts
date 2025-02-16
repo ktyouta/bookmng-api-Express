@@ -17,6 +17,15 @@ import { SearchBookShelfQueryParamModel } from "../model/SearchBookShelfQueryPar
 import { SearchBookShelfRequestQueryType } from "../model/SearchBookShelfRequestQueryType";
 import { ReadStatusModel } from "../../internaldata/bookshelf/properties/ReadStatusModel";
 import { TitleModel } from "../../internaldata/bookinfomaster/properties/TitleModel";
+import { SearchBookShelfListRequestType } from "../model/SearchBookShelfListRequestType";
+import { SearchBookShelfListBookAuthorsSelectEntity } from "../entity/SearchBookShelfListBookAuthorsSelectEntity";
+import { BookAuthorsMasterJsonType } from "../../internaldata/bookauthorsmaster/model/BookAuthorsMasterJsonType";
+import { SearchBookShelfListAuthorsSelectEntity } from "../entity/SearchBookShelfListAuthorsSelectEntity";
+import { AuthorIdModel } from "../../internaldata/authorsinfomaster/properties/AuthorIdMode";
+import { AuthorsMasterJsonType } from "../../internaldata/authorsinfomaster/model/AuthorsMasterJsonType";
+import { SearchBooksShelfListGoogleAuthorsCacheSelectEntity } from "../entity/SearchBooksShelfListGoogleAuthorsCacheSelectEntity";
+import { GoogleBooksApiIdModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiIdModel";
+import { GoogleBooksApiAuthorsCacheJsonModelType } from "../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheJsonModelType";
 
 
 export class SearchBookShelfListService {
@@ -74,14 +83,78 @@ export class SearchBookShelfListService {
      * 本棚情報を取得する
      * @param searchBookShelfListSelectEntity 
      */
-    public getBookShelfList(searchBookShelfListSelectEntity: SearchBookShelfListSelectEntity): ReadonlyArray<SearchBookShelfListType> {
+    public getBookShelfList(searchBookShelfListSelectEntity: SearchBookShelfListSelectEntity)
+        : ReadonlyArray<SearchBookShelfListRequestType> {
 
         // 永続ロジックを取得
-        const searchBookShelfListRepositoryInterface: SearchBookShelfListRepositoryInterface =
+        const searchBookShelfListRepository: SearchBookShelfListRepositoryInterface =
             (new SearchBookShelfListRepositorys()).get(RepositoryType.JSON);
 
-        const bookShelfList = searchBookShelfListRepositoryInterface.selectBookShelfList(searchBookShelfListSelectEntity);
+        // 本棚情報を取得
+        const bookShelfList = searchBookShelfListRepository.selectBookShelfList(searchBookShelfListSelectEntity);
 
-        return bookShelfList;
+        const retBookShelfList: ReadonlyArray<SearchBookShelfListRequestType> = bookShelfList.map((e: SearchBookShelfListType) => {
+
+            const bookId = e.bookId;
+            // 著者リスト
+            let authorList: string[] = [];
+            // 書籍著者検索条件
+            const searchBookShelfListBookAuthorsSelectEntity = new SearchBookShelfListBookAuthorsSelectEntity(
+                BookIdModel.reConstruct(bookId),
+            );
+
+            // 書籍著者マスタリスト取得
+            const bookAuthorsList: ReadonlyArray<BookAuthorsMasterJsonType> =
+                searchBookShelfListRepository.selectBookAuthorList(searchBookShelfListBookAuthorsSelectEntity);
+
+            // 書籍著者マスタにデータが存在する場合は著者マスタから著者情報を取得する
+            if (bookAuthorsList.length > 0) {
+
+                authorList = bookAuthorsList.map((e1: BookAuthorsMasterJsonType) => {
+
+                    const authorIdModel = AuthorIdModel.reConstruct(e1.authorId);
+                    // 著者検索条件
+                    const searchBookShelfListAuthorsSelectEntity = new SearchBookShelfListAuthorsSelectEntity(
+                        authorIdModel
+                    );
+
+                    // 著者マスタリスト取得
+                    const authorMasterList: ReadonlyArray<AuthorsMasterJsonType> =
+                        searchBookShelfListRepository.selectAuthorList(searchBookShelfListAuthorsSelectEntity);
+
+                    if (authorMasterList.length === 0) {
+                        return;
+                    }
+
+                    return authorMasterList[0].authorName;
+                }).flatMap((e1) => {
+                    return e1 ? [e1] : []
+                });
+            }
+            // 書籍マスタにデータが存在しない場合はGoogle Books Apiのキャッシュから著者情報を取得する
+            else {
+
+                const googleBooksApiIdModel = new GoogleBooksApiIdModel(e.bookId);
+                // Google Books Api著者キャッシュ検索条件
+                const searchBooksShelfListGoogleAuthorsCacheSelectEntity = new SearchBooksShelfListGoogleAuthorsCacheSelectEntity(
+                    googleBooksApiIdModel
+                );
+
+                // Google Books Api著者キャッシュ情報を取得
+                const googleBooksApiAuthorsCacheList: ReadonlyArray<GoogleBooksApiAuthorsCacheJsonModelType> =
+                    searchBookShelfListRepository.selectGoogleBooksApiAuthorsCacheList(searchBooksShelfListGoogleAuthorsCacheSelectEntity);
+
+                authorList = googleBooksApiAuthorsCacheList.map((e1: GoogleBooksApiAuthorsCacheJsonModelType) => {
+                    return e1.authorName;
+                });
+            }
+
+            return {
+                ...e,
+                authors: authorList,
+            }
+        });
+
+        return retBookShelfList;
     }
 }

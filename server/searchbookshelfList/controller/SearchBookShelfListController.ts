@@ -16,6 +16,7 @@ import { SUCCESS_MESSAGE } from '../const/SearchBookShelfListConst';
 import { SearchBookShelfListType } from '../model/SearchBookShelfListType';
 import { SearchBookShelfRequestQueryType } from '../model/SearchBookShelfRequestQueryType';
 import { SearchBookShelfQueryParamModel } from '../model/SearchBookShelfQueryParamModel';
+import { SearchBookShelfListRequestType } from '../model/SearchBookShelfListRequestType';
 
 
 
@@ -56,7 +57,7 @@ export class SearchBookShelfListController extends RouteController {
             this.searchBookShelfListService.getBookShelfListSelectEntity(frontUserIdModel, queryParamModel);
 
         // 本棚情報の取得
-        const bookShelfList: ReadonlyArray<SearchBookShelfListType> =
+        const bookShelfList: ReadonlyArray<SearchBookShelfListRequestType> =
             this.searchBookShelfListService.getBookShelfList(searchBookShelfListSelectEntity);
 
         return ApiResponse.create(res, HTTP_STATUS_CREATED, SUCCESS_MESSAGE, bookShelfList);
