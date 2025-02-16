@@ -2,6 +2,7 @@
 export type GoogleBooksApiThumbnailCacheJsonModelType = {
     bookId: string,
     thumbnail: string,
+    smallThumbnail: string,
     createDate: string,
     updateDate: string,
 }

@@ -2,14 +2,12 @@ import { FrontUserInfoMasterJsonModelType } from "../../../internaldata/frontuse
 import { GoogleBooksApiAccessHistoryJsonModelType } from "../../../internaldata/googlebooksapiaccesshistory/model/GoogleBooksApiAccessHistoryJsonModelType";
 import { GoogleBooksApiAuthorsCacheJsonModelType } from "../../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheJsonModelType";
 import { GoogleBooksApiInfoCacheJsonModelType } from "../../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheJsonModelType";
-import { GoogleBooksApiSmallThumbnailCacheJsonModelType } from "../../../internaldata/googlebooksapismallthumbnailcache/model/GoogleBooksApiSmallThumbnailCacheJsonModelType";
 import { GoogleBooksApiThumbnailCacheJsonModelType } from "../../../internaldata/googlebooksapithumbnailcache/model/GoogleBooksApiThumbnailCacheJsonModelType";
 import { BookInfoMasterListSelectEntity } from "../../entity/BookInfoMasterListSelectEntity";
 import { SearchBookInfoGoogleBooksApiAccessHistorySelectEntity, } from "../../entity/SearchBookInfoGoogleBooksApiAccessHistorySelectEntity";
 import { GoogleBooksApiAuthorsCacheSelectEntity } from "../../entity/GoogleBooksApiAuthorsCacheSelectEntity";
 import { GoogleBooksApiCacheSelectEntity } from "../../entity/GoogleBooksApiCacheSelectEntity";
 import { GoogleBooksApiInfoCacheSelectEntity } from "../../entity/GoogleBooksApiInfoCacheSelectEntity";
-import { GoogleBooksApiSmallThumbnailCacheSelectEntity } from "../../entity/GoogleBooksApiSmallThumbnailCacheSelectEntity";
 import { GoogleBooksApiThumbnailCacheSelectEntity } from "../../entity/GoogleBooksApiThumbnailCacheSelectEntity";
 import { BookInfoListModelType } from "../../model/BookInfoListModelType";
 import { GoogleBooksApiCacheModelType } from "../../model/GoogleBooksApiCacheModelType";
@@ -31,13 +29,6 @@ export interface SearchBookInfoRepositoryInterface {
      */
     selectGoogleBooksApiCacheList(googleBooksApiCacheSelectEntity: GoogleBooksApiCacheSelectEntity): ReadonlyArray<GoogleBooksApiCacheModelType>;
 
-    /**
-     * Google Books Apiのサムネイル(小)キャッシュ情報取得
-     * @param googleBooksApiCacheSelectEntity 
-     */
-    selectGoogleBooksApiSmallThumbnailCacheList(
-        googleBooksApiSmallThumbnailCacheSelectEntity: GoogleBooksApiSmallThumbnailCacheSelectEntity)
-        : ReadonlyArray<GoogleBooksApiSmallThumbnailCacheJsonModelType>;
 
     /**
      * Google Books Apiのサムネイルキャッシュ情報取得

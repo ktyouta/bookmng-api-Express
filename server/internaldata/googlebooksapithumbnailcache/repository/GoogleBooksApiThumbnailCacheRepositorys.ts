@@ -1,5 +1,4 @@
 import { RepositoryType } from "../../../util/const/CommonConst";
-import { GoogleBooksApiSmallThumbnailCacheRepositoryInterface } from "../../googlebooksapismallthumbnailcache/repository/interface/GoogleBooksApiSmallThumbnailCacheRepositoryInterface";
 import { GoogleBooksApiThumbnailCacheRepositoryJson } from "./concrete/GoogleBooksApiThumbnailCacheRepositoryJson";
 import { GoogleBooksApiThumbnailCacheRepositoryInterface } from "./interface/GoogleBooksApiThumbnailCacheRepositoryInterface";
 

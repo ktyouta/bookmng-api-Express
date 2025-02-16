@@ -39,8 +39,6 @@ export const GOOGLE_BOOKS_API_ACCESS_HISTORY_TRANSACTION_FILE = "google_books_ap
 export const GOOGLE_BOOKS_API_INFO_CACHE_FILE = "google_books_api_info_cache.json";
 // Google Books Api著者名キャッシュファイル名
 export const GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE = "google_books_api_authors_cache.json";
-// Google Books Apiサムネイル(小)キャッシュファイル名
-export const GOOGLE_BOOKS_API_SMALLTHUMBNAIL_CACHE_FILE = "google_books_api_simallthumbnail_cache.json";
 // Google Books Apiサムネイルキャッシュファイル名
 export const GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE = "google_books_api_thumbnail_cache.json";
 

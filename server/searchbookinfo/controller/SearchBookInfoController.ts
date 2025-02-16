@@ -109,13 +109,6 @@ export class SearchBookInfoController extends RouteController {
                 googleBooksApiItems,
             );
 
-            // Google Books Apiのサムネイル(小)キャッシュ情報の追加/更新
-            this.searchBookInfoService.updateGoogleBooksApiSmallThumbnailCache(
-                searchBookInfoRepository,
-                booksApiCacheRepositorys.googleBooksApiSmallThumbnailCacheRepository,
-                googleBooksApiItems,
-            );
-
             // Google Books Apiのサムネイルキャッシュ情報の追加/更新
             this.searchBookInfoService.updateGoogleBooksApiThumbnailCache(
                 searchBookInfoRepository,

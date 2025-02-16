@@ -84,6 +84,7 @@ export class GoogleBooksApiThumbnailCacheRepositoryJson implements GoogleBooksAp
             thumbnail: googleBooksApiThumbnailCacheInsertEntity.thumbnail,
             createDate: googleBooksApiThumbnailCacheInsertEntity.createDate,
             updateDate: googleBooksApiThumbnailCacheInsertEntity.updateDate,
+            smallThumbnail: googleBooksApiThumbnailCacheInsertEntity.smallThumbnail,
         };
 
         return googleBooksApiThumbnailCacheJson;

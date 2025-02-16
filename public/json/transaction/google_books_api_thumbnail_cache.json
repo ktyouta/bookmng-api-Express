@@ -2,6 +2,7 @@
 	{
 		"bookId": "f18LyPhvNpsC",
 		"thumbnail": "http://books.google.com/books/content?id=f18LyPhvNpsC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+		"smallThumbnail": "http://books.google.com/books/content?id=f18LyPhvNpsC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
 		"createDate": "20250203",
 		"updateDate": "20250203"
 	},
@@ -9,65 +10,76 @@
 		"bookId": "PtAkAAAACAAJ",
 		"thumbnail": "http://books.google.com/books/content?id=PtAkAAAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
 		"createDate": "20250203",
+		"smallThumbnail": "http://books.google.com/books/content?id=PtAkAAAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
 		"updateDate": "20250203"
 	},
 	{
 		"bookId": "H0qpBAAAQBAJ",
 		"thumbnail": "http://books.google.com/books/content?id=H0qpBAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+		"smallThumbnail": "http://books.google.com/books/content?id=H0qpBAAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
 		"createDate": "20250203",
 		"updateDate": "20250203"
 	},
 	{
 		"bookId": "obJmzgEACAAJ",
 		"thumbnail": "http://books.google.com/books/content?id=obJmzgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+		"smallThumbnail": "http://books.google.com/books/content?id=obJmzgEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
 		"createDate": "20250203",
 		"updateDate": "20250203"
 	},
 	{
 		"bookId": "XsNaDwAAQBAJ",
 		"thumbnail": "http://books.google.com/books/content?id=XsNaDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+		"smallThumbnail": "http://books.google.com/books/content?id=XsNaDwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
 		"createDate": "20250203",
 		"updateDate": "20250203"
 	},
 	{
 		"bookId": "RWULxp2PhPIC",
 		"thumbnail": "http://books.google.com/books/content?id=RWULxp2PhPIC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+		"smallThumbnail": "http://books.google.com/books/content?id=RWULxp2PhPIC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
 		"createDate": "20250203",
 		"updateDate": "20250203"
 	},
 	{
 		"bookId": "qKJNAQAAIAAJ",
 		"thumbnail": "http://books.google.com/books/content?id=qKJNAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+		"smallThumbnail": "http://books.google.com/books/content?id=qKJNAQAAIAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
 		"createDate": "20250203",
 		"updateDate": "20250203"
 	},
 	{
 		"bookId": "QRcnAAAAMAAJ",
 		"thumbnail": "http://books.google.com/books/content?id=QRcnAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+		"smallThumbnail": "http://books.google.com/books/content?id=QRcnAAAAMAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
 		"createDate": "20250203",
 		"updateDate": "20250203"
 	},
 	{
 		"bookId": "-SxNAQAAIAAJ",
 		"thumbnail": "http://books.google.com/books/content?id=-SxNAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+		"smallThumbnail": "http://books.google.com/books/content?id=-SxNAQAAIAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
 		"createDate": "20250203",
 		"updateDate": "20250203"
 	},
 	{
 		"bookId": "1lz8USHf-PUC",
 		"thumbnail": "http://books.google.com/books/content?id=1lz8USHf-PUC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+		"smallThumbnail": "http://books.google.com/books/content?id=1lz8USHf-PUC&printsec=frontcover&img=1&zoom=5&source=gbs_api",
 		"createDate": "20250203",
 		"updateDate": "20250203"
 	},
 	{
 		"bookId": "pumlAQAACAAJ",
 		"thumbnail": "http://books.google.com/books/content?id=pumlAQAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+		"smallThumbnail": "http://books.google.com/books/content?id=pumlAQAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
 		"createDate": "20250204",
 		"updateDate": "20250204"
 	},
 	{
 		"bookId": "9CyozQEACAAJ",
 		"thumbnail": "http://books.google.com/books/content?id=9CyozQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+		"smallThumbnail": "http://books.google.com/books/content?id=9CyozQEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
 		"createDate": "20250211",
 		"updateDate": "20250211"
 	}

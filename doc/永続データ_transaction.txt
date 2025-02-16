@@ -23,11 +23,6 @@
 　　・bookId
 
 
-・google_books_api_simallthumbnail_cache
-　・PK
-　　・bookId
-
-
 ・google_books_api_thumbnail_cache
 　・PK
 　　・bookId

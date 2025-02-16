@@ -1,6 +1,7 @@
 import { CreateDateModel } from "../../common/model/CreateDateModel";
 import { UpdateDateModel } from "../../common/model/UpdateDateModel";
 import { GoogleBooksApiIdModel } from "../../googlebooksapiinfocache/properties/GoogleBooksApiIdModel";
+import { SmallThumbnailModel } from "../properties/SmallThumbnailModel";
 import { ThumbnailModel } from "../properties/ThumbnailModel";
 
 
@@ -10,12 +11,17 @@ export class GoogleBooksApiThumbnailCacheUpdateModel {
     private readonly _bookId: GoogleBooksApiIdModel;
     // Google Books Apiのサムネイル
     private readonly _thumbnail: ThumbnailModel;
+    // Google Books Apiのサムネイル(小)
+    private readonly _smallThumbnail: SmallThumbnailModel;
     private readonly _updateDate: UpdateDateModel = UpdateDateModel.create(`Google Books Apiサムネイルキャッシュ情報`);
 
-    constructor(bookId: GoogleBooksApiIdModel, thumbnail: ThumbnailModel) {
+    constructor(bookId: GoogleBooksApiIdModel,
+        thumbnail: ThumbnailModel,
+        smallThumbnail: SmallThumbnailModel) {
 
         this._bookId = bookId;
         this._thumbnail = thumbnail;
+        this._smallThumbnail = smallThumbnail;
     }
 
     public get bookId() {
@@ -24,6 +30,10 @@ export class GoogleBooksApiThumbnailCacheUpdateModel {
 
     public get thumbnail() {
         return this._thumbnail;
+    }
+
+    public get smallThumbnail() {
+        return this._smallThumbnail;
     }
 
     public get updateDate() {
