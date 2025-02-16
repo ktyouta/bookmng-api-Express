@@ -3,6 +3,5 @@ export type SearchBookShelfListType = {
     readonly userId: string,
     readonly bookId: string,
     readonly title: string,
-    readonly authors: string[],
     readonly readStatus: string,
 }

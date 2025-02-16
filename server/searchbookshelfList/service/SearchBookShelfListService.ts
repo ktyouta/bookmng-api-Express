@@ -76,9 +76,12 @@ export class SearchBookShelfListService {
      */
     public getBookShelfList(searchBookShelfListSelectEntity: SearchBookShelfListSelectEntity): ReadonlyArray<SearchBookShelfListType> {
 
+        // 永続ロジックを取得
         const searchBookShelfListRepositoryInterface: SearchBookShelfListRepositoryInterface =
             (new SearchBookShelfListRepositorys()).get(RepositoryType.JSON);
 
-        return searchBookShelfListRepositoryInterface.select(searchBookShelfListSelectEntity);
+        const bookShelfList = searchBookShelfListRepositoryInterface.selectBookShelfList(searchBookShelfListSelectEntity);
+
+        return bookShelfList;
     }
 }
