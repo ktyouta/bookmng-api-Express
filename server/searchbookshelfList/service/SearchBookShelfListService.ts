@@ -93,6 +93,7 @@ export class SearchBookShelfListService {
         // 本棚情報を取得
         const bookShelfList = searchBookShelfListRepository.selectBookShelfList(searchBookShelfListSelectEntity);
 
+        // レスポンス用の本棚情報を作成
         const retBookShelfList: ReadonlyArray<SearchBookShelfListRequestType> = bookShelfList.map((e: SearchBookShelfListType) => {
 
             const bookId = e.bookId;

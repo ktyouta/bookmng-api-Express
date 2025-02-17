@@ -42,7 +42,7 @@ export class SearchBookShelfListRepositoryJson implements SearchBookShelfListRep
     private _googleBooksApiInfoCacheList: ReadonlyArray<GoogleBooksApiInfoCacheJsonModelType>;
     // Google Books Api著者キャッシュ情報
     private _googleBooksApiAuthorsCacheList: ReadonlyArray<GoogleBooksApiAuthorsCacheJsonModelType>;
-    // Google Books Apiサムネイル情報
+    // Google Books Apiサムネイルキャッシュ情報
     private _googleBooksApiThumbnailCacheList: ReadonlyArray<GoogleBooksApiThumbnailCacheJsonModelType>;
 
 
@@ -94,10 +94,14 @@ export class SearchBookShelfListRepositoryJson implements SearchBookShelfListRep
         const retBookShelf: ReadonlyArray<SearchBookShelfListType> = bookShelfList.map((e: BookShelfJsonModelType) => {
 
             const bookId = e.bookId;
+            let thumbnail = ``;
+            let smallThumbnail = ``;
 
             // 書籍情報を取得
             const bookInfoMaster = this._bookInfoMasterJsonList.find((e1: BookInfoJsonModelType) => {
-                return e1.bookId === bookId && (!titleCondition || e1.title.includes(titleCondition));
+                return e1.bookId === bookId &&
+                    e.deleteFlg === FLG.OFF
+                    && (!titleCondition || e1.title.includes(titleCondition));
             });
 
             if (bookInfoMaster) {
@@ -107,8 +111,8 @@ export class SearchBookShelfListRepositoryJson implements SearchBookShelfListRep
                     bookId: bookId,
                     title: bookInfoMaster.title,
                     readStatus: e.readStatus,
-                    thumbnail: ``,
-                    smallThumbnail: ``,
+                    thumbnail: thumbnail,
+                    smallThumbnail: smallThumbnail,
                 }
             }
 
@@ -122,14 +126,22 @@ export class SearchBookShelfListRepositoryJson implements SearchBookShelfListRep
             }
 
             // Google Books Apiのサムネイル情報を取得する
+            const googleBooksApiThumbnail = this._googleBooksApiThumbnailCacheList.find((e1: GoogleBooksApiThumbnailCacheJsonModelType) => {
+                return e1.bookId === bookId;
+            });
+
+            if (googleBooksApiThumbnail) {
+                thumbnail = googleBooksApiThumbnail.thumbnail;
+                smallThumbnail = googleBooksApiThumbnail.smallThumbnail;
+            }
 
             return {
                 userId: frontUserId,
                 bookId: bookId,
                 title: googleBooksApiInfo.title ?? ``,
                 readStatus: e.readStatus,
-                thumbnail: ``,
-                smallThumbnail: ``,
+                thumbnail: thumbnail,
+                smallThumbnail: smallThumbnail,
             }
         }).flatMap(e => e ? [e] : []);
 
