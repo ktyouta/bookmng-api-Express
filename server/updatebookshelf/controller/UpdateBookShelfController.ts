@@ -70,7 +70,7 @@ export class UpdateBookShelfController extends RouteController {
         const jsonWebTokenVerifyModel = this.updateBookShelfService.checkJwtVerify(req.cookies.jwt);
         const frontUserIdModel: FrontUserIdModel = jsonWebTokenVerifyModel.frontUserIdModel;
 
-        // 本棚情報の重複チェック
+        // 本棚情報の存在チェック
         if (!this.updateBookShelfService.checkExistBookShelf(updateBookShelfRequestModel, frontUserIdModel)) {
             return ApiResponse.create(res, HTTP_STATUS_UNPROCESSABLE_ENTITY, `更新対象の本が存在しません。`);
         }

@@ -5,19 +5,19 @@ import { BookShelfRepositoryInterface } from "../../internaldata/bookshelf/repos
 import { FrontUserIdModel } from "../../internaldata/frontuserinfomaster/properties/FrontUserIdModel";
 import { JsonWebTokenVerifyModel } from "../../jsonwebtoken/model/JsonWebTokenVerifyModel";
 import { FLG, RepositoryType } from "../../util/const/CommonConst";
-import { UpdateBookShelfSelectEntity } from "../entity/UpdateBookShelfSelectEntity";
-import { UpdateBookShelfRequestModel } from "../model/UpdateBookShelfRequestModel";
-import { UpdateBookShelfRepositorys } from "../repository/UpdateBookShelfRepositorys";
-import { UpdateBookShelfRepositoryInterface } from "../repository/interface/UpdateBookShelfRepositoryInterface";
+import { DeleteBookShelfSelectEntity } from "../entity/DeleteBookShelfSelectEntity";
+import { DeleteBookShelfRepositorys } from "../repository/DeleteBookShelfRepositorys";
+import { DeleteBookShelfRepositoryInterface } from "../repository/interface/DeleteBookShelfRepositoryInterface";
 import ENV from '../../env.json';
 import { BookShelfUpdateEntity } from "../../internaldata/bookshelf/entity/BookShelfUpdateEntity";
 import { ThoughtsModel } from "../../internaldata/bookshelf/properties/ThoughtsModel";
 import { ApiEndopoint } from "../../router/conf/ApiEndpoint";
 import { ReadStatusModel } from "../../internaldata/bookshelf/properties/ReadStatusModel";
+import { BookShelfJsonModelType } from "../../internaldata/bookshelf/model/BookShelfJsonModelType";
 import { DeleteFlgModel } from "../../internaldata/common/model/DeleteFlgModel";
 
 
-export class UpdateBookShelfService {
+export class DeleteBookShelfService {
 
     public checkJwtVerify(jwt: string) {
 
@@ -32,27 +32,26 @@ export class UpdateBookShelfService {
 
 
     /**
-     * 本棚情報の存在チェック
-     * @param UpdateBookShelfRequestModel 
+     * 削除対象の本棚情報を取得
+     * @param DeleteBookShelfRequestModel 
      * @param frontUserIdModel 
      * @returns 
      */
-    public checkExistBookShelf(UpdateBookShelfRequestModel: UpdateBookShelfRequestModel,
+    public getBookShelf(bookIdModel: BookIdModel,
         frontUserIdModel: FrontUserIdModel
-    ) {
+    ): ReadonlyArray<BookShelfJsonModelType> {
 
         // 永続ロジックを取得
-        const UpdateBookShelfRepository: UpdateBookShelfRepositoryInterface =
-            (new UpdateBookShelfRepositorys()).get(RepositoryType.JSON);
+        const DeleteBookShelfRepository: DeleteBookShelfRepositoryInterface =
+            (new DeleteBookShelfRepositorys()).get(RepositoryType.JSON);
 
         // 本棚情報取得Entity
-        const updateBookShelfSelectEntity = new UpdateBookShelfSelectEntity(
-            frontUserIdModel, UpdateBookShelfRequestModel.bookIdModel);
+        const deleteBookShelfSelectEntity = new DeleteBookShelfSelectEntity(frontUserIdModel, bookIdModel);
 
         // 本棚情報を取得
-        const bookShelfList = UpdateBookShelfRepository.select(updateBookShelfSelectEntity);
+        const bookShelfList = DeleteBookShelfRepository.select(deleteBookShelfSelectEntity);
 
-        return bookShelfList.length > 0
+        return bookShelfList;
     }
 
 
@@ -69,19 +68,20 @@ export class UpdateBookShelfService {
     /**
      * 本棚の書籍情報を更新する
      * @param bookShelfRepository 
-     * @param UpdateBookShelfRequestModel 
+     * @param DeleteBookShelfRequestModel 
      * @param frontUserIdModel 
      */
-    public update(bookShelfRepository: BookShelfRepositoryInterface,
-        UpdateBookShelfRequestModel: UpdateBookShelfRequestModel,
-        frontUserIdModel: FrontUserIdModel) {
+    public delete(bookShelfRepository: BookShelfRepositoryInterface,
+        bookIdModel: BookIdModel,
+        frontUserIdModel: FrontUserIdModel,
+        bookShelfInfo: BookShelfJsonModelType) {
 
         const bookShelfUpdateEntity = new BookShelfUpdateEntity(
             frontUserIdModel,
-            UpdateBookShelfRequestModel.bookIdModel,
-            UpdateBookShelfRequestModel.thoughtsModel,
-            UpdateBookShelfRequestModel.readStatusModel,
-            new DeleteFlgModel(FLG.OFF));
+            bookIdModel,
+            new ThoughtsModel(bookShelfInfo.thoughts),
+            new ReadStatusModel(bookShelfInfo.readStatus),
+            new DeleteFlgModel(FLG.ON));
 
         bookShelfRepository.update(bookShelfUpdateEntity);
     }

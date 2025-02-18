@@ -21,19 +21,21 @@ export class BookShelfUpdateEntity {
     // データ更新日
     private readonly _updateDateModel: UpdateDateModel = UpdateDateModel.create(`本棚情報`);
     // 削除フラグ
-    private readonly _deleteFlgModel: DeleteFlgModel = new DeleteFlgModel(FLG.OFF);
+    private readonly _deleteFlgModel: DeleteFlgModel;
 
 
     constructor(userId: FrontUserIdModel,
         bookIdModel: BookIdModel,
         thoughtsModel: ThoughtsModel,
         readStatusModel: ReadStatusModel,
+        deleteFlgModel: DeleteFlgModel
     ) {
 
         this._frontUserIdModel = userId;
         this._bookIdModel = bookIdModel;
         this._thoughtsModel = thoughtsModel;
         this._readStatusModel = readStatusModel;
+        this._deleteFlgModel = deleteFlgModel;
     }
 
     public get frontUserIdModel() {
