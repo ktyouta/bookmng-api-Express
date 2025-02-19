@@ -10,32 +10,19 @@ import { FLG } from "../../util/const/CommonConst";
 
 
 
-export class SearchBookShelfDetailSelectEntity {
+export class SearchBookShelfDetailThoughtSelectEntity {
 
-    // ユーザーID
-    private readonly _frontUserIdModel: FrontUserIdModel;
     // 書籍ID
     private readonly _bookIdModel: BookIdModel;
 
 
-    constructor(frontUserIdModel: FrontUserIdModel,
-        bookIdModel: BookIdModel
-    ) {
+    constructor(bookIdModel: BookIdModel) {
 
-        this._frontUserIdModel = frontUserIdModel;
         this._bookIdModel = bookIdModel;
-    }
-
-    get frontUserIdModel() {
-        return this._frontUserIdModel;
     }
 
     get bookIdModel() {
         return this._bookIdModel;
-    }
-
-    get frontUserId() {
-        return this._frontUserIdModel.frontUserId;
     }
 
     get bookId() {

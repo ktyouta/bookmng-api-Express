@@ -7,5 +7,5 @@ export type SearchBookShelfDetailResponseType = {
     readonly title: string,
     readonly readStatus: string,
     readonly authors: string[],
-    readonly thoughtList: SearchBookShelfDetailThoughtType[],
+    readonly thoughtList: ReadonlyArray<SearchBookShelfDetailThoughtType>,
 }

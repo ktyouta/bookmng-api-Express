@@ -7,6 +7,10 @@ import { BOOK_INFO_MASTER_FILE_PATH } from "../../../internaldata/bookinfomaster
 import { BookShelfJsonModelType } from "../../../internaldata/bookshelf/model/BookShelfJsonModelType";
 import { BOOKSHELF_FILE_PATH } from "../../../internaldata/bookshelf/repository/concrete/BookShelfRepositoryJson";
 import { BookShelfRepositoryInterface } from "../../../internaldata/bookshelf/repository/interface/BookShelfRepositoryInterface";
+import { FrontUserInfoMasterJsonModelType } from "../../../internaldata/frontuserinfomaster/model/FrontUserInfoMasterJsonModelType";
+import { FRONT_USER_INFO_MASTER_FILE_PATH } from "../../../internaldata/frontuserinfomaster/repository/concrete/FrontUserInfoMasterRepositoryJson";
+import { FrontUserLoginMasterJsonModelType } from "../../../internaldata/frontuserloginmaster/model/FrontUserLoginMasterJsonModelType";
+import { FRONT_USER_LOGIN_MASTER_FILE_PATH } from "../../../internaldata/frontuserloginmaster/repository/concrete/FrontUserLoginMasterRepositoryJson";
 import { GoogleBooksApiAuthorsCacheJsonModelType } from "../../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheJsonModelType";
 import { GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH } from "../../../internaldata/googlebooksapiauthorscache/repository/concrete/GoogleBooksApiAuthorsCacheRepositoryJson";
 import { GoogleBooksApiInfoCacheJsonModelType } from "../../../internaldata/googlebooksapiinfocache/model/GoogleBooksApiInfoCacheJsonModelType";
@@ -18,8 +22,10 @@ import { JsonFileData } from "../../../util/service/JsonFileData";
 import { SearchBookShelfDetailAuthorsSelectEntity } from "../../entity/SearchBookShelfDetailAuthorsSelectEntity";
 import { SearchBookShelfDetailBookAuthorsSelectEntity } from "../../entity/SearchBookShelfDetailBookAuthorsSelectEntity";
 import { SearchBookShelfDetailSelectEntity } from "../../entity/SearchBookShelfDetailSelectEntity";
+import { SearchBookShelfDetailThoughtSelectEntity } from "../../entity/SearchBookShelfDetailThoughtSelectEntity";
 import { SearchBooksShelfListGoogleAuthorsCacheSelectEntity } from "../../entity/SearchBooksShelfDetailGoogleAuthorsCacheSelectEntity";
 import { SearchBooksShelfListGoogleThumbnailCacheSelectModel } from "../../entity/SearchBooksShelfDetailGoogleThumbnailCacheSelectModel";
+import { SearchBookShelfDetailThoughtType } from "../../model/SearchBookShelfDetailThoughtType";
 import { SearchBookShelfDetailType } from "../../model/SearchBookShelfDetailType";
 import { SearchBookShelfDetailRepositoryInterface } from "../interface/SearchBookShelfDetailRepositoryInterface";
 
@@ -44,6 +50,8 @@ export class SearchBookShelfDetailRepositoryJson implements SearchBookShelfDetai
     private _googleBooksApiAuthorsCacheList: ReadonlyArray<GoogleBooksApiAuthorsCacheJsonModelType>;
     // Google Books Apiサムネイルキャッシュ情報
     private _googleBooksApiThumbnailCacheList: ReadonlyArray<GoogleBooksApiThumbnailCacheJsonModelType>;
+    // フロントユーザー情報
+    private _frontUserInfoMasterJsonList: ReadonlyArray<FrontUserInfoMasterJsonModelType>;
 
 
     constructor() {
@@ -62,6 +70,8 @@ export class SearchBookShelfDetailRepositoryJson implements SearchBookShelfDetai
         const googleBooksApiAuthorsCacheList: GoogleBooksApiAuthorsCacheJsonModelType[] = JsonFileData.getFileObj(GOOGLE_BOOKS_API_AUTHORS_CACHE_FILE_PATH);
         // Google Books Apiサムネイルキャッシュ情報ファイルからデータを取得
         const googleBooksApiThumbnailCacheList: GoogleBooksApiThumbnailCacheJsonModelType[] = JsonFileData.getFileObj(GOOGLE_BOOKS_API_THUMBNAIL_CACHE_FILE_PATH);
+        // ユーザーマスタファイルからデータを取得
+        const jsonUserInfoMasterList: FrontUserInfoMasterJsonModelType[] = JsonFileData.getFileObj(FRONT_USER_INFO_MASTER_FILE_PATH);
 
         this._bookShelfJsonList = bookShelfJsonModelType;
         this._authorsMasterJsonList = authorsMasterList;
@@ -70,6 +80,7 @@ export class SearchBookShelfDetailRepositoryJson implements SearchBookShelfDetai
         this._googleBooksApiInfoCacheList = googleBooksApiInfoCacheList;
         this._googleBooksApiAuthorsCacheList = googleBooksApiAuthorsCacheList;
         this._googleBooksApiThumbnailCacheList = googleBooksApiThumbnailCacheList;
+        this._frontUserInfoMasterJsonList = jsonUserInfoMasterList;
     }
 
 
@@ -215,5 +226,46 @@ export class SearchBookShelfDetailRepositoryJson implements SearchBookShelfDetai
             });
 
         return googleBooksApiThumbnailCacheList;
+    }
+
+
+    /**
+     * レビュー情報を取得
+     * @param searchBookShelfDetailThoughtSelectEntity 
+     * @returns 
+     */
+    public selectThoughtList(searchBookShelfDetailThoughtSelectEntity: SearchBookShelfDetailThoughtSelectEntity)
+        : ReadonlyArray<SearchBookShelfDetailThoughtType> {
+
+        const thoughtList: ReadonlyArray<SearchBookShelfDetailThoughtType> =
+            this._bookShelfJsonList.map((e: BookShelfJsonModelType) => {
+
+                const bookId = searchBookShelfDetailThoughtSelectEntity.bookId;
+
+                if (e.bookId !== bookId && e.deleteFlg === FLG.OFF) {
+                    return;
+                }
+
+                const userId = e.userId;
+
+                // 未削除のユーザー情報を取得
+                const userInfo = this._frontUserInfoMasterJsonList.find((e1: FrontUserInfoMasterJsonModelType) => {
+                    return e1.userId === userId && e1.deleteFlg === FLG.OFF;
+                });
+
+                if (!userInfo) {
+                    return;
+                }
+
+                return {
+                    userId: userId,
+                    userName: userInfo.userName,
+                    thought: e.thoughts
+                }
+            }).flatMap((e) => {
+                return e ? [e] : []
+            });
+
+        return thoughtList;
     }
 }

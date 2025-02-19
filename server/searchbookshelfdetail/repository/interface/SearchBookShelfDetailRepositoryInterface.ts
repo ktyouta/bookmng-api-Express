@@ -6,8 +6,10 @@ import { GoogleBooksApiThumbnailCacheJsonModelType } from "../../../internaldata
 import { SearchBookShelfDetailAuthorsSelectEntity } from "../../entity/SearchBookShelfDetailAuthorsSelectEntity";
 import { SearchBookShelfDetailBookAuthorsSelectEntity } from "../../entity/SearchBookShelfDetailBookAuthorsSelectEntity";
 import { SearchBookShelfDetailSelectEntity } from "../../entity/SearchBookShelfDetailSelectEntity";
+import { SearchBookShelfDetailThoughtSelectEntity } from "../../entity/SearchBookShelfDetailThoughtSelectEntity";
 import { SearchBooksShelfListGoogleAuthorsCacheSelectEntity } from "../../entity/SearchBooksShelfDetailGoogleAuthorsCacheSelectEntity";
 import { SearchBooksShelfListGoogleThumbnailCacheSelectModel } from "../../entity/SearchBooksShelfDetailGoogleThumbnailCacheSelectModel";
+import { SearchBookShelfDetailThoughtType } from "../../model/SearchBookShelfDetailThoughtType";
 import { SearchBookShelfDetailType } from "../../model/SearchBookShelfDetailType";
 
 
@@ -47,5 +49,12 @@ export interface SearchBookShelfDetailRepositoryInterface {
      */
     selectGoogleBooksApiThumbnailCacheList(searchBooksShelfListGoogleThumbnailCacheSelectModel: SearchBooksShelfListGoogleThumbnailCacheSelectModel):
         ReadonlyArray<GoogleBooksApiThumbnailCacheJsonModelType>;
+
+    /**
+     * レビュー情報を取得
+     * @param searchBooksShelfListGoogleThumbnailCacheSelectModel 
+     */
+    selectThoughtList(searchBookShelfDetailThoughtSelectEntity: SearchBookShelfDetailThoughtSelectEntity):
+        ReadonlyArray<SearchBookShelfDetailThoughtType>;
 
 }

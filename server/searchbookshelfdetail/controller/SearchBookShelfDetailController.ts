@@ -49,13 +49,9 @@ export class SearchBookShelfDetailController extends RouteController {
         const jsonWebTokenVerifyModel = this.searchBookShelfDetailService.checkJwtVerify(req.cookies.jwt);
         const frontUserIdModel: FrontUserIdModel = jsonWebTokenVerifyModel.frontUserIdModel;
 
-        // 本棚情報の検索条件を作成
-        const searchBookShelfDetailSelectEntity: SearchBookShelfDetailSelectEntity =
-            this.searchBookShelfDetailService.getBookShelfDetailSelectEntity(frontUserIdModel, bookIdModel);
-
         // 本棚情報の取得
         const bookShelfnfo: ReadonlyArray<SearchBookShelfDetailResponseType> =
-            this.searchBookShelfDetailService.getBookShelfDetail(searchBookShelfDetailSelectEntity);
+            this.searchBookShelfDetailService.getBookShelfDetail(frontUserIdModel, bookIdModel);
 
         if (bookShelfnfo.length === 0) {
             return ApiResponse.create(res, HTTP_STATUS_UNPROCESSABLE_ENTITY, `書籍情報が存在しません。`);

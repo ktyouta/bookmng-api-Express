@@ -25,6 +25,7 @@ import { SearchBooksShelfListGoogleAuthorsCacheSelectEntity } from "../entity/Se
 import { GoogleBooksApiIdModel } from "../../internaldata/googlebooksapiinfocache/properties/GoogleBooksApiIdModel";
 import { GoogleBooksApiAuthorsCacheJsonModelType } from "../../internaldata/googlebooksapiauthorscache/model/GoogleBooksApiAuthorsCacheJsonModelType";
 import { SearchBookShelfDetailThoughtType } from "../model/SearchBookShelfDetailThoughtType";
+import { SearchBookShelfDetailThoughtSelectEntity } from "../entity/SearchBookShelfDetailThoughtSelectEntity";
 
 
 export class SearchBookShelfDetailService {
@@ -47,47 +48,38 @@ export class SearchBookShelfDetailService {
 
 
     /**
-     * 本棚情報の検索条件を取得する
-     * @param frontUserIdModel 
-     * @returns 
-     */
-    public getBookShelfDetailSelectEntity(frontUserIdModel: FrontUserIdModel,
-        bookIdModel: BookIdModel
-    ): SearchBookShelfDetailSelectEntity {
-
-        return new SearchBookShelfDetailSelectEntity(
-            frontUserIdModel,
-            bookIdModel,
-        );
-    }
-
-
-    /**
      * 本棚情報を取得する
      * @param searchBookShelfDetailSelectEntity 
      */
-    public getBookShelfDetail(searchBookShelfDetailSelectEntity: SearchBookShelfDetailSelectEntity)
-        : ReadonlyArray<SearchBookShelfDetailResponseType> {
+    public getBookShelfDetail(frontUserIdModel: FrontUserIdModel,
+        bookIdModel: BookIdModel): ReadonlyArray<SearchBookShelfDetailResponseType> {
 
         // 永続ロジックを取得
         const searchBookShelfDetailRepository: SearchBookShelfDetailRepositoryInterface =
             (new SearchBookShelfDetailRepositorys()).get(RepositoryType.JSON);
 
+        // 本棚詳細取得条件
+        const searchBookShelfDetailSelectEntity: SearchBookShelfDetailSelectEntity = new SearchBookShelfDetailSelectEntity(
+            frontUserIdModel,
+            bookIdModel,
+        );
+
         // 本棚情報を取得
-        const bookShelfList = searchBookShelfDetailRepository.selectBookShelfDetail(searchBookShelfDetailSelectEntity);
+        const bookShelfList: ReadonlyArray<SearchBookShelfDetailType> =
+            searchBookShelfDetailRepository.selectBookShelfDetail(searchBookShelfDetailSelectEntity);
 
         // レスポンス用の本棚情報を作成
         const retBookShelfDetail: ReadonlyArray<SearchBookShelfDetailResponseType> = bookShelfList.map((e: SearchBookShelfDetailType) => {
 
+            // 書籍ID
             const bookId = e.bookId;
+            const bookIdModel = BookIdModel.reConstruct(bookId);
             // 著者リスト
             let authorList: string[] = [];
-            // レビューリスト
-            const thoughtList: SearchBookShelfDetailThoughtType[] = [];
 
             // 書籍著者検索条件
             const searchBookShelfDetailBookAuthorsSelectEntity = new SearchBookShelfDetailBookAuthorsSelectEntity(
-                BookIdModel.reConstruct(bookId),
+                bookIdModel,
             );
 
             // 書籍著者マスタリスト取得
@@ -121,7 +113,7 @@ export class SearchBookShelfDetailService {
             // 書籍マスタにデータが存在しない場合はGoogle Books Apiのキャッシュから著者情報を取得する
             else {
 
-                const googleBooksApiIdModel = new GoogleBooksApiIdModel(e.bookId);
+                const googleBooksApiIdModel = new GoogleBooksApiIdModel(bookId);
                 // Google Books Api著者キャッシュ検索条件
                 const searchBooksShelfListGoogleAuthorsCacheSelectEntity = new SearchBooksShelfListGoogleAuthorsCacheSelectEntity(
                     googleBooksApiIdModel
@@ -135,6 +127,15 @@ export class SearchBookShelfDetailService {
                     return e1.authorName;
                 });
             }
+
+            // レビューリスト検索条件
+            const searchBookShelfDetailThoughtSelectEntity = new SearchBookShelfDetailThoughtSelectEntity(
+                bookIdModel
+            );
+
+            // レビューリスト
+            const thoughtList: ReadonlyArray<SearchBookShelfDetailThoughtType> =
+                searchBookShelfDetailRepository.selectThoughtList(searchBookShelfDetailThoughtSelectEntity);
 
             return {
                 ...e,
