@@ -159,15 +159,30 @@ export class SearchBookInfoRepositoryJson implements SearchBookInfoRepositoryInt
         const filterGoogleBooksApiCacheList: GoogleBooksApiCacheModelType[] =
             GoogleBooksApiCacheMergedList.filter((e: GoogleBooksApiCacheModelType) => {
 
-                // タイトル、説明、著者に対してキーワードでデータを取得する
-                const titleRegex = new RegExp(e.title ?? ``, "i");
-                const descriptionRegex = new RegExp(e.description ?? ``, "i");
+                // キーワードでフィルターする
+                const title = e.title ?? ``;
+                const description = e.description ?? ``;
+                const titleRegex = new RegExp(title, "i");
+                const descriptionRegex = new RegExp(description, "i");
 
-                return titleRegex.test(keyword) || descriptionRegex.test(keyword) || e.authors?.some((e1) => {
+                // タイトル
+                if (title && titleRegex.test(keyword)) {
+                    return true;
+                }
 
-                    const authorNameRegex = new RegExp(e1, "i");
-                    return authorNameRegex.test(keyword);
-                });
+                // 説明
+                if (description && descriptionRegex.test(keyword)) {
+                    return true;
+                }
+
+                // 著者
+                if (e.authors?.some((e1) => {
+                    const authorName = e1.replace(/[ 　]/g, '');
+                    const authorNameRegex = new RegExp(authorName, "i");
+                    return e1 && authorNameRegex.test(keyword);
+                })) {
+                    return true;
+                }
             });
 
         return filterGoogleBooksApiCacheList;

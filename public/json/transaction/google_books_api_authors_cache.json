@@ -54,5 +54,89 @@
 		"authorName": "関宏夫",
 		"createDate": "20250214",
 		"updateDate": "20250214"
+	},
+	{
+		"bookId": "PqAgEAAAQBAJ",
+		"authorNo": 0,
+		"authorName": "藤井太洋",
+		"createDate": "20250222",
+		"updateDate": "20250222"
+	},
+	{
+		"bookId": "LwzNDwAAQBAJ",
+		"authorNo": 0,
+		"authorName": "藤井太洋",
+		"createDate": "20250222",
+		"updateDate": "20250222"
+	},
+	{
+		"bookId": "HGtYmwEACAAJ",
+		"authorNo": 0,
+		"authorName": "藤井太洋",
+		"createDate": "20250222",
+		"updateDate": "20250222"
+	},
+	{
+		"bookId": "ap5QDQEACAAJ",
+		"authorNo": 0,
+		"authorName": "藤井太洋",
+		"createDate": "20250222",
+		"updateDate": "20250222"
+	},
+	{
+		"bookId": "Ak7NjwEACAAJ",
+		"authorNo": 0,
+		"authorName": "藤井太洋",
+		"createDate": "20250222",
+		"updateDate": "20250222"
+	},
+	{
+		"bookId": "mJR5EAAAQBAJ",
+		"authorNo": 0,
+		"authorName": "藤井　太洋",
+		"createDate": "20250222",
+		"updateDate": "20250222"
+	},
+	{
+		"bookId": "9HQyDwAAQBAJ",
+		"authorNo": 0,
+		"authorName": "藤井 太洋",
+		"createDate": "20250222",
+		"updateDate": "20250222"
+	},
+	{
+		"bookId": "JNjFzwEACAAJ",
+		"authorNo": 0,
+		"authorName": "藤井太洋",
+		"createDate": "20250222",
+		"updateDate": "20250222"
+	},
+	{
+		"bookId": "JNjFzwEACAAJ",
+		"authorNo": 1,
+		"authorName": "仲俣暁生",
+		"createDate": "20250222",
+		"updateDate": "20250222"
+	},
+	{
+		"bookId": "JNjFzwEACAAJ",
+		"authorNo": 2,
+		"authorName": "鷹野凌",
+		"createDate": "20250222",
+		"updateDate": "20250222"
+	},
+	{
+		"bookId": "pLUyEQAAQBAJ",
+		"authorNo": 0,
+		"authorName": "藤井太洋",
+		"createDate": "20250222",
+		"updateDate": "20250222"
+	},
+	{
+		"bookId": "w9BvzgEACAAJ",
+		"authorNo": 0,
+		"authorName": "早川書房編集部",
+		"createDate": "20250222",
+		"updateDate": "20250222"
 	}
 ]

@@ -234,3 +234,11 @@
 [2025-02-14 00:18:45] [INFO] GET /searchbookinfo/v1/volumes?q=%E5%A4%8F%E9%9B%85%E6%BC%B1%E7%9F%B3 | User-Agent: PostmanRuntime/7.43.0 | Query: {"q":"夏雅漱石"} | Request Body: {} | ip: ::1
 [2025-02-14 00:19:30] [INFO] GET /bookinfo/v1/volumes?q=%E5%A4%8F%E9%9B%85%E6%BC%B1%E7%9F%B3 | User-Agent: PostmanRuntime/7.43.0 | Query: {"q":"夏雅漱石"} | Request Body: {} | ip: ::1
 [2025-02-14 21:27:45] [INFO] GET /bookinfo/v1/volumes?q=%E5%A4%8F%E9%9B%85%E6%BC%B1%E7%9F%B3 | User-Agent: PostmanRuntime/7.43.0 | Query: {"q":"夏雅漱石"} | Request Body: {} | ip: ::1
+[2025-02-22 13:58:52] [INFO] GET /booksearch/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
+[2025-02-22 13:59:10] [INFO] GET /booksearch/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
+[2025-02-22 14:04:40] [INFO] GET /null?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
+[2025-02-22 14:10:15] [INFO] GET /bookinfo/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
+[2025-02-22 14:12:20] [INFO] GET /bookinfo/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
+[2025-02-22 14:52:32] [INFO] GET /bookinfo/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
+[2025-02-22 15:01:03] [INFO] GET /bookinfo/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
+[2025-02-22 15:07:02] [INFO] GET /bookinfo/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
