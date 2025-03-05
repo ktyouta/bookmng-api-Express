@@ -37,7 +37,9 @@ export class UpdateBookShelfController extends RouteController {
      * @param res 
      * @returns 
      */
-    public doExecute(req: Request, res: Response, id: string) {
+    public doExecute(req: Request, res: Response) {
+
+        const id = req.params.id;
 
         if (!id) {
             return ApiResponse.create(res, HTTP_STATUS_METHOD_NOT_ALLOWED, `書籍IDが指定されていません。`);

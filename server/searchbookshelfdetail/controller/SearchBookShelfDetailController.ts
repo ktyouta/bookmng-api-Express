@@ -32,12 +32,14 @@ export class SearchBookShelfDetailController extends RouteController {
     }
 
     /**
-     * 本棚情報一覧を取得する
+     * 本棚情報詳細を取得する
      * @param req 
      * @param res 
      * @returns 
      */
-    public doExecute(req: Request, res: Response, id: string) {
+    public doExecute(req: Request, res: Response) {
+
+        const id = req.params.id;
 
         if (!id) {
             return ApiResponse.create(res, HTTP_STATUS_METHOD_NOT_ALLOWED, `書籍IDが指定されていません。`);

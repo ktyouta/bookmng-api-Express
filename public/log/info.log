@@ -242,3 +242,7 @@
 [2025-02-22 14:52:32] [INFO] GET /bookinfo/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
 [2025-02-22 15:01:03] [INFO] GET /bookinfo/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
 [2025-02-22 15:07:02] [INFO] GET /bookinfo/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
+[2025-02-22 22:13:51] [INFO] GET /bookinfo/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
+[2025-02-22 22:34:06] [INFO] GET /bookinfo/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
+[2025-02-22 22:34:16] [INFO] GET /bookinfo/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
+[2025-02-22 22:58:02] [INFO] GET /bookinfo/v1/volumes?q=%E8%97%A4%E4%BA%95%E5%A4%AA%E6%B4%8B | User-Agent: Dart/3.5 (dart:io) | Query: {"q":"藤井太洋"} | Request Body: {} | ip: ::ffff:127.0.0.1
